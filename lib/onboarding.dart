@@ -1,5 +1,6 @@
 // import 'dart:js_interop';
 
+import 'package:flutter/animation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -18,17 +19,23 @@ class OnBoarding extends StatefulWidget {
   State<OnBoarding> createState() => _OnBoardingState();
 }
 
-class _OnBoardingState extends State<OnBoarding> {
+class _OnBoardingState extends State<OnBoarding>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
   late PageController _controller;
   @override
   void initState() {
     _controller = PageController(initialPage: 0);
+    _animationController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 150));
+    _animationController.forward();
     super.initState();
   }
 
   @override
   void dispose() {
     _controller.dispose();
+    _animationController.dispose();
     super.dispose();
   }
 
@@ -118,62 +125,101 @@ class _OnBoardingState extends State<OnBoarding> {
               ),
             ),
           ),
-          Container(
-            color: Colors.transparent,
-            height: 90,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                TextButton(
-                  onPressed: () async {
-                    SharedPreferences prefs =
-                        await SharedPreferences.getInstance();
-                    await prefs.setBool('onboardingCompleted', true);
-                    if (context.mounted) {
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const NavNotifier()));
-                    }
-                  },
-                  style: ButtonStyle(
-                      overlayColor:
-                          MaterialStateProperty.all(Colors.transparent)),
-                  child: const Text(
-                    'Skip',
-                    style: TextStyle(
-                      color: Colors.white,
+          Stack(
+            children: [
+              GetStarted(
+                animationController: _animationController,
+              ),
+              Container(
+                color: Colors.transparent,
+                height: 90,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    TextButton(
+                      onPressed: () async {
+                        SharedPreferences prefs =
+                            await SharedPreferences.getInstance();
+                        await prefs.setBool('onboardingCompleted', true);
+                        if (context.mounted) {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const NavNotifier()));
+                        }
+                      },
+                      style: ButtonStyle(
+                          overlayColor:
+                              MaterialStateProperty.all(Colors.transparent)),
+                      child: const Text(
+                        'Skip',
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
-                  ),
+                    TextButton(
+                      style: ButtonStyle(
+                          overlayColor:
+                              MaterialStateProperty.all(Colors.transparent)),
+                      onPressed: () async {
+                        if (currentIndex != contents.length - 1) {
+                          _controller.nextPage(
+                              duration: const Duration(milliseconds: 200),
+                              curve: Curves.easeIn);
+                        } else {
+                          SharedPreferences prefs =
+                              await SharedPreferences.getInstance();
+                          await prefs.setBool('onboardingCompleted', true);
+                          if (context.mounted) {
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const NavNotifier()));
+                          }
+                        }
+                      },
+                      child: const Text('Next',
+                          style: TextStyle(color: Colors.white)),
+                    ),
+                  ],
                 ),
-                TextButton(
-                  style: ButtonStyle(
-                      overlayColor:
-                          MaterialStateProperty.all(Colors.transparent)),
-                  onPressed: () async {
-                    if (currentIndex != contents.length - 1) {
-                      _controller.nextPage(
-                          duration: const Duration(milliseconds: 200),
-                          curve: Curves.easeIn);
-                    } else {
-                      SharedPreferences prefs =
-                          await SharedPreferences.getInstance();
-                      await prefs.setBool('onboardingCompleted', true);
-                      if (context.mounted) {
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const NavNotifier()));
-                      }
-                    }
-                  },
-                  child:
-                      const Text('Next', style: TextStyle(color: Colors.white)),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ],
+      ),
+    );
+  }
+}
+
+class GetStarted extends StatelessWidget {
+  final AnimationController animationController;
+  const GetStarted({required this.animationController, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.only(top: 50),
+        child: AnimatedContainer(
+          duration: Duration.zero,
+          decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(40), topRight: Radius.circular(40))),
+          height: 50,
+          width: double.infinity,
+          child: TextButton(
+            child: const Text(
+              "Get Started",
+              style: TextStyle(
+                color: Colors.lightGreen,
+              ),
+            ),
+            onPressed: () {},
+          ),
+        ),
       ),
     );
   }
