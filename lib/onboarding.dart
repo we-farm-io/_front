@@ -1,7 +1,15 @@
+// import 'dart:js_interop';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/svg.dart';
+// import 'package:iconsax/iconsax.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart_farm/content_model.dart';
+import 'package:smart_farm/main.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class OnBoarding extends StatefulWidget {
   const OnBoarding({super.key});
@@ -28,114 +36,143 @@ class _OnBoardingState extends State<OnBoarding> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
+      backgroundColor: Colors.lightGreen,
+      body: Column(
         children: [
-          Column(
-            children: [
-              Expanded(
-                child: PageView.builder(
-                  onPageChanged: (int index) => {
-                    setState(
-                      () {
-                        currentIndex = index;
+          Expanded(
+            flex: 1,
+            child: Container(
+              decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(40),
+                      bottomRight: Radius.circular(40))),
+              child: Column(
+                children: [
+                  Expanded(
+                    child: PageView.builder(
+                      onPageChanged: (int index) => {
+                        setState(
+                          () {
+                            currentIndex = index;
+                          },
+                        )
                       },
-                    )
-                  },
-                  controller: _controller,
-                  itemCount: contents.length,
-                  itemBuilder: (_, i) {
-                    return Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 50, 0, 0),
-                      child: Column(
-                        children: [
-                          Image(
-                            height: 450,
-                            image: AssetImage(
-                              contents[i].image,
-                            ),
+                      controller: _controller,
+                      itemCount: contents.length,
+                      itemBuilder: (_, i) {
+                        return Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 150, 0, 0),
+                          child: Column(
+                            children: [
+                              SvgPicture.asset(
+                                height: 350,
+                                contents[i].image,
+                              ),
+                              const SizedBox(
+                                height: 0,
+                              ),
+                              Text(
+                                contents[i].title,
+                                style: const TextStyle(
+                                  fontSize: 19,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 19,
+                              ),
+                              Text(
+                                textAlign: TextAlign.center,
+                                contents[i].description,
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  color: Colors.black.withOpacity(0.5),
+                                ),
+                              ),
+                            ],
                           ),
-                          const SizedBox(
-                            height: 50,
-                          ),
-                          Text(
-                            contents[i].title,
-                            style: const TextStyle(
-                              fontSize: 28,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Text(
-                            textAlign: TextAlign.center,
-                            contents[i].description,
-                            style: TextStyle(
-                              fontSize: 15,
-                              color: Colors.black.withOpacity(0.5),
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
-          Positioned(
-              right: 15,
-              top: 30,
-              child: TextButton(
-                onPressed: () => {},
-                style: ButtonStyle(
-                    overlayColor:
-                        MaterialStateProperty.all(Colors.transparent)),
-                child: const Text(
-                  'skip',
-                  style: TextStyle(
-                    color: Colors.grey,
+                        );
+                      },
+                    ),
                   ),
-                ),
-              )),
-          Positioned(
-            bottom: kBottomNavigationBarHeight + 19,
-            left: 25,
-            child: SmoothPageIndicator(
-              onDotClicked: (index) {
-                _controller.animateToPage(index,
-                    duration: const Duration(milliseconds: 100),
-                    curve: Curves.easeIn);
-              },
-              controller: _controller,
-              count: 3,
-              effect: const ExpandingDotsEffect(
-                activeDotColor: Colors.lightGreen,
-                dotHeight: 6,
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 30),
+                    child: SmoothPageIndicator(
+                      onDotClicked: (index) {
+                        _controller.animateToPage(index,
+                            duration: const Duration(milliseconds: 100),
+                            curve: Curves.easeIn);
+                      },
+                      controller: _controller,
+                      count: 3,
+                      effect: const ExpandingDotsEffect(
+                        activeDotColor: Colors.lightGreen,
+                        dotHeight: 6,
+                        dotWidth: 6,
+                        expansionFactor: 3,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
-          Positioned(
-              right: 15,
-              bottom: kBottomNavigationBarHeight,
-              child: ElevatedButton(
-                style: ButtonStyle(
-                    minimumSize:
-                        MaterialStateProperty.all(const Size.fromRadius(27)),
-                    elevation: MaterialStateProperty.all(1),
-                    shape: MaterialStateProperty.all(const CircleBorder()),
-                    backgroundColor:
-                        MaterialStateProperty.all(Colors.lightGreen)),
-                onPressed: () {
-                  _controller.nextPage(
-                      duration: const Duration(milliseconds: 100),
-                      curve: Curves.easeIn);
-                },
-                child: const Icon(
-                  Iconsax.arrow_right_3,
-                  color: Colors.white,
+          Container(
+            color: Colors.transparent,
+            height: 90,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                TextButton(
+                  onPressed: () async {
+                    SharedPreferences prefs =
+                        await SharedPreferences.getInstance();
+                    await prefs.setBool('onboardingCompleted', true);
+                    if (context.mounted) {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const NavNotifier()));
+                    }
+                  },
+                  style: ButtonStyle(
+                      overlayColor:
+                          MaterialStateProperty.all(Colors.transparent)),
+                  child: const Text(
+                    'Skip',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
                 ),
-              ))
+                TextButton(
+                  style: ButtonStyle(
+                      overlayColor:
+                          MaterialStateProperty.all(Colors.transparent)),
+                  onPressed: () async {
+                    if (currentIndex != contents.length - 1) {
+                      _controller.nextPage(
+                          duration: const Duration(milliseconds: 200),
+                          curve: Curves.easeIn);
+                    } else {
+                      SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
+                      await prefs.setBool('onboardingCompleted', true);
+                      if (context.mounted) {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const NavNotifier()));
+                      }
+                    }
+                  },
+                  child:
+                      const Text('Next', style: TextStyle(color: Colors.white)),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );

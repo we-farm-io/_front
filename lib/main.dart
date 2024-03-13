@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart_farm/drawer.dart';
+import 'package:smart_farm/onboarding.dart';
 //import 'package:smart_farm/onboarding.dart';
 import 'package:smart_farm/views/agro_insight.dart';
 import 'package:smart_farm/views/home_page.dart';
@@ -21,14 +23,40 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'AgriTech',
-      home: ChangeNotifierProvider<BottomNavigationBarProvider>(
-        child: const NavBar(),
-        create: (BuildContext context) => BottomNavigationBarProvider(),
+      home: FutureBuilder(
+        future:
+            SharedPreferences.getInstance(), // Get SharedPreferences instance
+        builder: (context, AsyncSnapshot<SharedPreferences> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            // Show a loading indicator while waiting for SharedPreferences to be initialized
+            return const CircularProgressIndicator();
+          } else {
+            // Check if the onboarding has been completed before
+            bool onboardingCompleted = false;
+            // snapshot.data?.getBool('onboardingCompleted') ?? false;
+
+            // Decide whether to show onboarding or directly launch homepage
+            return onboardingCompleted
+                ? const NavNotifier()
+                : const OnBoarding(); // onboarding is disabled for now
+          }
+        },
       ),
     );
-    // ChangeNotifierProvider<BottomNavigationBarProvider>(
-    //   child: const NavBar(),
-    //   create: (BuildContext context) => BottomNavigationBarProvider(),
+  }
+}
+
+class NavNotifier extends StatelessWidget {
+  const NavNotifier({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider<BottomNavigationBarProvider>(
+      child: const NavBar(),
+      create: (BuildContext context) => BottomNavigationBarProvider(),
+    );
   }
 }
 

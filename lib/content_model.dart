@@ -8,18 +8,18 @@ class OnBoardingContent {
 
 List<OnBoardingContent> contents = [
   OnBoardingContent(
-    image: "assets/images/on_boarding_images/plant_disease.gif",
-    title: "PlantDoc",
+    image: "assets/images/on_boarding_images/3.svg",
+    title: "Get seed recommendations",
+    description:
+        "Not sure what to seed? Our AI model will make a decision for you",
+  ),
+  OnBoardingContent(
+    image: "assets/images/on_boarding_images/1.svg",
+    title: "Examine your plants",
     description: "eliminate disease , preserve your harvest",
   ),
   OnBoardingContent(
-      image: "assets/images/on_boarding_images/plant_care.gif",
-      title: "PlantCare",
+      image: "assets/images/on_boarding_images/2.svg",
+      title: "Manage your Farm efficiently",
       description: "make your plants feel better"),
-  OnBoardingContent(
-    image: "assets/images/on_boarding_images/plant_twerking.gif",
-    title: "AgroInsight",
-    description:
-        "not sure what to seed? Our AI model will make a decision for you",
-  )
 ];
