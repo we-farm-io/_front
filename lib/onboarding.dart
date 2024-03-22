@@ -1,11 +1,7 @@
 // import 'dart:js_interop';
 
-import 'package:flutter/animation.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
-// import 'package:iconsax/iconsax.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart_farm/content_model.dart';
 import 'package:smart_farm/main.dart';
@@ -19,23 +15,27 @@ class OnBoarding extends StatefulWidget {
   State<OnBoarding> createState() => _OnBoardingState();
 }
 
-class _OnBoardingState extends State<OnBoarding>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _animationController;
+class _OnBoardingState extends State<OnBoarding> with TickerProviderStateMixin {
+  late AnimationController _animationslideController;
+  late AnimationController _animationfadeController;
+
   late PageController _controller;
   @override
   void initState() {
     _controller = PageController(initialPage: 0);
-    _animationController = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 150));
-    _animationController.forward();
+    _animationfadeController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 250));
+    _animationslideController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 250));
     super.initState();
   }
 
   @override
   void dispose() {
     _controller.dispose();
-    _animationController.dispose();
+    _animationfadeController.dispose();
+    _animationslideController.dispose();
+
     super.dispose();
   }
 
@@ -43,7 +43,7 @@ class _OnBoardingState extends State<OnBoarding>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.lightGreen,
+      backgroundColor: const Color(0xFF98C13F),
       body: Column(
         children: [
           Expanded(
@@ -62,6 +62,13 @@ class _OnBoardingState extends State<OnBoarding>
                         setState(
                           () {
                             currentIndex = index;
+                            if (currentIndex == contents.length - 1) {
+                              _animationslideController.forward();
+                              _animationfadeController.reverse();
+                            } else {
+                              _animationslideController.reverse();
+                              _animationfadeController.forward();
+                            }
                           },
                         )
                       },
@@ -108,13 +115,13 @@ class _OnBoardingState extends State<OnBoarding>
                     child: SmoothPageIndicator(
                       onDotClicked: (index) {
                         _controller.animateToPage(index,
-                            duration: const Duration(milliseconds: 100),
-                            curve: Curves.easeIn);
+                            duration: const Duration(milliseconds: 200),
+                            curve: Curves.easeInOutCubic);
                       },
                       controller: _controller,
                       count: 3,
                       effect: const ExpandingDotsEffect(
-                        activeDotColor: Colors.lightGreen,
+                        activeDotColor: Color(0xFF98C13F),
                         dotHeight: 6,
                         dotWidth: 6,
                         expansionFactor: 3,
@@ -128,63 +135,13 @@ class _OnBoardingState extends State<OnBoarding>
           Stack(
             children: [
               GetStarted(
-                animationController: _animationController,
+                currentIndex: currentIndex,
+                animationController: _animationslideController,
               ),
-              Container(
-                color: Colors.transparent,
-                height: 90,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    TextButton(
-                      onPressed: () async {
-                        SharedPreferences prefs =
-                            await SharedPreferences.getInstance();
-                        await prefs.setBool('onboardingCompleted', true);
-                        if (context.mounted) {
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const NavNotifier()));
-                        }
-                      },
-                      style: ButtonStyle(
-                          overlayColor:
-                              MaterialStateProperty.all(Colors.transparent)),
-                      child: const Text(
-                        'Skip',
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                    TextButton(
-                      style: ButtonStyle(
-                          overlayColor:
-                              MaterialStateProperty.all(Colors.transparent)),
-                      onPressed: () async {
-                        if (currentIndex != contents.length - 1) {
-                          _controller.nextPage(
-                              duration: const Duration(milliseconds: 200),
-                              curve: Curves.easeIn);
-                        } else {
-                          SharedPreferences prefs =
-                              await SharedPreferences.getInstance();
-                          await prefs.setBool('onboardingCompleted', true);
-                          if (context.mounted) {
-                            Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const NavNotifier()));
-                          }
-                        }
-                      },
-                      child: const Text('Next',
-                          style: TextStyle(color: Colors.white)),
-                    ),
-                  ],
-                ),
-              ),
+              NextSkip(
+                  animationfadeController: _animationfadeController,
+                  currentIndex: currentIndex,
+                  controller: _controller),
             ],
           ),
         ],
@@ -193,31 +150,142 @@ class _OnBoardingState extends State<OnBoarding>
   }
 }
 
-class GetStarted extends StatelessWidget {
-  final AnimationController animationController;
-  const GetStarted({required this.animationController, super.key});
+class NextSkip extends StatefulWidget {
+  const NextSkip({
+    super.key,
+    required AnimationController animationfadeController,
+    required this.currentIndex,
+    required PageController controller,
+  })  : _animationfadeController = animationfadeController,
+        _controller = controller;
+
+  final AnimationController _animationfadeController;
+  final int currentIndex;
+  final PageController _controller;
+
+  @override
+  State<NextSkip> createState() => _NextSkipState();
+}
+
+class _NextSkipState extends State<NextSkip> {
+  @override
+  void initState() {
+    super.initState();
+    widget._animationfadeController.forward();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return FadeTransition(
+      opacity: widget._animationfadeController,
       child: Padding(
-        padding: const EdgeInsets.only(top: 50),
-        child: AnimatedContainer(
-          duration: Duration.zero,
-          decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(40), topRight: Radius.circular(40))),
-          height: 50,
-          width: double.infinity,
-          child: TextButton(
-            child: const Text(
-              "Get Started",
-              style: TextStyle(
-                color: Colors.lightGreen,
+        padding: const EdgeInsets.only(top: 10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            TextButton(
+              onPressed: () async {
+                if (widget.currentIndex != contents.length - 1) {
+                  SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
+                  await prefs.setBool('onboardingCompleted', true);
+                  if (context.mounted) {
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const NavNotifier()));
+                  }
+                }
+              },
+              style: ButtonStyle(
+                  overlayColor: MaterialStateProperty.all(Colors.transparent)),
+              child: const Text(
+                'Skip',
+                style: TextStyle(
+                  color: Colors.white,
+                ),
               ),
             ),
-            onPressed: () {},
+            TextButton(
+              style: ButtonStyle(
+                  overlayColor: MaterialStateProperty.all(Colors.transparent)),
+              onPressed: () {
+                if (widget.currentIndex != contents.length - 1) {
+                  widget._controller.nextPage(
+                      duration: const Duration(milliseconds: 200),
+                      curve: Curves.easeInOutCubic);
+                }
+              },
+              child: const Text(
+                'Next',
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class GetStarted extends StatefulWidget {
+  final AnimationController animationController;
+  const GetStarted({
+    super.key,
+    required this.animationController,
+    required this.currentIndex,
+  });
+  final int currentIndex;
+
+  @override
+  State<GetStarted> createState() => _GetStartedState();
+}
+
+class _GetStartedState extends State<GetStarted> {
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () async {
+        if (widget.currentIndex == contents.length - 1) {
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          await prefs.setBool('onboardingCompleted', true);
+          if (context.mounted) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const NavNotifier(),
+              ),
+            );
+          }
+        }
+      },
+      child: SlideTransition(
+        position: Tween<Offset>(
+          begin: const Offset(0, 1),
+          end: Offset.zero,
+        ).animate(widget.animationController),
+        child: FadeTransition(
+          opacity: widget.animationController,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 50),
+            child: Container(
+              decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(40),
+                      topRight: Radius.circular(40))),
+              height: 50,
+              width: double.infinity,
+              child: const Center(
+                child: Text(
+                  "Get Started",
+                  style: TextStyle(
+                    color: Color(0xFF98C13F),
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
           ),
         ),
       ),

@@ -39,6 +39,8 @@ dependencies:
   iconsax: ^0.0.8
   smooth_page_indicator: ^1.1.0
   shared_preferences: ^2.2.2
+  image_picker: ^1.0.7
+  flutter_speed_dial: ^7.0.0
 
 dev_dependencies:
   flutter_test:

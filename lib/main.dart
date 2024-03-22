@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
             return const CircularProgressIndicator();
           } else {
             // Check if the onboarding has been completed before
-            bool onboardingCompleted = false;
+            bool onboardingCompleted = true;
             // snapshot.data?.getBool('onboardingCompleted') ?? false;
 
             // Decide whether to show onboarding or directly launch homepage
