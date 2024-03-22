@@ -4,38 +4,62 @@ import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:smart_farm/views/plant_detail_screen.dart';
+
+class PlantData {
+  final File image;
+  final String disease;
+  final String definition;
+  final String solution;
+
+  PlantData({
+    required this.image,
+    required this.disease,
+    required this.definition,
+    required this.solution,
+  });
+}
 
 class Tab1 extends StatefulWidget {
-  const Tab1({super.key});
+  const Tab1({Key? key}) : super(key: key);
 
   @override
   State<Tab1> createState() => _Tab1State();
 }
 
 class _Tab1State extends State<Tab1> {
-  File? _selectedImage;
-  List<File> _recentPhotos = [];
+  List<PlantData> _recentPlantData = [];
   final picker = ImagePicker();
+
   @override
   void initState() {
     super.initState();
-    _loadRecentPhotos();
+    _loadRecentPlantData();
   }
 
-  Future<void> _saveRecentPhotos() async {
+  Future<void> _saveRecentPlantData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String>
-        recentPhotoPaths = //todo make the list contain image plus result
-        _recentPhotos.map((photo) => photo.path).toList();
-    await prefs.setStringList('recentPhotos', recentPhotoPaths);
+    List<String> recentPlantDataStrings = _recentPlantData.map((plantData) {
+      return '${plantData.image.path},${plantData.disease},${plantData.definition},${plantData.solution}';
+    }).toList();
+    await prefs.setStringList('recentPlantData', recentPlantDataStrings);
   }
 
-  Future<void> _loadRecentPhotos() async {
+  Future<void> _loadRecentPlantData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String>? recentPhotoPaths = prefs.getStringList('recentPhotos');
-    if (recentPhotoPaths != null) {
+    List<String>? recentPlantDataStrings =
+        prefs.getStringList('recentPlantData');
+    if (recentPlantDataStrings != null) {
       setState(() {
-        _recentPhotos = recentPhotoPaths.map((path) => File(path)).toList();
+        _recentPlantData = recentPlantDataStrings.map((dataString) {
+          List<String> parts = dataString.split(',');
+          return PlantData(
+            image: File(parts[0]),
+            disease: parts[1],
+            definition: parts[2],
+            solution: parts[3],
+          );
+        }).toList();
       });
     }
   }
@@ -44,17 +68,25 @@ class _Tab1State extends State<Tab1> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: ListView.builder(
-        itemCount: _recentPhotos.length,
+        itemCount: _recentPlantData.length,
         itemBuilder: (context, index) {
           return ListTile(
             leading: Image.file(
-              _recentPhotos[index],
+              _recentPlantData[index].image,
               width: 100,
               height: 100,
               fit: BoxFit.cover,
             ),
+            title: Text('Disease: ${_recentPlantData[index].disease}'),
             onTap: () {
-              //todo implement what happens when history element chosen (show result screen from history)
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => PlantDetailScreen(
+                    plantData: _recentPlantData[index],
+                  ),
+                ),
+              );
             },
           );
         },
@@ -98,24 +130,58 @@ class _Tab1State extends State<Tab1> {
   }
 
   Future _pickImageFromGallery() async {
-    final returnedImage = await picker.pickImage(source: ImageSource.gallery);
-    if (returnedImage == null) return;
-    setState(() {
-      _selectedImage = File(returnedImage.path);
-      _recentPhotos.add(_selectedImage!);
-      _saveRecentPhotos();
-      //todo implement the result screen
-    });
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      // Todo: You can prompt user to input disease, definition, and solution here.
+      PlantData newPlantData = PlantData(
+        image: File(pickedFile.path),
+        disease: 'Some Disease',
+        definition: 'Some Definition',
+        solution: 'Some Solution',
+      );
+      setState(() {
+        _recentPlantData.add(newPlantData);
+        _saveRecentPlantData();
+        // Todo: Implement the result screen
+      });
+      if (!mounted) return;
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => PlantDetailScreen(
+            plantData: newPlantData,
+          ),
+        ),
+      );
+    }
   }
 
   Future _pickImageFromCamera() async {
-    final returnedImage = await picker.pickImage(source: ImageSource.camera);
-    if (returnedImage == null) return;
-    setState(() {
-      _selectedImage = File(returnedImage.path);
-      _recentPhotos.add(_selectedImage!);
-      _saveRecentPhotos();
-      //todo implement the result screen
-    });
+    final pickedFile = await picker.pickImage(source: ImageSource.camera);
+
+    if (pickedFile != null) {
+      // Todo: You can prompt user to input disease, definition, and solution here.
+      PlantData newPlantData = PlantData(
+        image: File(pickedFile.path),
+        disease: 'Some Disease',
+        definition: 'Some Definition',
+        solution: 'Some Solution',
+      );
+      setState(() {
+        _recentPlantData.add(newPlantData);
+        _saveRecentPlantData();
+        // Todo: Implement the result screen
+      });
+      if (!mounted) return;
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => PlantDetailScreen(
+            plantData: newPlantData,
+          ),
+        ),
+      );
+    }
   }
 }
