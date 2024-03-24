@@ -31,21 +31,23 @@ class _SignUpPageState extends State<SignUpPage> {
     final userViewModel = Provider.of<UserViewModel>(context);
 
     return Consumer<UserViewModel>(
-      builder:(context, value, child) => 
-      SafeArea(
+      builder: (context, value, child) => SafeArea(
         child: Scaffold(
           appBar: AppBar(),
           body: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SvgPicture.asset('assets/images/authentication_images/signup.svg', height: 240),
+                SvgPicture.asset(
+                    'assets/images/authentication_images/signup.svg',
+                    height: 240),
                 const SizedBox(height: 20),
                 SvgPicture.asset('assets/logos/AgriTech.svg'),
                 const SizedBox(height: 20),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: Form(
+                    key: userViewModel.signUpFormKey,
                     child: Column(
                       children: [
                         InternationalPhoneNumberInput(
@@ -60,6 +62,12 @@ class _SignUpPageState extends State<SignUpPage> {
                           inputBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter a phone number';
+                            }
+                            return null;
+                          },
                         ),
                         const SizedBox(height: 20),
                         CustomTextFormField(
@@ -225,16 +233,14 @@ class _SignUpPageState extends State<SignUpPage> {
                             'Please accept the terms & conditions to sign up.'),
                       ));
                     } else {
-                      final username = usernameController.text.trim();
-                      final password = passwordController1.text.trim();
-                      final phonenumber = phoneController.text.trim();
-                      final id = idController.text.trim();
-      
-                      userViewModel.signUpProvider(context, userViewModel,
-                           phonenumber: phonenumber,
-                           username: username,
-                           password: password,
-                           id: id);
+                      context.read<UserViewModel>().signUpProvider(
+                            context,
+                            userViewModel,
+                            username: usernameController.text.trim(),
+                            password: passwordController1.text.trim(),
+                            phonenumber: phoneController.text.trim(),
+                            id: idController.text.trim(),
+                          );
                     }
                   },
                 ),
@@ -254,13 +260,15 @@ class _SignUpPageState extends State<SignUpPage> {
                         child: const Text(
                           'Log in',
                           style: TextStyle(
-                              fontFamily: 'Poppins', color: Pallete.buttonGreen),
+                              fontFamily: 'Poppins',
+                              color: Pallete.buttonGreen),
                         ),
                       ),
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => const LoginPage()),
+                          MaterialPageRoute(
+                              builder: (context) => const LoginPage()),
                         );
                       },
                     ),

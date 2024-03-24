@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:smart_farm/features/authentication/models.authentication/authentication_models.dart';
+import 'package:smart_farm/features/authentication/screens/auth.screens/page1_change_password.dart';
 import 'package:smart_farm/features/authentication/screens/auth.screens/sign_up.dart';
 import 'package:smart_farm/pallete.dart';
 import 'package:smart_farm/widgets/custom_button.dart';
@@ -25,17 +26,18 @@ class _LoginPageState extends State<LoginPage> {
     final userViewModel = Provider.of<UserViewModel>(context);
 
     return Consumer<UserViewModel>(
-      // ignore: avoid_types_as_parameter_names, non_constant_identifier_names
-      builder: (context, UserViewModel, child) => Scaffold(
+      builder: (context, value, child) => Scaffold(
         appBar: AppBar(),
         body: SafeArea(
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SvgPicture.asset('assets/images/authentication_images/login.svg', height: 275),
+                SvgPicture.asset(
+                    'assets/images/authentication_images/login.svg',
+                    height: 275),
                 SvgPicture.asset('assets/logos/AgriTech.svg'),
-                const SizedBox(height: 20),
+                const SizedBox(height: 40),
                 Container(
                   alignment: Alignment.centerLeft,
                   padding: const EdgeInsets.only(left: 25),
@@ -67,6 +69,7 @@ class _LoginPageState extends State<LoginPage> {
                   alignment: Alignment.centerLeft,
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: Form(
+                    key: userViewModel.loginFormKey,
                     child: Column(
                       children: [
                         CustomTextFormField(
@@ -129,20 +132,21 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   onTap: () {
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(builder: (context) => ChangePassword()),
-                    // );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Page1ChangePassword()),
+                    );
                   },
                 ),
                 const SizedBox(height: 20),
                 CustomButton(
                   buttonText: 'Log in',
                   onPressed: () {
-                    final username = usernameController.text.trim();
-                    final password = passwordController.text.trim();
-                    UserViewModel.loginProvider(context, userViewModel,
-                        username: username, password: password);
+                    context.read<UserViewModel>().loginProvider(
+                        context, userViewModel,
+                        username: usernameController.text.trim(),
+                        password: passwordController.text.trim());
                   },
                 ),
                 const SizedBox(height: 10),
