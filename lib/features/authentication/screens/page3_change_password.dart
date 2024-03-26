@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:smart_farm/features/authentication/models.authentication/authentication_models.dart';
-import 'package:smart_farm/pallete.dart';
-import 'package:smart_farm/widgets/custom_button.dart';
-import 'package:smart_farm/widgets/custom_textformfield.dart';
+import 'package:smart_farm/features/authentication/models/authentication_models.dart';
+import 'package:smart_farm/shared/utils/palette.dart';
+import 'package:smart_farm/shared/widgets/custom_button.dart';
+import 'package:smart_farm/shared/widgets/custom_textformfield.dart';
 
 class Page3ChangePassword extends StatelessWidget {
   final TextEditingController passwordController1 = TextEditingController();
@@ -84,7 +84,7 @@ class Page3ChangePassword extends StatelessWidget {
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(16),
                             borderSide:
-                                const BorderSide(color: Pallete.buttonGreen),
+                                const BorderSide(color: Palette.buttonGreen),
                           ),
                         ),
                       ),

@@ -1,28 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:smart_farm/pallete.dart';
+import 'package:smart_farm/shared/utils/palette.dart';
 
 class CustomTextFormField extends StatelessWidget {
   final String hintText;
   final String labelText;
-  final TextEditingController controller; 
+  final TextEditingController controller;
 
   const CustomTextFormField({
-    super.key, 
+    super.key,
     required this.hintText,
     required this.labelText,
-    required this.controller, 
+    required this.controller,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      controller: controller, 
+      controller: controller,
       validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'This field is required';
-                  }
-                  return null;
-                },
+        if (value == null || value.isEmpty) {
+          return 'This field is required';
+        }
+        return null;
+      },
       decoration: InputDecoration(
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
@@ -33,7 +33,7 @@ class CustomTextFormField extends StatelessWidget {
         contentPadding: const EdgeInsets.all(14),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Pallete.buttonGreen),
+          borderSide: const BorderSide(color: Palette.buttonGreen),
         ),
       ),
     );

@@ -1,13 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:smart_farm/drawer.dart';
-import 'package:smart_farm/main.dart';
-import 'package:smart_farm/views/agro_insight.dart';
-import 'package:smart_farm/views/home_page.dart';
-import 'package:smart_farm/views/plant_doc.dart';
-import 'package:smart_farm/views/store.dart';
-import 'package:smart_farm/views/weather.dart';
+import 'package:smart_farm/shared/widgets/app_sidebar.dart';
+import 'package:smart_farm/features/agroinsight/screens/agro_insight.dart';
+import 'package:smart_farm/features/home/screens/home.dart';
+import 'package:smart_farm/features/plantdoc/screens/plant_doc.dart';
 import 'package:provider/provider.dart';
+import 'package:smart_farm/features/store/screens/store.dart';
+import 'package:smart_farm/features/weather/screens/weather.dart';
+
+class BottomNavigationBarProvider with ChangeNotifier {
+  int _currentIndex = 0;
+
+  int get currentIndex => _currentIndex;
+
+  set currentIndex(int index) {
+    _currentIndex = index;
+    notifyListeners();
+  }
+}
 
 class NavBar extends StatefulWidget {
   const NavBar({super.key});

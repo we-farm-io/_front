@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:smart_farm/features/authentication/screens/auth.screens/page2_change_password.dart';
-import 'package:smart_farm/features/authentication/screens/auth.screens/page3_change_password.dart';
-import 'package:smart_farm/features/authentication/screens/auth.screens/success_auth.dart';
-import 'package:smart_farm/features/authentication/screens/auth.screens/success_change_password.dart';
-import 'package:smart_farm/views/home_page.dart';
+import 'package:smart_farm/features/authentication/screens/page2_change_password.dart';
+import 'package:smart_farm/features/authentication/screens/page3_change_password.dart';
+import 'package:smart_farm/features/authentication/screens/success_auth.dart';
+import 'package:smart_farm/features/authentication/screens/success_change_password.dart';
+import 'package:smart_farm/features/home/screens/home.dart';
 
 class UserViewModel with ChangeNotifier {
   final loginFormKey = GlobalKey<FormState>();

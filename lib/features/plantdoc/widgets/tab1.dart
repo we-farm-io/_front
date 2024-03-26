@@ -4,21 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:smart_farm/views/plant_detail_screen.dart';
-
-class PlantData {
-  final File image;
-  final String disease;
-  final String definition;
-  final String solution;
-
-  PlantData({
-    required this.image,
-    required this.disease,
-    required this.definition,
-    required this.solution,
-  });
-}
+import 'package:smart_farm/features/plantdoc/models/plant_data.dart';
+import 'package:smart_farm/features/plantdoc/screens/plant_detail_screen.dart';
 
 class Tab1 extends StatefulWidget {
   const Tab1({super.key});

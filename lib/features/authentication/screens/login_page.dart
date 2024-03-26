@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:smart_farm/features/authentication/models.authentication/authentication_models.dart';
-import 'package:smart_farm/features/authentication/screens/auth.screens/page1_change_password.dart';
-import 'package:smart_farm/features/authentication/screens/auth.screens/sign_up.dart';
-import 'package:smart_farm/pallete.dart';
-import 'package:smart_farm/widgets/custom_button.dart';
-import 'package:smart_farm/widgets/custom_textformfield.dart';
+import 'package:smart_farm/features/authentication/models/authentication_models.dart';
+import 'package:smart_farm/features/authentication/screens/page1_change_password.dart';
+import 'package:smart_farm/features/authentication/screens/sign_up.dart';
+import 'package:smart_farm/shared/utils/palette.dart';
+import 'package:smart_farm/shared/widgets/custom_button.dart';
+import 'package:smart_farm/shared/widgets/custom_textformfield.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -110,7 +110,7 @@ class _LoginPageState extends State<LoginPage> {
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
                               borderSide:
-                                  const BorderSide(color: Pallete.buttonGreen),
+                                  const BorderSide(color: Palette.buttonGreen),
                             ),
                           ),
                         ),
@@ -127,7 +127,7 @@ class _LoginPageState extends State<LoginPage> {
                       'Forgot password?',
                       style: TextStyle(
                         fontFamily: 'Poppins',
-                        color: Pallete.buttonGreen,
+                        color: Palette.buttonGreen,
                       ),
                     ),
                   ),
@@ -165,7 +165,7 @@ class _LoginPageState extends State<LoginPage> {
                         'Sign up',
                         style: TextStyle(
                           fontFamily: 'Poppins',
-                          color: Pallete.buttonGreen,
+                          color: Palette.buttonGreen,
                         ),
                       ),
                       onTap: () {

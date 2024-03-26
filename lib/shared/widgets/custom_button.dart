@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smart_farm/pallete.dart';
+import 'package:smart_farm/shared/utils/palette.dart';
 
 class CustomButton extends StatelessWidget {
   final String buttonText;
@@ -19,7 +19,7 @@ class CustomButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onPressed,
         style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(Pallete.buttonGreen),
+          backgroundColor: MaterialStateProperty.all(Palette.buttonGreen),
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),

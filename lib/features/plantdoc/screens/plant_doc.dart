@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:smart_farm/views/tab1.dart';
-import 'package:smart_farm/views/tab2.dart';
+import 'package:smart_farm/features/plantdoc/widgets/tab1.dart';
+import 'package:smart_farm/features/plantdoc/widgets/tab2.dart';
 
 class PlantDoc extends StatefulWidget {
   const PlantDoc({super.key});

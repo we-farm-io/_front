@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
-import 'package:smart_farm/features/authentication/models.authentication/authentication_models.dart';
-import 'package:smart_farm/widgets/custom_button.dart';
+import 'package:smart_farm/features/authentication/models/authentication_models.dart';
+import 'package:smart_farm/shared/widgets/custom_button.dart';
 
 class Page1ChangePassword extends StatelessWidget {
   final TextEditingController phoneController = TextEditingController();

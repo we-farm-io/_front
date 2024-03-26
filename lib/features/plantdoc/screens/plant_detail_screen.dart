@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smart_farm/views/tab1.dart';
+import 'package:smart_farm/features/plantdoc/models/plant_data.dart';
 
 class PlantDetailScreen extends StatelessWidget {
   final PlantData plantData;

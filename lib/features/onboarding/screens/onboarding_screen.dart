@@ -3,19 +3,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:smart_farm/content_model.dart';
-import 'package:smart_farm/main.dart';
+import 'package:smart_farm/features/onboarding/models/content_model.dart';
+import 'package:smart_farm/shared/widgets/nav_bar.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class OnBoarding extends StatefulWidget {
-  const OnBoarding({super.key});
+class Onboarding extends StatefulWidget {
+  const Onboarding({super.key});
 
   @override
-  State<OnBoarding> createState() => _OnBoardingState();
+  State<Onboarding> createState() => _OnBoardingState();
 }
 
-class _OnBoardingState extends State<OnBoarding> with TickerProviderStateMixin {
+class _OnBoardingState extends State<Onboarding> with TickerProviderStateMixin {
   late AnimationController _animationslideController;
   late AnimationController _animationfadeController;
 
@@ -193,7 +193,7 @@ class _NextSkipState extends State<NextSkip> {
                     Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const NavNotifier()));
+                            builder: (context) => const NavBar()));
                   }
                 }
               },
@@ -253,7 +253,7 @@ class _GetStartedState extends State<GetStarted> {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => const NavNotifier(),
+                builder: (context) => const NavBar(),
               ),
             );
           }

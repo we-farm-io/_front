@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:provider/provider.dart';
-import 'package:smart_farm/features/authentication/models.authentication/authentication_models.dart';
-import 'package:smart_farm/features/authentication/screens/auth.screens/login_page.dart';
-import 'package:smart_farm/pallete.dart';
-import 'package:smart_farm/widgets/custom_button.dart';
-import 'package:smart_farm/widgets/custom_textformfield.dart';
+import 'package:smart_farm/features/authentication/models/authentication_models.dart';
+import 'package:smart_farm/features/authentication/screens/login_page.dart';
+import 'package:smart_farm/shared/utils/palette.dart';
+import 'package:smart_farm/shared/widgets/custom_button.dart';
+import 'package:smart_farm/shared/widgets/custom_textformfield.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -108,7 +108,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
                               borderSide:
-                                  const BorderSide(color: Pallete.buttonGreen),
+                                  const BorderSide(color: Palette.buttonGreen),
                             ),
                           ),
                         ),
@@ -149,7 +149,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
                               borderSide:
-                                  const BorderSide(color: Pallete.buttonGreen),
+                                  const BorderSide(color: Palette.buttonGreen),
                             ),
                           ),
                         ),
@@ -176,7 +176,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               _checked = value ?? false;
                             });
                           },
-                          activeColor: Pallete.buttonGreen,
+                          activeColor: Palette.buttonGreen,
                         ),
                       ),
                       const SizedBox(width: 10),
@@ -196,7 +196,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                 text: 'terms & conditions of use ',
                                 style: TextStyle(
                                   fontFamily: 'Poppins', fontSize: 12,
-                                  color: Pallete.buttonGreen,
+                                  color: Palette.buttonGreen,
                                   //decoration: TextDecoration.underline,
                                 ),
                               ),
@@ -212,7 +212,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                 text: ' privacy policy',
                                 style: TextStyle(
                                   fontFamily: 'Poppins', fontSize: 12,
-                                  color: Pallete.buttonGreen,
+                                  color: Palette.buttonGreen,
                                   //decoration: TextDecoration.underline,
                                 ),
                               ),
@@ -261,7 +261,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           'Log in',
                           style: TextStyle(
                               fontFamily: 'Poppins',
-                              color: Pallete.buttonGreen),
+                              color: Palette.buttonGreen),
                         ),
                       ),
                       onTap: () {

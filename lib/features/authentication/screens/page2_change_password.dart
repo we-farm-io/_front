@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:smart_farm/features/authentication/models.authentication/authentication_models.dart';
-import 'package:smart_farm/pallete.dart';
-import 'package:smart_farm/widgets/custom_button.dart';
+import 'package:smart_farm/features/authentication/models/authentication_models.dart';
+import 'package:smart_farm/shared/utils/palette.dart';
+import 'package:smart_farm/shared/widgets/custom_button.dart';
 
 class Page2ChangePassword extends StatefulWidget {
   final String phonenumber;
@@ -40,7 +40,8 @@ class _Page2ChangePasswordState extends State<Page2ChangePassword> {
                 const SizedBox(
                   height: 20,
                 ),
-                SvgPicture.asset('assets/images/authentication_images/changepass2.svg'),
+                SvgPicture.asset(
+                    'assets/images/authentication_images/changepass2.svg'),
                 const SizedBox(
                   height: 10,
                 ),
@@ -101,7 +102,7 @@ class _Page2ChangePasswordState extends State<Page2ChangePassword> {
                             'Resend',
                             style: TextStyle(
                                 fontFamily: 'Poppins',
-                                color: Pallete.buttonGreen),
+                                color: Palette.buttonGreen),
                           )),
                       onTap: () {
                         userViewModel.sendOTPProvider(

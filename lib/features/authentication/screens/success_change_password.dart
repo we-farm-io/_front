@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:smart_farm/features/authentication/screens/auth.screens/login_page.dart';
-import 'package:smart_farm/widgets/custom_button.dart';
+import 'package:smart_farm/features/authentication/screens/login_page.dart';
+import 'package:smart_farm/shared/widgets/custom_button.dart';
 
 class SuccessChangePassword extends StatelessWidget {
   const SuccessChangePassword({super.key});

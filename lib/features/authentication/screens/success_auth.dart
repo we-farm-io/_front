@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:smart_farm/views/home_page.dart';
-import 'package:smart_farm/widgets/custom_button.dart';
+import 'package:smart_farm/features/home/screens/home.dart';
+import 'package:smart_farm/shared/widgets/custom_button.dart';
 
 class SuccessAuth extends StatelessWidget {
   const SuccessAuth({super.key});
