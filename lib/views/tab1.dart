@@ -21,7 +21,7 @@ class PlantData {
 }
 
 class Tab1 extends StatefulWidget {
-  const Tab1({Key? key}) : super(key: key);
+  const Tab1({super.key});
 
   @override
   State<Tab1> createState() => _Tab1State();

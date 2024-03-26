@@ -6,6 +6,7 @@ class PlantDoc extends StatefulWidget {
   const PlantDoc({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _PlantDocState createState() => _PlantDocState();
 }
 
@@ -79,7 +80,7 @@ class _PlantDocState extends State<PlantDoc>
                 child: TabBarView(
                   physics: const NeverScrollableScrollPhysics(),
                   controller: tabController,
-                  children: [
+                  children: const [
                     Tab2(),
                     Tab1(),
                   ],
