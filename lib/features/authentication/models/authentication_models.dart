@@ -3,7 +3,7 @@ import 'package:smart_farm/features/authentication/screens/page2_change_password
 import 'package:smart_farm/features/authentication/screens/page3_change_password.dart';
 import 'package:smart_farm/features/authentication/screens/success_auth.dart';
 import 'package:smart_farm/features/authentication/screens/success_change_password.dart';
-import 'package:smart_farm/features/home/screens/home.dart';
+import 'package:smart_farm/features/home/screens/home_screen.dart';
 
 class UserViewModel with ChangeNotifier {
   final loginFormKey = GlobalKey<FormState>();

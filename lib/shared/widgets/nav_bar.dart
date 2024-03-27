@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:smart_farm/features/home/providers/news_provider.dart';
 import 'package:smart_farm/shared/widgets/app_sidebar.dart';
 import 'package:smart_farm/features/agroinsight/screens/agro_insight.dart';
-import 'package:smart_farm/features/home/screens/home.dart';
+import 'package:smart_farm/features/home/screens/home_screen.dart';
 import 'package:smart_farm/features/plantdoc/screens/plant_doc.dart';
 import 'package:provider/provider.dart';
 import 'package:smart_farm/features/store/screens/store.dart';
@@ -35,6 +36,13 @@ class _NavBarState extends State<NavBar> {
     const StorePage(),
     const WeatherPage(),
   ];
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Provider.of<NewsProvider>(context, listen: false).getNews();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
