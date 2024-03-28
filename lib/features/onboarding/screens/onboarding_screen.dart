@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart_farm/features/onboarding/models/content_model.dart';
-import 'package:smart_farm/shared/widgets/nav_bar.dart';
+import 'package:smart_farm/shared/widgets/app_navbar.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
