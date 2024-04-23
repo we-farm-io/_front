@@ -36,7 +36,7 @@ class _PlantDocState extends State<PlantDoc>
           height: MediaQuery.of(context).size.height,
           child: Column(
             children: [
-              const SizedBox(height: 50),
+              const SizedBox(height: 10),
               Container(
                 // height: 50,
                 width: MediaQuery.of(context).size.height,

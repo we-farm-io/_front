@@ -4,6 +4,7 @@ import 'package:smart_farm/features/authentication/screens/page3_change_password
 import 'package:smart_farm/features/authentication/screens/success_auth.dart';
 import 'package:smart_farm/features/authentication/screens/success_change_password.dart';
 import 'package:smart_farm/features/home/screens/home_screen.dart';
+import 'package:smart_farm/shared/widgets/app_navbar.dart';
 
 class UserViewModel with ChangeNotifier {
   final loginFormKey = GlobalKey<FormState>();
@@ -66,7 +67,7 @@ class UserViewModel with ChangeNotifier {
       userViewModel.setLoginCredentials(username, password);
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const HomePage()),
+        MaterialPageRoute(builder: (context) => const NavBar()),
       );
     } else if (username.isNotEmpty && password.isNotEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(

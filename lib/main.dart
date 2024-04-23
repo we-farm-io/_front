@@ -3,17 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:provider/provider.dart';
 import 'package:smart_farm/features/authentication/models/authentication_models.dart';
+import 'package:smart_farm/features/authentication/screens/login_page.dart';
+import 'package:smart_farm/features/authentication/screens/sign_up.dart';
 import 'package:smart_farm/features/home/providers/news_provider.dart';
 import 'package:smart_farm/features/onboarding/screens/onboarding_screen.dart';
+import 'package:smart_farm/features/plantdoc/providers/plantgrowth_provider.dart';
 import 'package:smart_farm/shared/services/shared_preferences_service.dart';
 import 'package:smart_farm/shared/widgets/app_navbar.dart';
 
-Future main() async{
+Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
-    if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) {
+  if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) {
     await InAppWebViewController.setWebContentsDebuggingEnabled(kDebugMode);
   }
-  SharedPreferencesService.init();
+  await SharedPreferencesService.init();
 
   runApp(const MyApp());
 }
@@ -24,9 +27,11 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(
+          create: (context) => PlantProvider(),
+        ),
         ChangeNotifierProvider(
           create: (context) => NewsProvider(),
         ),
@@ -47,8 +52,9 @@ class MyApp extends StatelessWidget {
               return const CircularProgressIndicator();
             } else {
               final bool onboardingCompleted = snapshot.data ?? false;
+              print(snapshot.data);
               return onboardingCompleted
-                  ? const NavBar()
+                  ? const SignUpPage()
                   : const Onboarding(); //boarding is disabled for now
             }
           },

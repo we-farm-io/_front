@@ -169,7 +169,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       onTap: () {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
                               builder: (context) => const SignUpPage()),
