@@ -1,14 +1,16 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:smart_farm/features/authentication/models.authentication/authentication_models.dart';
-import 'package:smart_farm/features/authentication/screens/auth.screens/sign_up.dart';
-import 'package:smart_farm/onboarding.dart';
-import 'package:smart_farm/widgets/nav_bar.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:smart_farm/features/authentication/models/authentication_models.dart';
+import 'package:smart_farm/features/authentication/screens/sign_up.dart';
+import 'package:smart_farm/features/home/providers/news_provider.dart';
+import 'package:smart_farm/features/onboarding/screens/onboarding_screen.dart';
+import 'package:smart_farm/features/plantdoc/providers/plantgrowth_provider.dart';
+import 'package:smart_farm/shared/services/shared_preferences_service.dart';
+import 'package:smart_farm/shared/widgets/app_navbar.dart';
 
-void main() async {
+Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: const FirebaseOptions(
@@ -20,7 +22,16 @@ void main() async {
       projectId: "farmai-e033e", //paste your project id here
     ),
   );
+  if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) {
+    await InAppWebViewController.setWebContentsDebuggingEnabled(kDebugMode);
+  }
+  await SharedPreferencesService.init();
+
   runApp(const MyApp());
+}
+
+class InAppWebViewController {
+  static setWebContentsDebuggingEnabled(bool kDebugMode) {}
 }
 
 class MyApp extends StatelessWidget {
@@ -32,6 +43,12 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
+          create: (context) => PlantProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => NewsProvider(),
+        ),
+        ChangeNotifierProvider(
           create: (context) => UserViewModel(),
         ),
         ChangeNotifierProvider(
@@ -41,52 +58,21 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'AgriTech',
-        home: FutureBuilder(
-          future:
-              SharedPreferences.getInstance(), // Get SharedPreferences instance
-          builder: (context, AsyncSnapshot<SharedPreferences> snapshot) {
+        home: FutureBuilder<bool>(
+          future: SharedPreferencesService.onboardingCompleted,
+          builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              // Show a loading indicator while waiting for SharedPreferences to be initialized
               return const CircularProgressIndicator();
             } else {
-              // Check if the onboarding has been completed before
-              bool onboardingCompleted = true;
-              // snapshot.data?.getBool('onboardingCompleted') ?? false;
-
-              // Decide whether to show onboarding or directly launch homepage
+              final bool onboardingCompleted = snapshot.data ?? false;
+              print(snapshot.data);
               return onboardingCompleted
-                  ? const OnBoarding()
-                  // ignore: dead_code
-                  : const OnBoarding(); // onboarding is disabled for now
+                  ? const SignUpPage()
+                  : const Onboarding(); //boarding is disabled for now
             }
           },
         ),
       ),
     );
-  }
-}
-
-class NavNotifier extends StatelessWidget {
-  const NavNotifier({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return ChangeNotifierProvider<BottomNavigationBarProvider>(
-      child: const NavBar(),
-      create: (BuildContext context) => BottomNavigationBarProvider(),
-    );
-  }
-}
-
-class BottomNavigationBarProvider with ChangeNotifier {
-  int _currentIndex = 0;
-
-  int get currentIndex => _currentIndex;
-
-  set currentIndex(int index) {
-    _currentIndex = index;
-    notifyListeners();
   }
 }
