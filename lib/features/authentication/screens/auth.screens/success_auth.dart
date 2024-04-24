@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smart_farm/views/home_page.dart';
 import 'package:smart_farm/widgets/custom_button.dart';
+import 'package:smart_farm/widgets/nav_bar.dart';
 
 class SuccessAuth extends StatelessWidget {
   const SuccessAuth({super.key});
@@ -18,7 +19,9 @@ class SuccessAuth extends StatelessWidget {
                 const SizedBox(height: 30),
                 SvgPicture.asset('assets/logos/AgriTech.svg'),
                 const SizedBox(height: 30),
-                SvgPicture.asset('assets/images/authentication_images/success.svg', height: 380),
+                SvgPicture.asset(
+                    'assets/images/authentication_images/success.svg',
+                    height: 380),
                 const SizedBox(height: 30),
                 const Text(
                   'Success!',
@@ -43,7 +46,7 @@ class SuccessAuth extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const HomePage()),
+                      MaterialPageRoute(builder: (context) => const NavBar()),
                     );
                   },
                 ),

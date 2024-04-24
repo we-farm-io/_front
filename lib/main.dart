@@ -2,10 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart_farm/features/authentication/models.authentication/authentication_models.dart';
+import 'package:smart_farm/features/authentication/screens/auth.screens/sign_up.dart';
 import 'package:smart_farm/onboarding.dart';
 import 'package:smart_farm/widgets/nav_bar.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-void main() => runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: const FirebaseOptions(
+      apiKey:
+          "AIzaSyCOgNGfXwwQzn1AqmCOwBJMaFJcLLlVsIc", // paste your api key here
+      appId:
+          "1:1079163628132:android:a65af8797b83eabaad0d71", //paste your app id here
+      messagingSenderId: "1079163628132", //paste your messagingSenderId here
+      projectId: "farmai-e033e", //paste your project id here
+    ),
+  );
+  runApp(const MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -39,7 +55,7 @@ class MyApp extends StatelessWidget {
 
               // Decide whether to show onboarding or directly launch homepage
               return onboardingCompleted
-                  ? const NavNotifier()
+                  ? const OnBoarding()
                   // ignore: dead_code
                   : const OnBoarding(); // onboarding is disabled for now
             }

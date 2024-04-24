@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart_farm/content_model.dart';
+import 'package:smart_farm/features/authentication/screens/auth.screens/sign_up.dart';
 import 'package:smart_farm/main.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -253,7 +254,7 @@ class _GetStartedState extends State<GetStarted> {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => const NavNotifier(),
+                builder: (context) => const SignUpPage(),
               ),
             );
           }
