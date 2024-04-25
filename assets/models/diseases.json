@@ -1,0 +1,233 @@
+{
+    "diseases": [
+      {
+        "disease": "Apple Scab",
+        "code": 0,
+        "definition": "Apple scab is a fungal disease that affects apple trees, causing dark, scabby lesions on leaves, fruit, and twigs.",
+        "solution": "To control apple scab, use fungicides, prune infected branches, and remove fallen leaves in the autumn. Planting resistant apple varieties can also help prevent the spread of the disease."
+      },
+      {
+        "disease": "Black Rot",
+        "code": 1,
+        "definition": "Black rot is a fungal disease that affects apples, causing black, sunken lesions on fruit, leaves, and stems.",
+        "solution": "To manage black rot, practice good sanitation by removing infected plant material, use fungicides, and plant resistant apple varieties."
+      },
+      {
+        "disease": "Cedar Apple Rust",
+        "code": 2,
+        "definition": "Cedar apple rust is a fungal disease that affects apple trees, causing orange to rust-colored spots on leaves and fruit.",
+        "solution": "Control cedar apple rust by pruning infected branches, removing nearby cedar trees (which act as alternate hosts), and using fungicides."
+      },
+      {
+        "disease": "Healthy Apple",
+        "code": 3,
+        "definition": "No disease symptoms present. The apple tree is healthy.",
+        "solution": "No action required."
+      },
+      {
+        "disease": "Blueberry Healthy",
+        "code": 4,
+        "definition": "No disease symptoms present. The blueberry plant is healthy.",
+        "solution": "No action required."
+      },
+      {
+        "disease": "Cherry (including sour) Powdery Mildew",
+        "code": 5,
+        "definition": "Powdery mildew is a fungal disease that affects cherry trees, causing a white powdery coating on leaves, shoots, and fruit.",
+        "solution": "To control powdery mildew, prune to improve air circulation, apply fungicides, and plant resistant cherry varieties."
+      },
+      {
+        "disease": "Cherry (including sour) Healthy",
+        "code": 6,
+        "definition": "No disease symptoms present. The cherry tree is healthy.",
+        "solution": "No action required."
+      },
+      {
+        "disease": "Corn (maize) Cercospora Leaf Spot Gray Leaf Spot",
+        "code": 7,
+        "definition": "Cercospora leaf spot, also known as gray leaf spot, is a fungal disease that affects corn, causing brown to gray spots with yellow halos on leaves.",
+        "solution": "To manage cercospora leaf spot, rotate crops, use resistant corn varieties, and apply fungicides."
+      },
+      {
+        "disease": "Corn (maize) Common Rust",
+        "code": 8,
+        "definition": "Common rust is a fungal disease that affects corn, causing small, reddish-brown pustules on leaves, which may merge to form larger lesions.",
+        "solution": "To control common rust, plant resistant corn varieties, practice crop rotation, and use fungicides if necessary."
+      },
+      {
+        "disease": "Corn (maize) Northern Leaf Blight",
+        "code": 9,
+        "definition": "Northern leaf blight is a fungal disease that affects corn, causing large, tan to gray lesions with wavy margins on leaves.",
+        "solution": "To manage northern leaf blight, rotate crops, till residues, use resistant corn varieties, and apply fungicides."
+      },
+      {
+        "disease": "Corn (maize) Healthy",
+        "code": 10,
+        "definition": "No disease symptoms present. The corn plant is healthy.",
+        "solution": "No action required."
+      },
+      {
+        "disease": "Grape Black Rot",
+        "code": 11,
+        "definition": "Black rot is a fungal disease that affects grapes, causing brown to black lesions on leaves, shoots, and fruit.",
+        "solution": "To control black rot, practice good sanitation, use fungicides, and plant resistant grape varieties."
+      },
+      {
+        "disease": "Grape Esca (Black Measles)",
+        "code": 12,
+        "definition": "Esca, also known as black measles, is a fungal disease that affects grapevines, causing wilting, yellowing, and black streaks in the wood.",
+        "solution": "Control esca by pruning affected vines, managing vine vigor, and using preventative fungicides."
+      },
+      {
+        "disease": "Grape Leaf Blight (Isariopsis Leaf Spot)",
+        "code": 13,
+        "definition": "Isariopsis leaf spot, also known as grape leaf blight, is a fungal disease that affects grape leaves, causing small, dark spots with yellow halos.",
+        "solution": "To manage grape leaf blight, practice good vineyard sanitation, use fungicides, and promote air circulation."
+      },
+      {
+        "disease": "Grape Healthy",
+        "code": 14,
+        "definition": "No disease symptoms present. The grapevine is healthy.",
+        "solution": "No action required."
+      },
+      {
+        "disease": "Orange Haunglongbing (Citrus Greening)",
+        "code": 15,
+        "definition": "Huanglongbing, also known as citrus greening, is a bacterial disease that affects citrus trees, causing mottled leaves, yellow shoots, and bitter, misshapen fruit.",
+        "solution": "Control citrus greening by removing infected trees, controlling insect vectors, and planting disease-free citrus trees."
+      },
+      {
+        "disease": "Peach Bacterial Spot",
+        "code": 16,
+        "definition": "Bacterial spot is a disease that affects peach trees, causing small, dark lesions on leaves and fruit.",
+        "solution": "To manage bacterial spot, prune to improve air circulation, apply copper-based fungicides, and plant resistant peach varieties."
+      },
+      {
+        "disease": "Peach Healthy",
+        "code": 17,
+        "definition": "No disease symptoms present. The peach tree is healthy.",
+        "solution": "No action required."
+      },
+      {
+        "disease": "Pepper, Bell Bacterial Spot",
+        "code": 18,
+        "definition": "Bacterial spot is a disease that affects bell pepper plants, causing dark lesions on leaves, stems, and fruit.",
+        "solution": "To control bacterial spot, practice good sanitation, apply copper-based fungicides, and plant resistant pepper varieties."
+      },
+      {
+        "disease": "Pepper, Bell Healthy",
+        "code": 19,
+        "definition": "No disease symptoms present. The bell pepper plant is healthy.",
+        "solution": "No action required."
+      },
+      {
+        "disease": "Potato Early Blight",
+        "code": 20,
+        "definition": "Early blight is a fungal disease that affects potato plants, causing dark lesions with concentric rings on leaves.",
+        "solution": "To manage early blight, rotate crops, space plants for good air circulation, and apply fungicides preventatively."
+      },
+      {
+        "disease": "Potato Late Blight",
+        "code": 21,
+        "definition": "Late blight is a fungal disease that affects potato plants, causing dark lesions on leaves and stems, often leading to rapid defoliation.",
+        "solution": "To control late blight, practice good sanitation, rotate crops, and apply fungicides preventatively."
+      },
+      {
+        "disease": "Potato Healthy",
+        "code": 22,
+        "definition": "No disease symptoms present. The potato plant is healthy.",
+        "solution": "No action required."
+      },
+      {
+        "disease": "Raspberry Healthy",
+        "code": 23,
+        "definition": "No disease symptoms present. The raspberry plant is healthy.",
+        "solution": "No action required."
+      },
+      {
+        "disease": "Soybean Healthy",
+        "code": 24,
+        "definition": "No disease symptoms present. The soybean plant is healthy.",
+        "solution": "No action required."
+      },
+      {
+        "disease": "Squash Powdery Mildew",
+        "code": 25,
+        "definition": "Powdery mildew is a fungal disease that affects squash plants, causing white powdery patches on leaves, stems, and fruit.",
+        "solution": "To control powdery mildew, prune to improve air circulation, apply fungicides, and plant resistant squash varieties."
+      },
+      {
+        "disease": "Strawberry Leaf Scorch",
+        "code": 26,
+        "definition": "Leaf scorch is a disease that affects strawberry plants, causing browning and necrosis of leaf margins.",
+        "solution": "To manage leaf scorch, remove infected leaves, space plants for good air circulation, and avoid overhead irrigation."
+      },
+      {
+        "disease": "Strawberry Healthy",
+        "code": 27,
+        "definition": "No disease symptoms present. The strawberry plant is healthy.",
+        "solution": "No action required."
+      },
+      {
+        "disease": "Tomato Bacterial Spot",
+        "code": 28,
+        "definition": "Bacterial spot is a disease that affects tomato plants, causing dark lesions on leaves, stems, and fruit.",
+        "solution": "To control bacterial spot, practice good sanitation, apply copper-based fungicides, and plant resistant tomato varieties."
+      },
+      {
+        "disease": "Tomato Early Blight",
+        "code": 29,
+        "definition": "Early blight is a fungal disease that affects tomato plants, causing dark concentric lesions on leaves, often leading to defoliation.",
+        "solution": "To manage early blight, rotate crops, space plants for good air circulation, and apply fungicides preventatively."
+      },
+      {
+        "disease": "Tomato Late Blight",
+        "code": 30,
+        "definition": "Late blight is a fungal disease that affects tomato plants, causing dark lesions on leaves, stems, and fruit, often leading to rapid defoliation.",
+        "solution": "To control late blight, practice good sanitation, rotate crops, and apply fungicides preventatively."
+      },
+      {
+        "disease": "Tomato Leaf Mold",
+        "code": 31,
+        "definition": "Leaf mold is a fungal disease that affects tomato plants, causing yellow to brown patches on leaves, often with fuzzy growth on the underside.",
+        "solution": "To manage leaf mold, prune to improve air circulation, avoid overhead irrigation, and apply fungicides preventatively."
+      },
+      {
+        "disease": "Tomato Septoria Leaf Spot",
+        "code": 32,
+        "definition": "Septoria leaf spot is a fungal disease that affects tomato plants, causing small, dark spots with yellow halos on leaves.",
+        "solution": "To control septoria leaf spot, remove infected leaves, practice crop rotation, and apply fungicides preventatively."
+      },
+      {
+        "disease": "Tomato Spider Mites Two-Spotted Spider Mite",
+        "code": 33,
+        "definition": "Spider mites are tiny pests that feed on tomato plants, causing stippling, webbing, and leaf yellowing.",
+        "solution": "To manage spider mites, use insecticidal soaps, neem oil, or predatory mites, and maintain plant health to reduce susceptibility."
+      },
+      {
+        "disease": "Tomato Target Spot",
+        "code": 34,
+        "definition": "Target spot is a fungal disease that affects tomato plants, causing dark, concentric lesions with a target-like appearance on leaves.",
+        "solution": "To control target spot, practice good sanitation, rotate crops, and apply fungicides preventatively."
+      },
+      {
+        "disease": "Tomato Tomato Yellow Leaf Curl Virus",
+        "code": 35,
+        "definition": "Tomato yellow leaf curl virus is a viral disease transmitted by whiteflies that affects tomato plants, causing leaf curling, yellowing, and stunted growth.",
+        "solution": "Control tomato yellow leaf curl virus by controlling whiteflies with insecticides, using virus-resistant tomato varieties, and removing infected plants."
+      },
+      {
+        "disease": "Tomato Tomato Mosaic Virus",
+        "code": 36,
+        "definition": "Tomato mosaic virus is a viral disease that affects tomato plants, causing mosaic patterns, leaf distortion, and reduced yield.",
+        "solution": "To manage tomato mosaic virus, control aphids (vectors of the virus), remove infected plants, and plant virus-resistant tomato varieties."
+      },
+      {
+        "disease": "Tomato Healthy",
+        "code": 37,
+        "definition": "No disease symptoms present. The tomato plant is healthy.",
+        "solution": "No action required."
+      }
+    ]
+  }
+  
