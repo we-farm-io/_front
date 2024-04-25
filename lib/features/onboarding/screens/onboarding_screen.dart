@@ -3,10 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:smart_farm/features/authentication/screens/sign_up.dart';
 import 'package:smart_farm/features/onboarding/models/content_model.dart';
 import 'package:smart_farm/shared/widgets/app_navbar.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class Onboarding extends StatefulWidget {
   const Onboarding({super.key});
@@ -253,7 +253,7 @@ class _GetStartedState extends State<GetStarted> {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => const NavBar(),
+                builder: (context) => const SignUpPage(),
               ),
             );
           }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:smart_farm/features/home/screens/home_screen.dart';
 import 'package:smart_farm/shared/widgets/app_navbar.dart';
 import 'package:smart_farm/shared/widgets/custom_button.dart';
 

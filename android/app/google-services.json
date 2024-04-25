@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1079163628132",
+    "project_id": "farmai-e033e",
+    "storage_bucket": "farmai-e033e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1079163628132:android:a65af8797b83eabaad0d71",
+        "android_client_info": {
+          "package_name": "com.testing.my_test_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCOgNGfXwwQzn1AqmCOwBJMaFJcLLlVsIc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1079163628132:android:19c719e3f33d7ca4ad0d71",
+        "android_client_info": {
+          "package_name": "wefarm.io.smart_farm"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCOgNGfXwwQzn1AqmCOwBJMaFJcLLlVsIc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

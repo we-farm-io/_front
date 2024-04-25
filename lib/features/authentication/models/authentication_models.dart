@@ -1,9 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:smart_farm/features/authentication/models/user.dart';
 import 'package:smart_farm/features/authentication/screens/page2_change_password.dart';
 import 'package:smart_farm/features/authentication/screens/page3_change_password.dart';
 import 'package:smart_farm/features/authentication/screens/success_auth.dart';
 import 'package:smart_farm/features/authentication/screens/success_change_password.dart';
-import 'package:smart_farm/features/home/screens/home_screen.dart';
 import 'package:smart_farm/shared/widgets/app_navbar.dart';
 
 class UserViewModel with ChangeNotifier {
@@ -12,12 +13,14 @@ class UserViewModel with ChangeNotifier {
   final page1FormKey = GlobalKey<FormState>();
   final page3FormKey = GlobalKey<FormState>();
 
-
   String? username;
   String? password;
   String? phonenumber;
   String? id;
-  String? errorMessage; 
+  String? errorMessage;
+  Userclass? _userFromFirebaseUser(User user) {
+    return user != null ? Userclass(uid: user.uid) : null;
+  }
 
   void setLoginCredentials(String username, String password) {
     this.username = username;
@@ -65,10 +68,30 @@ class UserViewModel with ChangeNotifier {
       // replace with actual verification
       // API implementation + errors managing
       userViewModel.setLoginCredentials(username, password);
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const NavBar()),
-      );
+      try {
+        await FirebaseAuth.instance
+            .signInWithEmailAndPassword(email: username, password: password);
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const NavBar()),
+        );
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'user-not-found') {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              backgroundColor: Colors.orangeAccent,
+              content: Text(
+                "No User Found for that Email",
+                style: TextStyle(fontSize: 18.0),
+              )));
+        } else if (e.code == 'wrong-password') {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              backgroundColor: Colors.orangeAccent,
+              content: Text(
+                "Wrong Password Provided by User",
+                style: TextStyle(fontSize: 18.0),
+              )));
+        }
+      }
     } else if (username.isNotEmpty && password.isNotEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -88,13 +111,46 @@ class UserViewModel with ChangeNotifier {
     if (signUpFormKey.currentState?.validate() ?? false) {
       // replace with actual verification
       // API implementation + errors managing
+
       userViewModel.setSignUpCredentials(phonenumber, username, password, id);
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const SuccessAuth()),
-      );
+      if (password.length < 8) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            backgroundColor: Colors.orangeAccent,
+            content: Text(
+              "Password Provided is too short",
+              style: TextStyle(fontSize: 18.0),
+            )));
+      } else {
+        try {
+          UserCredential usercredential = await FirebaseAuth.instance
+              .createUserWithEmailAndPassword(
+                  email: username, password: password);
+          User? user = usercredential.user;
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const SuccessAuth()),
+          );
+          // Navigate to the next screen upon successful sign-up
+        } on FirebaseAuthException catch (e) {
+          if (e.code == 'weak-password') {
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                backgroundColor: Colors.orangeAccent,
+                content: Text(
+                  "Password Provided is too Weak",
+                  style: TextStyle(fontSize: 18.0),
+                )));
+          } else if (e.code == "email-already-in-use") {
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                backgroundColor: Colors.orangeAccent,
+                content: Text(
+                  "Email Already is used",
+                  style: TextStyle(fontSize: 18.0),
+                )));
+          }
+        }
+      }
     }
-  } 
+  }
 
   void sendOTPProvider(BuildContext context, UserViewModel userViewModel,
       {required String phonenumber}) async {
@@ -103,13 +159,36 @@ class UserViewModel with ChangeNotifier {
     if (page1FormKey.currentState?.validate() ?? false) {
       // replace with actual verification with the phone in database
       userViewModel.setPhoneNumber(phonenumber);
+      String? sentOTP;
+      await FirebaseAuth.instance.verifyPhoneNumber(
+        timeout: Duration(seconds: 20),
+        phoneNumber: /* userViewModel.phonenumber?.trim() */
+            '+213770763430',
+        verificationCompleted: (PhoneAuthCredential credential) {
+          print('doooooooooooooooooooone');
+        },
+        verificationFailed: (FirebaseAuthException e) {
+          print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
+          print(e);
+          print('failed');
+        },
+        codeSent: (String verificationId, int? resendToken) {
+          sentOTP = verificationId;
+          print('hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh');
+          print(verificationId);
+          print('hhhhhhhhhhhhhhhhhhhhhhhhhhh');
+        },
+        codeAutoRetrievalTimeout: (String verificationId) {},
+      );
+
       // API implementation (sending OTP) + errors managing
-      String sentOTP = '1234'; // replace with actual sendig OTP process
+      // replace with actual sendig OTP process
+
       Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) =>
-              Page2ChangePassword(phonenumber: phonenumber, sentOTP: sentOTP),
+              Page2ChangePassword(phonenumber: phonenumber, sentOTP: sentOTP!),
         ),
       );
     }
