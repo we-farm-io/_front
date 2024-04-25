@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:provider/provider.dart';
 import 'package:smart_farm/features/authentication/models/authentication_models.dart';
@@ -27,6 +28,8 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations(
+        [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
@@ -54,7 +57,7 @@ class MyApp extends StatelessWidget {
               final bool onboardingCompleted = snapshot.data ?? false;
               print(snapshot.data);
               return onboardingCompleted
-                  ? const SignUpPage()
+                  ? const Onboarding()
                   : const Onboarding(); //boarding is disabled for now
             }
           },

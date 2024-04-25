@@ -5,8 +5,7 @@ import 'package:smart_farm/features/home/models/news_model.dart';
 
 class NewsService {
   Future<List<ArticleModel>> fetchNews() async {
-    // Step 4: Fetch Data
-
+    // Step 4: Fetch Dat
     final response = await get(Uri.parse(
         "https://newsapi.org/v2/everything?q=الزراعة&sortBy=popularity&apiKey=014f1282a1964550b09c963fc5c19c49"));
     if (response.statusCode == 200) {
