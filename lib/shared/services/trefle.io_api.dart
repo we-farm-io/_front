@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:http/http.dart';
-import 'package:smart_farm/features/plantdoc/models/plant_data.dart';
 import 'package:smart_farm/features/plantdoc/models/plant_info.dart';
 import 'package:smart_farm/features/plantdoc/models/plant_species.dart';
 
