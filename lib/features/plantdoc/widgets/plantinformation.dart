@@ -1,15 +1,10 @@
-import 'dart:math';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:smart_farm/features/plantdoc/models/plant_info.dart';
 import 'package:smart_farm/features/plantdoc/models/plant_species.dart';
 import 'package:smart_farm/features/plantdoc/providers/plantgrowth_provider.dart';
 import 'package:smart_farm/features/plantdoc/screens/plant_info_screen.dart';
-import 'package:smart_farm/shared/services/trefle.io_api.dart';
 
 class Tab2 extends StatefulWidget {
   const Tab2({super.key});
