@@ -19,14 +19,11 @@ class PlantDetailScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Container(
-            
-                child: Image.file(
-                  plantData.image,
-                  width: 400,
-                  height: 400,
-                  fit: BoxFit.contain,
-                ),
+              Image.file(
+                plantData.image,
+                width: 400,
+                height: 400,
+                fit: BoxFit.contain,
               ),
               const SizedBox(height: 20),
               Text(

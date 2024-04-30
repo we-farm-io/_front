@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:http/http.dart';
 import 'package:smart_farm/features/plantdoc/models/plant_info.dart';
 import 'package:smart_farm/features/plantdoc/models/plant_species.dart';
@@ -37,6 +36,7 @@ class PlantService {
   }
 
   Future<PlantInfo> fetchPlantGrowth(String id) async {
+    // ignore: avoid_print
     print('we are here ');
     final response = await get(Uri(
       scheme: 'https',

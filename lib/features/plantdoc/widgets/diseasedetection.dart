@@ -1,3 +1,5 @@
+// ignore_for_file: unused_field
+
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/services.dart';
@@ -206,6 +208,7 @@ class _Tab1State extends State<Tab1> {
       _loading = false;
     });
     if (outputs != null && outputs.isNotEmpty) {
+      // ignore: avoid_print
       print(outputs);
       return outputs[0]['index'];
     }
@@ -231,6 +234,7 @@ class _Tab1State extends State<Tab1> {
         );
       }
 
+      // ignore: avoid_print
       print('Disease not found.');
     }
   }

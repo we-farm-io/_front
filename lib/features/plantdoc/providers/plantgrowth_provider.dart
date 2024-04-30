@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
 import 'package:smart_farm/features/plantdoc/models/plant_info.dart';
 import 'package:smart_farm/features/plantdoc/models/plant_species.dart';
 import 'package:smart_farm/shared/services/trefle.io_api.dart';
@@ -23,6 +22,7 @@ class PlantProvider extends ChangeNotifier {
       _species = response;
     } catch (error) {
       // Handle error
+      // ignore: avoid_print
       print('Error: $error');
       // Set _plantInfo to an empty PlantInfo object or handle error state as needed
     }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:smart_farm/features/plantdoc/models/plant_info.dart';
 
 class PlantInformation extends StatefulWidget {
+  // ignore: no_leading_underscores_for_local_identifiers
   const PlantInformation(PlantInfo _plantInfo, {super.key})
       : plantInfo = _plantInfo;
   final PlantInfo plantInfo;
@@ -21,7 +22,7 @@ class _PlantInformationState extends State<PlantInformation> {
       child: Scaffold(
         appBar: AppBar(),
         body: ListView(
-          padding: EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0),
           children: [
             _buildItem('Description', widget.plantInfo.description),
             _buildItem('Sowing', widget.plantInfo.sowing),
@@ -58,7 +59,7 @@ class _PlantInformationState extends State<PlantInformation> {
     return ListTile(
       title: Text(
         title,
-        style: TextStyle(fontWeight: FontWeight.bold),
+        style: const TextStyle(fontWeight: FontWeight.bold),
       ),
       subtitle: Text(value != null ? value.toString() : 'N/A'),
     );

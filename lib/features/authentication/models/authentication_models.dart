@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print, use_build_context_synchronously
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:smart_farm/features/authentication/models/user.dart';
@@ -18,7 +20,9 @@ class UserViewModel with ChangeNotifier {
   String? phonenumber;
   String? id;
   String? errorMessage;
+  // ignore: unused_element
   Userclass? _userFromFirebaseUser(User user) {
+    // ignore: unnecessary_null_comparison
     return user != null ? Userclass(uid: user.uid) : null;
   }
 
@@ -125,6 +129,7 @@ class UserViewModel with ChangeNotifier {
           UserCredential usercredential = await FirebaseAuth.instance
               .createUserWithEmailAndPassword(
                   email: username, password: password);
+          // ignore: unused_local_variable
           User? user = usercredential.user;
           Navigator.push(
             context,
@@ -161,7 +166,7 @@ class UserViewModel with ChangeNotifier {
       userViewModel.setPhoneNumber(phonenumber);
       String? sentOTP;
       await FirebaseAuth.instance.verifyPhoneNumber(
-        timeout: Duration(seconds: 20),
+        timeout: const Duration(seconds: 20),
         phoneNumber: /* userViewModel.phonenumber?.trim() */
             '+213770763430',
         verificationCompleted: (PhoneAuthCredential credential) {
