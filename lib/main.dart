@@ -69,8 +69,8 @@ class MyApp extends StatelessWidget {
               final bool onboardingCompleted = snapshot.data ?? false;
               print(snapshot.data);
               return onboardingCompleted
-                  ? const Onboarding()
-                  : const Onboarding(); //boarding is disabled for now
+                  ? const NavBar()
+                  : const NavBar(); //boarding is disabled for now
             }
           },
         ),
