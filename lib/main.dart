@@ -75,8 +75,8 @@ class MyApp extends StatelessWidget {
               // ignore: avoid_print
               print(snapshot.data);
               return onboardingCompleted
-                  ? const Onboarding()
-                  : const Onboarding(); //boarding is disabled for now
+                  ? const NavBar()
+                  : const NavBar(); //boarding is disabled for now
             }
           },
         ),
