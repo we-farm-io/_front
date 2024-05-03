@@ -1,10 +1,10 @@
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:smart_farm/features/plantdoc/models/plant_species.dart';
 import 'package:smart_farm/features/plantdoc/providers/plantgrowth_provider.dart';
 import 'package:smart_farm/features/plantdoc/screens/plant_info_screen.dart';
+import 'package:smart_farm/features/store/widgets/app_search_bar.dart';
 
 class Tab2 extends StatefulWidget {
   const Tab2({super.key});
@@ -22,13 +22,13 @@ class _Tab2State extends State<Tab2> {
           const SizedBox(
             height: 30,
           ),
-          SearchBar(
-            controller: provider.controller,
-            hintText: "search plants",
-            onSubmitted: (String plantname) {
-              provider.fetchPlantSpecies(plantname);
-            },
-          ),
+          AppSearchBar(
+              // controller: provider.controller,
+              // hintText: "search plants",
+              // onSubmitted: (String plantname) {
+              //   provider.fetchPlantSpecies(plantname);
+              // },
+              ),
           Builder(
             builder: (context) {
               if (provider.isLoading) {
