@@ -1,0 +1,72 @@
+[
+    {
+        "id": "0",
+        "name": "corn crop",
+        "category": "Plantings",
+        "Image": "assets/images/store/corn crop.png",
+        "price": "650 DA",
+        "description": "High Quality planting for your farm",
+        "title": "Green Plantings",
+        "quantity": "20 kg"
+    },
+    {
+        "id": "1",
+        "name": "cow",
+        "category": "Animals",
+        "Image": "assets/images/store/cow.png",
+        "price": "250000 DA",
+        "description": "Healthy Animals for your farm",
+        "title": "Strong Animals",
+        "quantity": "1 cow"
+    },
+    {
+        "id": "2",
+        "name": "deffirent crops",
+        "category": "Plantings",
+        "Image": "assets/images/store/corns.png",
+        "price": "1500 DA",
+        "description": "High Quality planting for your farm",
+        "title": "Green Plantings",
+        "quantity": "60 kg"
+    },
+    {
+        "id": "3",
+        "name": "tractor",
+        "category": "Material",
+        "Image": "assets/images/store/tractor.png",
+        "price": "4000000 DA",
+        "description": "Best Material for your farm",
+        "title": "High Quality Material",
+        "quantity": "1 tractor"
+    },
+    {
+        "id": "4",
+        "name": "corn crop",
+        "category": "Plantings",
+        "Image": "assets/images/store/corns.png",
+        "price": "650 DA",
+        "description": "High Quality planting for your farm",
+        "title": "Green Plantings",
+        "quantity": "20 kg"
+    },
+    {
+        "id": "5",
+        "name": "tractor",
+        "category": "Tools",
+        "Image": "assets/images/store/tractor.png",
+        "price": "4000000 DA",
+        "description": "Tools for your farm",
+        "title": "High Quality Tools",
+        "quantity": "1 tractor"
+    },
+    {
+        "id": "6",
+        "name": "cow",
+        "category": "Animals",
+        "Image": "assets/images/store/cow.png",
+        "price": "250000 DA",
+        "description": "Healthy Animals for your farm",
+        "title": "Strong Animals",
+        "quantity": "1 cow"
+    }
+]

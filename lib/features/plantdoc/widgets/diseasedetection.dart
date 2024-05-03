@@ -167,12 +167,9 @@ class _Tab1State extends State<Tab1> {
 
     if (pickedFile != null) {
       // Todo: You can prompt user to input disease, definition, and solution here.
-      PlantData newPlantData = PlantData(
-        image: File(pickedFile.path),
-        disease: 'Some Disease',
-        definition: 'Some Definition',
-        solution: 'Some Solution',
-      );
+      int index = await classifyImage(pickedFile);
+
+      PlantData newPlantData = await searchDiseaseByCode(index, pickedFile);
       setState(() {
         _recentPlantData.add(newPlantData);
         _saveRecentPlantData();
