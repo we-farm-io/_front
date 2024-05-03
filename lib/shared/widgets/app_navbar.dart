@@ -32,7 +32,7 @@ class _NavBarState extends State<NavBar> {
   var currentTab = [
     const HomePage(),
     const PlantDoc(),
-    const AgroInsight(),
+    AgroInsight(),
     const StorePage(),
     const WeatherPage(),
   ];
@@ -72,34 +72,22 @@ class _NavBarState extends State<NavBar> {
               },
             ),
             centerTitle: true,
-            title: Wrap(
+            title: const Wrap(
               direction: Axis.horizontal,
               children: [
                 Text("Agri",
                     style: TextStyle(
-                        fontFamily: 'Quicksand',
-                        color: const Color(0xFF98C13F),
-                        fontSize: 24,
-                        shadows: [
-                          Shadow(
-                            color: Colors.grey.withOpacity(0.25),
-                            offset: const Offset(0, 4),
-                            blurRadius: 4.0,
-                          )
-                        ])),
+                      fontFamily: 'Quicksand',
+                      color: const Color(0xFF98C13F),
+                      fontSize: 24,
+                    )),
                 Text(
                   "Tech",
                   style: TextStyle(
-                      fontFamily: 'Quicksand',
-                      color: const Color(0xFF159148),
-                      fontSize: 24,
-                      shadows: [
-                        Shadow(
-                          color: Colors.black.withOpacity(0.25),
-                          offset: const Offset(0, 4),
-                          blurRadius: 4.0,
-                        )
-                      ]),
+                    fontFamily: 'Quicksand',
+                    color: const Color(0xFF159148),
+                    fontSize: 24,
+                  ),
                 ),
               ],
             ),
