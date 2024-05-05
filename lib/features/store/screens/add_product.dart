@@ -1,8 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:smart_farm/features/store/screens/store.dart';
 import 'package:smart_farm/features/store/widgets/input_shadow.dart';
 import 'package:smart_farm/features/store/widgets/maptest.dart';
 import 'package:smart_farm/shared/widgets/app_navbar.dart';
