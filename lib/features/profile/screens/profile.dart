@@ -1,8 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:smart_farm/features/profile/models/entity.dart';
+import 'package:smart_farm/features/profile/screens/animals_page.dart';
+import 'package:smart_farm/features/profile/screens/crops_page.dart';
+import 'package:smart_farm/features/profile/screens/materials_page.dart';
+import 'package:smart_farm/features/profile/widgets/customentry.dart';
 import 'package:smart_farm/features/profile/widgets/editprofilebutton.dart';
+import 'package:smart_farm/shared/widgets/custom_textformfield.dart';
 
 void main() {
   runApp(const ProfilePage());
@@ -35,7 +39,9 @@ class _ProfilePageState extends State<ProfilePage> {
                 scaleX: 1.3,
                 child: IconButton(
                   icon: SvgPicture.asset("assets/icons/arrow-left.svg"),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
                 ))),
         Positioned(
           top: mediaQuery.size.height / 10,
@@ -55,7 +61,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
               Transform.scale(
-                scale: 0.6,
+                scale: 0.65,
                 child: SizedBox(
                   width: mediaQuery.size.width / 2,
                   child: CustomButtonProfile(
@@ -67,77 +73,207 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
               const SizedBox(height: 20),
-              const Text(
-                "Farm's Stats",
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
+              Container(
+                color: const Color(0xFFF6F6F6),
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: mediaQuery.size.width / 10,
+                    vertical: 5,
+                  ),
+                  child: const Text(
+                    "Farm's Stats",
+                    style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: "Poppins"),
+                  ),
                 ),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 20),
               ListTile(
-                title: const Text('Crops'),
-                subtitle: const Text('Number of crops grown'),
-                leading: const Icon(Icons.grass),
+                visualDensity:
+                    const VisualDensity(horizontal: -4, vertical: -4),
+                title: const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: Text(
+                    'Crops',
+                    style: TextStyle(
+                        fontFamily: "Poppins",
+                        fontWeight: FontWeight.w600,
+                        fontSize: 15),
+                  ),
+                ),
+                trailing: SvgPicture.asset(
+                  "assets/icons/right_arrow.svg",
+                ),
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const CropsPage()));
+                  // Add functionality for crops
+                },
+              ),
+              ListTile(
+                visualDensity:
+                    const VisualDensity(horizontal: -4, vertical: -4),
+                title: const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: Text(
+                    'Animals',
+                    style: TextStyle(
+                        fontFamily: "Poppins",
+                        fontWeight: FontWeight.w600,
+                        fontSize: 15),
+                  ),
+                ),
+                trailing: SvgPicture.asset(
+                  "assets/icons/right_arrow.svg",
+                ),
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const AnimalsPage()));
+                  // Add functionality for animals
+                },
+              ),
+              ListTile(
+                visualDensity:
+                    const VisualDensity(horizontal: -4, vertical: -4),
+                title: const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: Text(
+                    'Materials',
+                    style: TextStyle(
+                        fontFamily: "Poppins",
+                        fontWeight: FontWeight.w600,
+                        fontSize: 15),
+                  ),
+                ),
+                trailing: SvgPicture.asset(
+                  "assets/icons/right_arrow.svg",
+                ),
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const MaterialsPage()));
+                  // Add functionality for materials
+                },
+              ),
+              const SizedBox(height: 20),
+              Container(
+                color: const Color(0xFFF6F6F6),
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: mediaQuery.size.width / 10,
+                    vertical: 5,
+                  ),
+                  child: const Text(
+                    "Content",
+                    style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: "Poppins"),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              ListTile(
+                visualDensity:
+                    const VisualDensity(horizontal: -4, vertical: -4),
+                title: const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: Text(
+                    'My to do list',
+                    style: TextStyle(
+                        fontFamily: "Poppins",
+                        fontWeight: FontWeight.w600,
+                        fontSize: 15),
+                  ),
+                ),
+                trailing: SvgPicture.asset(
+                  "assets/icons/right_arrow.svg",
+                ),
+                onTap: () {
+                  // Add functionality for crops
+                },
+              ),
+              const SizedBox(height: 20),
+              Container(
+                color: const Color(0xFFF6F6F6),
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: mediaQuery.size.width / 10,
+                    vertical: 5,
+                  ),
+                  child: const Text(
+                    "Store",
+                    style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: "Poppins"),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              ListTile(
+                visualDensity:
+                    const VisualDensity(horizontal: -4, vertical: -4),
+                title: const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: Text(
+                    'My products',
+                    style: TextStyle(
+                        fontFamily: "Poppins",
+                        fontWeight: FontWeight.w600,
+                        fontSize: 15),
+                  ),
+                ),
+                trailing: SvgPicture.asset(
+                  "assets/icons/right_arrow.svg",
+                ),
                 onTap: () {
                   // Add functionality for crops
                 },
               ),
               ListTile(
-                title: const Text('Animals'),
-                subtitle: const Text('Number of animals raised'),
-                leading: const Icon(Icons.pets),
+                visualDensity:
+                    const VisualDensity(horizontal: -4, vertical: -4),
+                title: const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: Text(
+                    'My statistics',
+                    style: TextStyle(
+                        fontFamily: "Poppins",
+                        fontWeight: FontWeight.w600,
+                        fontSize: 15),
+                  ),
+                ),
+                trailing: SvgPicture.asset(
+                  "assets/icons/right_arrow.svg",
+                ),
                 onTap: () {
-                  // Add functionality for animals
-                },
-              ),
-              ListTile(
-                title: const Text('Materials'),
-                subtitle: const Text('Number of materials harvested'),
-                leading: const Icon(Icons.storage),
-                onTap: () {
-                  // Add functionality for materials
+                  // Add functionality for crops
                 },
               ),
             ],
+          ),
+        ),
+        Positioned(
+          top: mediaQuery.size.height / 14,
+          right: 0,
+          left: 0,
+          child: Container(
+            alignment: Alignment.topCenter,
+            child: const Text(
+              "Profile",
+              style: TextStyle(
+                  color: Colors.white,
+                  fontFamily: "Poppins",
+                  fontWeight: FontWeight.w600),
+            ),
           ),
         ),
       ]),
     );
   }
 }
-// import 'package:flutter/material.dart';
-
-// class ProfilePage extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       title: 'Colored Box Example',
-//       home: Scaffold(
-//         body: Stack(
-//           children: [
-//             Positioned(
-//               top: 0,
-//               left: 0,
-//               right: 0,
-//               child: Container(
-//                 height: 200, // Adjust the height as needed
-//                 color: Colors.blue, // Set your desired color
-//               ),
-//             ),
-//             Padding(
-//               padding: EdgeInsets.only(
-//                   top: 100), // Ensure content below the colored box
-//               child: Center(
-//                 child: Text(
-//                   'Your Content Goes Here',
-//                   style: TextStyle(fontSize: 24),
-//                 ),
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }

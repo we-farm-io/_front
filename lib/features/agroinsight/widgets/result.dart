@@ -2,42 +2,66 @@ import 'package:flutter/material.dart';
 
 class ResultPage extends StatelessWidget {
   final String label;
-  const ResultPage({super.key, required this.label});
+  const ResultPage({Key? key, required this.label}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Result Page'),
+        centerTitle: true,
+        title: const Text(
+          'Insight',
+          style: TextStyle(fontFamily: "Poppins"),
+        ),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          const Padding(
-            padding: EdgeInsets.all(16.0),
-            child: Text(
-              'Your Result:',
-              style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+      body: Center(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: SizedBox(
+                  width: MediaQuery.of(context).size.width - 20,
+                  child: Image.asset(
+                    "assets/images/store/corns.png",
+                    fit: BoxFit.fill,
+                  )),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Image.network(
-              'https://via.placeholder.com/150', // Placeholder image URL
-              width: 150,
-              height: 150,
+            const SizedBox(
+              height: 20,
             ),
-          ),
-          Padding(
-            padding: EdgeInsets.all(16.0),
-            child: Text(
-              label,
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 18.0),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(50, 20, 0, 0),
+              child: Container(
+                alignment: Alignment.centerLeft,
+                child: const Text(
+                  'Result',
+                  style: TextStyle(
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: "Poppins"),
+                ),
+              ),
             ),
-          ),
-        ],
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: TextField(
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(color: Colors.green),
+                )),
+                readOnly: true,
+                controller: TextEditingController(text: label.split(":")[1]),
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                    fontSize: 20.0,
+                    fontFamily: "Poppins",
+                    fontWeight: FontWeight.w600),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
