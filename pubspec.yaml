@@ -56,13 +56,13 @@ dependencies:
   google_maps_flutter: ^2.6.1
   geocoding: ^3.0.0
   flutter_polyline_points: ^2.0.0
-  url_launcher: ^6.2.6
   location: ^6.0.1
   gif: ^2.3.0
   intl: ^0.19.0
   date_picker_timeline: ^1.2.6
-  flutter_staggered_grid_view: ^0.4.0
   pie_chart: ^5.4.0
+  flutter_staggered_grid_view: ^0.4.0
+  url_launcher: ^6.0.9
 
 dev_dependencies:
   flutter_test:
@@ -83,6 +83,7 @@ flutter:
   assets:
     - assets/
     - assets/icons/
+    - assets/icons/store_icons/
     - assets/logos/
     - assets/json/
     - assets/images/
@@ -92,6 +93,7 @@ flutter:
     - assets/images/weather/
     - assets/models/
     - assets/icons/SideBarIcons/
+    - assets/images/store/
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

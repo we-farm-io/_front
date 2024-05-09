@@ -33,7 +33,7 @@ class AppSearchBar extends StatelessWidget {
           ),
           prefixIcon: Transform.scale(
               scale: 1.2,
-              child: Image.asset('assets/icons/Search.png')),
+              child: Image.asset('assets/icons/store_icons/Search.png')),
         ),
       ),
     );

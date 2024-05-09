@@ -1,21 +1,14 @@
-// ignore_for_file: file_names
-
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smart_farm/shared/utils/palette.dart';
 
 class InputShadow extends StatefulWidget {
   final TextEditingController controller;
-  final String suffixIcon;
   final String hintText;
-  final bool readOnly;
 
   const InputShadow({
     super.key,
     required this.controller,
-    required this.suffixIcon,
     required this.hintText,
-    this.readOnly = false,
   });
 
   @override
@@ -48,11 +41,7 @@ class _InputShadowState extends State<InputShadow> {
         },
         cursorColor: Palette.buttonGreen,
         controller: widget.controller,
-        readOnly: widget.readOnly,
         decoration: InputDecoration(
-          suffixIcon: Transform.scale(
-            scale: 0.7,
-            child: SvgPicture.asset(widget.suffixIcon)),
           fillColor: Colors.white,
           filled: true,
           hintText: widget.hintText,
