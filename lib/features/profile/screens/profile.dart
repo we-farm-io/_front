@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:smart_farm/features/profile/models/entity.dart';
 import 'package:smart_farm/features/profile/screens/animals_page.dart';
 import 'package:smart_farm/features/profile/screens/crops_page.dart';
+import 'package:smart_farm/features/profile/screens/edit_profile.dart';
 import 'package:smart_farm/features/profile/screens/materials_page.dart';
-import 'package:smart_farm/features/profile/widgets/customentry.dart';
 import 'package:smart_farm/features/profile/widgets/editprofilebutton.dart';
-import 'package:smart_farm/shared/widgets/custom_textformfield.dart';
 
 void main() {
   runApp(const ProfilePage());
@@ -67,6 +65,9 @@ class _ProfilePageState extends State<ProfilePage> {
                   child: CustomButtonProfile(
                     buttonText: "Edit Profile",
                     onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => EditProfilePage()));
+
                       // Add edit profile functionality here
                     },
                   ),
