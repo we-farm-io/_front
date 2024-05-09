@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:smart_farm/features/profile/screens/profile.dart';
 
 class SideBar extends StatelessWidget {
   const SideBar({
@@ -45,7 +45,10 @@ class SideBar extends StatelessWidget {
                     fontSize: 15,
                     fontFamily: 'Poppins'),
               ),
-              onTap: () => {},
+              onTap: () => {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => ProfilePage()))
+              },
             ),
             ListTile(
               leading:
