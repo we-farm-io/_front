@@ -64,7 +64,7 @@ class MyApp extends StatelessWidget {
           create: (context) => ProductsProvider(),
         ),
       ],
-      child:  MaterialApp(
+      child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'AgriTech',
         home: FutureBuilder<bool>(

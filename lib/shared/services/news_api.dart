@@ -24,6 +24,7 @@ class NewsService {
                     DateTime.parse(articleData['publishedAt']).toLocal(),
               ))
           .toList();
+      // ignore: avoid_print
       print(_articles[0].publishedAt);
       return _articles; // Step 5: Update State
     } else {

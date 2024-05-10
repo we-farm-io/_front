@@ -4,7 +4,7 @@ import 'package:smart_farm/features/profile/models/entity.dart';
 import 'package:smart_farm/features/profile/widgets/customentry.dart';
 
 class AnimalsPage extends StatefulWidget {
-  const AnimalsPage({Key? key}) : super(key: key);
+  const AnimalsPage({super.key});
 
   @override
   State<AnimalsPage> createState() => _AnimalsPageState();

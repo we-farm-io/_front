@@ -66,7 +66,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     buttonText: "Edit Profile",
                     onPressed: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => EditProfilePage()));
+                          builder: (context) => const EditProfilePage()));
 
                       // Add edit profile functionality here
                     },

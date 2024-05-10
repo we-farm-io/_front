@@ -3,10 +3,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:smart_farm/features/profile/models/entity.dart';
 
 class EditProfilePage extends StatefulWidget {
-  const EditProfilePage({Key? key}) : super(key: key);
+  const EditProfilePage({super.key});
 
   @override
   State<EditProfilePage> createState() => _EditProfilePageState();
@@ -78,7 +77,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         ),
                       );
                     } else {
-                      return CircleAvatar(
+                      return const CircleAvatar(
                         backgroundColor: Colors.white,
                         radius: 69,
                         child: CircleAvatar(
@@ -179,6 +178,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
       if (pickedFile != null) {
         _image = File(pickedFile.path);
       } else {
+        // ignore: avoid_print
         print('No image selected.');
       }
     });

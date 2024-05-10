@@ -1,17 +1,12 @@
-// ignore_for_file: unused_field, prefer_const_constructors
+// ignore_for_file: unused_field, prefer_const_constructors, no_leading_underscores_for_local_identifiers, avoid_print
 
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geocoding/geocoding.dart' as cod;
 import 'package:location/location.dart' as loc;
 import 'package:location/location.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:smart_farm/features/store/widgets/maptest.dart';
-import 'package:smart_farm/shared/utils/palette.dart';
-import 'package:smart_farm/shared/widgets/custom_button.dart';
 
 class AddressCombo {
   late final String? _address;
@@ -23,6 +18,8 @@ class AddressCombo {
 }
 
 class NavigationPage extends StatefulWidget {
+  const NavigationPage({super.key});
+
   @override
   State<NavigationPage> createState() => _StorePageState();
 }
@@ -128,6 +125,7 @@ class _StorePageState extends State<NavigationPage> {
     PermissionStatus _permissionGranted;
 
     _serviceEnabled = await location.serviceEnabled();
+    // ignore: unused_local_variable, unnecessary_nullable_for_final_variable_declarations
     final GoogleMapController? controller = await _controller.future;
 
     if (!_serviceEnabled) {
@@ -150,6 +148,8 @@ class _StorePageState extends State<NavigationPage> {
 }
 
 class SecondPage extends StatelessWidget {
+  const SecondPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     TextEditingController _textEditingController = TextEditingController();

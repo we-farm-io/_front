@@ -16,7 +16,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
   bool _hidePassword = true;
@@ -73,9 +73,9 @@ class _LoginPageState extends State<LoginPage> {
                     child: Column(
                       children: [
                         CustomTextFormField(
-                            hintText: 'Enter your username',
-                            labelText: 'Username',
-                            controller: usernameController),
+                            hintText: 'Enter your email',
+                            labelText: 'Email',
+                            controller: emailController),
                         const SizedBox(height: 26),
                         TextFormField(
                           controller: passwordController,
@@ -132,22 +132,36 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => Page1ChangePassword()),
-                    );
+                    final email = emailController.text.trim();
+                    if (email.isEmpty || !userViewModel.isValidEmail(email)) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Please enter a valid email address'),
+                        ),
+                      );
+                    } else {
+                      userViewModel.sendPasswordResetEmail(context, email);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Page1ChangePassword(email: email,),
+                        ),
+                      );
+                    }
                   },
                 ),
                 const SizedBox(height: 20),
-                CustomButton(
-                  buttonText: 'Log in',
-                  onPressed: () {
-                    context.read<UserViewModel>().loginProvider(
-                        context, userViewModel,
-                        username: usernameController.text.trim(),
-                        password: passwordController.text.trim());
-                  },
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25),
+                  child: CustomButton(
+                    buttonText: 'Log in',
+                    onPressed: () {
+                      context.read<UserViewModel>().loginProvider(
+                          context, userViewModel,
+                          email: emailController.text.trim(),
+                          password: passwordController.text.trim());
+                    },
+                  ),
                 ),
                 const SizedBox(height: 10),
                 Row(

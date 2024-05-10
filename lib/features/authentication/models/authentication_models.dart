@@ -1,10 +1,9 @@
-// ignore_for_file: avoid_print, use_build_context_synchronously
+// to implement reset password via mail go from line 153 to 177 :)
 
+// ignore_for_file: avoid_print, use_build_context_synchronously
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:smart_farm/features/authentication/models/user.dart';
-import 'package:smart_farm/features/authentication/screens/page2_change_password.dart';
-import 'package:smart_farm/features/authentication/screens/page3_change_password.dart';
 import 'package:smart_farm/features/authentication/screens/success_auth.dart';
 import 'package:smart_farm/features/authentication/screens/success_change_password.dart';
 import 'package:smart_farm/shared/widgets/app_navbar.dart';
@@ -13,11 +12,10 @@ class UserViewModel with ChangeNotifier {
   final loginFormKey = GlobalKey<FormState>();
   final signUpFormKey = GlobalKey<FormState>();
   final page1FormKey = GlobalKey<FormState>();
-  final page3FormKey = GlobalKey<FormState>();
+  final page2FormKey = GlobalKey<FormState>();
 
-  String? username;
+  String? email;
   String? password;
-  String? phonenumber;
   String? id;
   String? errorMessage;
   // ignore: unused_element
@@ -26,17 +24,15 @@ class UserViewModel with ChangeNotifier {
     return user != null ? Userclass(uid: user.uid) : null;
   }
 
-  void setLoginCredentials(String username, String password) {
-    this.username = username;
+  void setLoginCredentials(String email, String password) {
+    this.email = email;
     this.password = password;
     errorMessage = null;
     notifyListeners();
   }
 
-  void setSignUpCredentials(
-      String phonenumber, String username, String password, String id) {
-    this.phonenumber = phonenumber;
-    this.username = username;
+  void setSignUpCredentials(String email, String password, String id) {
+    this.email = email;
     this.password = password;
     this.id = id;
     errorMessage = null;
@@ -44,7 +40,6 @@ class UserViewModel with ChangeNotifier {
   }
 
   void setPhoneNumber(String phonenumber) {
-    this.phonenumber = phonenumber;
     errorMessage = null;
     notifyListeners();
   }
@@ -63,7 +58,7 @@ class UserViewModel with ChangeNotifier {
   void loginProvider(
     BuildContext context,
     UserViewModel userViewModel, {
-    required String username,
+    required String email,
     required String password,
   }) async {
     FocusManager.instance.primaryFocus?.unfocus();
@@ -71,10 +66,10 @@ class UserViewModel with ChangeNotifier {
     if (loginFormKey.currentState?.validate() ?? false) {
       // replace with actual verification
       // API implementation + errors managing
-      userViewModel.setLoginCredentials(username, password);
+      userViewModel.setLoginCredentials(email, password);
       try {
         await FirebaseAuth.instance
-            .signInWithEmailAndPassword(email: username, password: password);
+            .signInWithEmailAndPassword(email: email, password: password);
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const NavBar()),
@@ -96,18 +91,17 @@ class UserViewModel with ChangeNotifier {
               )));
         }
       }
-    } else if (username.isNotEmpty && password.isNotEmpty) {
+    } else if (email.isNotEmpty && password.isNotEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Username or pasword is incorrect'),
+          content: Text('Email or pasword is incorrect'),
         ),
       );
     }
   }
 
   void signUpProvider(BuildContext context, UserViewModel userViewModel,
-      {required String phonenumber,
-      required String username,
+      {required String email,
       required String password,
       required String id}) async {
     FocusManager.instance.primaryFocus?.unfocus();
@@ -116,7 +110,7 @@ class UserViewModel with ChangeNotifier {
       // replace with actual verification
       // API implementation + errors managing
 
-      userViewModel.setSignUpCredentials(phonenumber, username, password, id);
+      userViewModel.setSignUpCredentials(email, password, id);
       if (password.length < 8) {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             backgroundColor: Colors.orangeAccent,
@@ -127,8 +121,7 @@ class UserViewModel with ChangeNotifier {
       } else {
         try {
           UserCredential usercredential = await FirebaseAuth.instance
-              .createUserWithEmailAndPassword(
-                  email: username, password: password);
+              .createUserWithEmailAndPassword(email: email, password: password);
           // ignore: unused_local_variable
           User? user = usercredential.user;
           Navigator.push(
@@ -157,77 +150,36 @@ class UserViewModel with ChangeNotifier {
     }
   }
 
-  void sendOTPProvider(BuildContext context, UserViewModel userViewModel,
-      {required String phonenumber}) async {
-    FocusManager.instance.primaryFocus?.unfocus();
+  bool isValidEmail(String email) {
+    // Replace with actual email verification 
+    final emailValide = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+    return emailValide.hasMatch(email);
+  }
 
-    if (page1FormKey.currentState?.validate() ?? false) {
-      // replace with actual verification with the phone in database
-      userViewModel.setPhoneNumber(phonenumber);
-      String? sentOTP;
-      await FirebaseAuth.instance.verifyPhoneNumber(
-        timeout: const Duration(seconds: 20),
-        phoneNumber: /* userViewModel.phonenumber?.trim() */
-            '+213770763430',
-        verificationCompleted: (PhoneAuthCredential credential) {
-          print('doooooooooooooooooooone');
-        },
-        verificationFailed: (FirebaseAuthException e) {
-          print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
-          print(e);
-          print('failed');
-        },
-        codeSent: (String verificationId, int? resendToken) {
-          sentOTP = verificationId;
-          print('hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh');
-          print(verificationId);
-          print('hhhhhhhhhhhhhhhhhhhhhhhhhhh');
-        },
-        codeAutoRetrievalTimeout: (String verificationId) {},
-      );
-
-      // API implementation (sending OTP) + errors managing
-      // replace with actual sendig OTP process
-
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) =>
-              Page2ChangePassword(phonenumber: phonenumber, sentOTP: sentOTP!),
+  void sendPasswordResetEmail(BuildContext context, String email) {
+    // send password reset email here -----------------------------
+    try { 
+      // send mail
+    } catch (e) { 
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to send password reset email: $e'),
         ),
       );
     }
   }
+   // -------------------------------------------------------------
 
-  void verifyOTP(
-    BuildContext context,
-    UserViewModel userViewModel, {
-    required String phonenumber,
-    required String sentOTP, // replace with actual sentOTP
-    required String enteredOTP,
-  }) async {
-    FocusManager.instance.primaryFocus?.unfocus();
-    if (sentOTP == enteredOTP) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => Page3ChangePassword(phonenumber: phonenumber),
-        ),
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Incorrect OTP'),
-        ),
-      );
-    }
+   bool linkChecked() {
+    // Replace with actual verification
+    return true;
   }
 
   void changePasswordProvider(BuildContext context, UserViewModel userViewModel,
       {required String newpassword}) async {
     FocusManager.instance.primaryFocus?.unfocus();
 
-    if (page3FormKey.currentState!.validate()) {
+    if (page2FormKey.currentState!.validate()) {
       userViewModel.setPassword(newpassword); // + modify in database
       Navigator.push(
         context,

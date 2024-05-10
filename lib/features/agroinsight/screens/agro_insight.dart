@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
@@ -8,7 +10,7 @@ import 'package:smart_farm/shared/widgets/custom_button.dart';
 import 'package:tflite_flutter/tflite_flutter.dart';
 
 class AgroInsight extends StatefulWidget {
-  const AgroInsight({Key? key}) : super(key: key);
+  const AgroInsight({super.key});
 
   @override
   State<AgroInsight> createState() => _AgroInsightState();
@@ -62,9 +64,9 @@ class _AgroInsightState extends State<AgroInsight> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: const Text(
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        child: Text(
                           'Nitrogen Value',
                           style: TextStyle(
                               fontSize: 16,
@@ -98,9 +100,9 @@ class _AgroInsightState extends State<AgroInsight> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: const Text(
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        child: Text(
                           'Phosphorus value',
                           style: TextStyle(
                               fontSize: 16,
@@ -223,6 +225,7 @@ class _AgroInsightState extends State<AgroInsight> {
                       double avgTemp = totalTemp / dataList.length;
                       double avgRH = (totalRH / dataList.length);
                       double avgPrecip = totalPrecip;
+                      // ignore: use_build_context_synchronously
                       int index = _validate(context, avgTemp, avgRH, avgPrecip);
                       if (index != -1) {
                         String labels = await rootBundle
