@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:smart_farm/features/store/models/product_model.dart';
 import 'package:smart_farm/features/store/providers/products_provider.dart';
 import 'package:smart_farm/features/store/screens/store.dart';
+import 'package:smart_farm/shared/widgets/app_navbar.dart';
 import 'package:smart_farm/shared/widgets/custom_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -24,7 +25,7 @@ class ProductDetails extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const StorePage()),
+                  MaterialPageRoute(builder: (context) => const NavBar()),
                 );
               },
               icon: SvgPicture.asset('assets/icons/back_arrow.svg'),
@@ -49,8 +50,11 @@ class ProductDetails extends StatelessWidget {
                       borderRadius: BorderRadius.circular(40),
                     ),
                     child: ClipRRect(
-                      borderRadius: BorderRadius.circular(24),
-                      child: Image.network(product.image, fit: BoxFit.cover,)),
+                        borderRadius: BorderRadius.circular(24),
+                        child: Image.network(
+                          product.image,
+                          fit: BoxFit.cover,
+                        )),
                   ),
                   const SizedBox(height: 8),
                   Text(
@@ -115,7 +119,7 @@ class ProductDetails extends StatelessWidget {
                       children: [
                         const Text('Location Details'),
                         Container(
-                          height:MediaQuery.of(context).size.height,
+                          height: MediaQuery.of(context).size.height,
                           width: 72.0,
                           decoration: const BoxDecoration(
                             color: Color.fromRGBO(52, 199, 89, 1),
@@ -127,8 +131,10 @@ class ProductDetails extends StatelessWidget {
                             ),
                           ),
                           child: IconButton(
-                            onPressed: () {
-                              // Go to map page
+                            onPressed: () async {
+                              await launchUrl(Uri.parse(
+                                  //Todo implement the fetch product coordinates and link with firebase
+                                  'google.navigation:q=${35.7048287}, ${-0.653571}&key=AIzaSyDSbl052WrQ8pwywEKmNl5FLJAa21tXxa0'));
                             },
                             icon: const Icon(
                               Icons.add,

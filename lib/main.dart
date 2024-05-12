@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:smart_farm/features/authentication/models/authentication_models.dart';
 import 'package:smart_farm/features/home/providers/news_provider.dart';
+import 'package:smart_farm/features/onboarding/screens/onboarding_screen.dart';
 import 'package:smart_farm/features/plantdoc/providers/plantgrowth_provider.dart';
 import 'package:smart_farm/features/store/providers/products_provider.dart';
 import 'package:smart_farm/features/weather/providers/weather_provider.dart';
@@ -64,7 +65,7 @@ class MyApp extends StatelessWidget {
           create: (context) => ProductsProvider(),
         ),
       ],
-      child:  MaterialApp(
+      child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'AgriTech',
         home: FutureBuilder<bool>(
@@ -78,7 +79,7 @@ class MyApp extends StatelessWidget {
               print(snapshot.data);
               return onboardingCompleted
                   ? const NavBar()
-                  : const NavBar(); //boarding is disabled for now
+                  : const Onboarding(); //boarding is disabled for now
             }
           },
         ),

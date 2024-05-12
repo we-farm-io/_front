@@ -5,6 +5,7 @@ import 'package:smart_farm/features/store/providers/products_provider.dart';
 import 'package:smart_farm/features/store/screens/store.dart';
 import 'package:smart_farm/features/store/widgets/input_shadow.dart';
 import 'package:smart_farm/features/store/widgets/input_shadow_with_suffix.dart';
+import 'package:smart_farm/features/store/widgets/maptest.dart';
 import 'package:smart_farm/shared/widgets/custom_button.dart';
 
 class AddProduct extends StatefulWidget {
@@ -30,27 +31,25 @@ class _AddProductState extends State<AddProduct> {
       builder: (context, productsProvider, child) {
         return Scaffold(
           appBar: AppBar(
-              title: SvgPicture.asset('assets/logos/AgriTech.svg'),
-              centerTitle: true,
-              leading: IconButton(
-                onPressed: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => const StorePage()),
-                  );
-                },
-                icon: SvgPicture.asset('assets/icons/back_arrow.svg'),
-              ),
-              actions: [
-                Container(
-                  padding: const EdgeInsets.only(right: 10),
-                  child: IconButton(
-                    icon: SvgPicture.asset('assets/icons/notification_active.svg'),
-                    onPressed: () {}, // for notifications functionnality
-                  ),
-                )
-              ],
-              ),
+            title: SvgPicture.asset('assets/logos/AgriTech.svg'),
+            centerTitle: true,
+            leading: IconButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              icon: SvgPicture.asset('assets/icons/back_arrow.svg'),
+            ),
+            actions: [
+              Container(
+                padding: const EdgeInsets.only(right: 10),
+                child: IconButton(
+                  icon:
+                      SvgPicture.asset('assets/icons/notification_active.svg'),
+                  onPressed: () {}, // for notifications functionnality
+                ),
+              )
+            ],
+          ),
           body: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -176,7 +175,21 @@ class _AddProductState extends State<AddProduct> {
                     suffixIcon: SvgPicture.asset(
                         'assets/icons/store_icons/location.svg'),
                     hintText: 'Add your location',
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context)
+                          .push(
+                        MaterialPageRoute(
+                            builder: (context) => NavigationPage()),
+                      )
+                          .then((value) {
+                        AddressCombo valeur = value;
+                        if (value != null) {
+                          setState(() {
+                            locationController.text = valeur.address!;
+                          });
+                        }
+                      });
+                    },
                   ),
                   const SizedBox(
                     height: 16,
@@ -241,11 +254,7 @@ class _AddProductState extends State<AddProduct> {
                                                 fontFamily: 'poppins'),
                                           ));
                                     });
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const StorePage()),
-                                );
+                                Navigator.pop(context);
                               })),
                       SizedBox(
                           width: MediaQuery.of(context).size.width * 0.43,
@@ -271,11 +280,7 @@ class _AddProductState extends State<AddProduct> {
                                     'longitude': -122.4194
                                   }, // replace here with values gotten with map APi
                                 );
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const StorePage()),
-                                );
+                                Navigator.of(context).pop();
                                 showModalBottomSheet(
                                     context: context,
                                     builder: (BuildContext context) {
