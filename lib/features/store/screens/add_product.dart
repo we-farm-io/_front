@@ -30,27 +30,28 @@ class _AddProductState extends State<AddProduct> {
       builder: (context, productsProvider, child) {
         return Scaffold(
           appBar: AppBar(
-              title: SvgPicture.asset('assets/logos/AgriTech.svg'),
-              centerTitle: true,
-              leading: IconButton(
-                onPressed: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => const StorePage()),
-                  );
-                },
-                icon: SvgPicture.asset('assets/icons/back_arrow.svg'),
-              ),
-              actions: [
-                Container(
-                  padding: const EdgeInsets.only(right: 10),
-                  child: IconButton(
-                    icon: SvgPicture.asset('assets/icons/notification_active.svg'),
-                    onPressed: () {}, // for notifications functionnality
-                  ),
-                )
-              ],
-              ),
+            title: SvgPicture.asset('assets/logos/AgriTech.svg'),
+            centerTitle: true,
+            leading: IconButton(
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const StorePage()),
+                );
+              },
+              icon: SvgPicture.asset('assets/icons/back_arrow.svg'),
+            ),
+            actions: [
+              Container(
+                padding: const EdgeInsets.only(right: 10),
+                child: IconButton(
+                  icon:
+                      SvgPicture.asset('assets/icons/notification_active.svg'),
+                  onPressed: () {}, // for notifications functionnality
+                ),
+              )
+            ],
+          ),
           body: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),

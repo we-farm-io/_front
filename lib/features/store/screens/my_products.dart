@@ -16,7 +16,6 @@ class _MyProductsState extends State<MyProducts> {
   String selectedButton = 'Buy';
   String userID = "3"; // static one for test
   @override
-  @override
 void initState() {
   super.initState();
   Future.delayed(Duration.zero, () {
