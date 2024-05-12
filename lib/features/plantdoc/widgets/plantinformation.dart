@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:smart_farm/features/plantdoc/models/plant_species.dart';
 import 'package:smart_farm/features/plantdoc/providers/plantgrowth_provider.dart';
 import 'package:smart_farm/features/plantdoc/screens/plant_info_screen.dart';
-import 'package:smart_farm/features/store/widgets/app_search_bar.dart';
 import 'package:smart_farm/shared/utils/palette.dart';
 
 class Tab2 extends StatefulWidget {

@@ -17,9 +17,9 @@ class CustomEntry extends StatelessWidget {
       inputFormatters: <TextInputFormatter>[
         FilteringTextInputFormatter.digitsOnly,
       ],
-      keyboardType: TextInputType.numberWithOptions(decimal: false),
+      keyboardType: const TextInputType.numberWithOptions(decimal: false),
       controller: TextEditingController(),
-      style: TextStyle(
+      style: const TextStyle(
           fontFamily: "Poppins", fontWeight: FontWeight.w600, fontSize: 20),
       decoration: InputDecoration(
         border: OutlineInputBorder(

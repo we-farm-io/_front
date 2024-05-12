@@ -32,7 +32,7 @@ class _NavBarState extends State<NavBar> {
   var currentTab = [
     const HomePage(),
     const PlantDoc(),
-    AgroInsight(),
+    const AgroInsight(),
     const StorePage(),
     const WeatherPage(),
   ];
@@ -78,14 +78,14 @@ class _NavBarState extends State<NavBar> {
                 Text("Agri",
                     style: TextStyle(
                       fontFamily: 'Quicksand',
-                      color: const Color(0xFF98C13F),
+                      color: Color(0xFF98C13F),
                       fontSize: 24,
                     )),
                 Text(
                   "Tech",
                   style: TextStyle(
                     fontFamily: 'Quicksand',
-                    color: const Color(0xFF159148),
+                    color:  Color(0xFF159148),
                     fontSize: 24,
                   ),
                 ),

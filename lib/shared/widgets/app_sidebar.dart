@@ -47,7 +47,7 @@ class SideBar extends StatelessWidget {
               ),
               onTap: () => {
                 Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => ProfilePage()))
+                    MaterialPageRoute(builder: (context) => const ProfilePage()))
               },
             ),
             ListTile(

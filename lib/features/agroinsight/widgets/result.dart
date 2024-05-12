@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class ResultPage extends StatelessWidget {
   final String label;
-  const ResultPage({Key? key, required this.label}) : super(key: key);
+  const ResultPage({super.key, required this.label});
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +49,7 @@ class ResultPage extends StatelessWidget {
                 decoration: InputDecoration(
                     border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide(color: Colors.green),
+                  borderSide: const BorderSide(color: Colors.green),
                 )),
                 readOnly: true,
                 controller: TextEditingController(text: label.split(":")[1]),
