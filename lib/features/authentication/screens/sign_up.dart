@@ -33,7 +33,6 @@ class _SignUpPageState extends State<SignUpPage> {
     return Consumer<UserViewModel>(
       builder: (context, value, child) => SafeArea(
         child: Scaffold(
-          appBar: AppBar(),
           body: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

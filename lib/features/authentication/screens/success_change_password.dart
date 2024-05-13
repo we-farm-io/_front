@@ -10,7 +10,6 @@ class SuccessChangePassword extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(),
         body: SafeArea(
           child: SingleChildScrollView(
             child: Column(

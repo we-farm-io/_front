@@ -15,7 +15,6 @@ class Page1ChangePassword extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<UserViewModel>(
       builder: (context, userViewModel, child) => Scaffold(
-        appBar: AppBar(),
         body: SafeArea(
           child: SingleChildScrollView(
             child: Column(

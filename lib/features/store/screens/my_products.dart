@@ -3,7 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:smart_farm/features/store/providers/products_provider.dart';
 import 'package:smart_farm/features/store/screens/store.dart';
-import 'package:smart_farm/features/store/widgets/custome_icon.dart';
+import 'package:smart_farm/features/store/widgets/custom_icon.dart';
 
 class MyProducts extends StatefulWidget {
   const MyProducts({super.key});
@@ -60,7 +60,7 @@ void initState() {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  CustomeIcon(
+                  CustomIcon(
                     text: 'Rent',
                     isSelected: selectedButton == 'Rent',
                     onPressed: () {
@@ -68,7 +68,7 @@ void initState() {
                       productsProvider.fetchMyProducts( 'Rent', userID);
                     },                    svgImage: 'assets/icons/store_icons/Rent.svg',
                   ),
-                  CustomeIcon(
+                  CustomIcon(
                     text: 'Buy',
                     isSelected: selectedButton == 'Buy',
                     onPressed: () {

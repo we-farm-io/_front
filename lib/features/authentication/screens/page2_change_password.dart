@@ -17,7 +17,6 @@ class Page2ChangePassword extends StatelessWidget {
 
     return Consumer<UserViewModel>(
       builder: (context, userViewModel, child) => Scaffold(
-        appBar: AppBar(),
         body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,

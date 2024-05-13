@@ -5,35 +5,36 @@ import 'package:smart_farm/features/store/screens/add_product.dart';
 import 'package:smart_farm/features/store/widgets/app_search_bar.dart';
 import 'package:smart_farm/features/store/widgets/store_view.dart';
 import 'package:smart_farm/shared/utils/palette.dart';
-import '../widgets/custome_icon.dart';
-
+import '../widgets/custom_icon.dart';
 
 // ignore: must_be_immutable
 class StorePage extends StatefulWidget {
-   const StorePage({super.key});
+  const StorePage({super.key});
 
   @override
   State<StorePage> createState() => _StorePageState();
 }
 
-
 class _StorePageState extends State<StorePage> {
-String selectedButton = 'Buy';
+  String selectedButton = 'Buy';
   @override
-void initState() {
-  super.initState();
-  Future.delayed(Duration.zero, () {
-    Provider.of<ProductsProvider>(context, listen: false).fetchProducts('Buy');
-  });
-}
-
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero, () {
+      Provider.of<ProductsProvider>(context, listen: false)
+          .fetchProducts('Buy');
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Consumer<ProductsProvider>(
       builder: (context, productsProvider, child) {
         if (productsProvider.products.isEmpty) {
-          return const Center(child: CircularProgressIndicator(color: Palette.buttonGreen,));
+          return const Center(
+              child: CircularProgressIndicator(
+            color: Palette.buttonGreen,
+          ));
         } else {
           return Scaffold(
             body: SingleChildScrollView(
@@ -41,41 +42,44 @@ void initState() {
                 children: [
                   const AppSearchBar(),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      CustomeIcon(
+                      CustomIcon(
                         text: 'Rent',
                         isSelected: selectedButton == 'Rent',
                         onPressed: () {
-                            selectedButton = 'Rent';
-                          productsProvider.fetchProducts( 'Rent');
+                          selectedButton = 'Rent';
+                          productsProvider.fetchProducts('Rent');
                         },
                         svgImage: 'assets/icons/store_icons/Rent.svg',
                       ),
-                      CustomeIcon(
+                      CustomIcon(
                         text: 'Buy',
                         isSelected: selectedButton == 'Buy',
                         onPressed: () {
-                            selectedButton = 'Buy';
-                          productsProvider.fetchProducts( 'Buy');
+                          selectedButton = 'Buy';
+                          productsProvider.fetchProducts('Buy');
                         },
                         svgImage: 'assets/icons/store_icons/Buy.svg',
                       ),
-                      CustomeIcon(
-                        text: 'Add product',
+                      CustomIcon(
+                        text: 'Sell',
                         onPressed: () {
-                          Navigator.push(context, 
-                          MaterialPageRoute(builder: (context) => const AddProduct())
-                          );
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const AddProduct()));
                         },
-                        svgImage: 'assets/icons/store_icons/AddProduct.svg', isSelected: false,
+                        svgImage: 'assets/icons/store_icons/AddProduct.svg',
+                        isSelected: false,
                       ),
                     ],
                   ),
                   Container(
-                    padding: const EdgeInsets.only(left: 20, bottom: 20, right: 20),
+                    padding:
+                        const EdgeInsets.only(left: 20, bottom: 20, right: 20),
                     height: MediaQuery.of(context).size.height * 0.54,
-                    child: StoreView(products: productsProvider.products), 
+                    child: StoreView(products: productsProvider.products),
                   ),
                 ],
               ),

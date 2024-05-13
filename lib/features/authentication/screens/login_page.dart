@@ -27,7 +27,6 @@ class _LoginPageState extends State<LoginPage> {
 
     return Consumer<UserViewModel>(
       builder: (context, value, child) => Scaffold(
-        appBar: AppBar(),
         body: SafeArea(
           child: SingleChildScrollView(
             child: Column(
@@ -144,7 +143,9 @@ class _LoginPageState extends State<LoginPage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => Page1ChangePassword(email: email,),
+                          builder: (context) => Page1ChangePassword(
+                            email: email,
+                          ),
                         ),
                       );
                     }

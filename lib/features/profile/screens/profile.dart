@@ -4,6 +4,7 @@ import 'package:smart_farm/features/profile/screens/animals_page.dart';
 import 'package:smart_farm/features/profile/screens/crops_page.dart';
 import 'package:smart_farm/features/profile/screens/edit_profile.dart';
 import 'package:smart_farm/features/profile/screens/materials_page.dart';
+import 'package:smart_farm/features/profile/screens/statistics_page.dart';
 import 'package:smart_farm/features/profile/widgets/editprofilebutton.dart';
 
 void main() {
@@ -253,6 +254,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   "assets/icons/right_arrow.svg",
                 ),
                 onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const StatisticsPage()));
                   // Add functionality for crops
                 },
               ),

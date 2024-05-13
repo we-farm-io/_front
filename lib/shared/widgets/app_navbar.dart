@@ -85,7 +85,7 @@ class _NavBarState extends State<NavBar> {
                   "Tech",
                   style: TextStyle(
                     fontFamily: 'Quicksand',
-                    color:  Color(0xFF159148),
+                    color: Color(0xFF159148),
                     fontSize: 24,
                   ),
                 ),
@@ -108,7 +108,7 @@ class _NavBarState extends State<NavBar> {
           decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(30), topRight: Radius.circular(30)),
+                  topLeft: Radius.circular(15), topRight: Radius.circular(15)),
               boxShadow: [
                 BoxShadow(
                   color: Colors.grey.withOpacity(0.25),
