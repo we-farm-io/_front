@@ -27,15 +27,17 @@ class _HomePageState extends State<HomePage> {
         } else {
           return ListView.builder(
               itemCount: provider.articles.length,
+              cacheExtent: 20,
               physics: const ClampingScrollPhysics(),
-              shrinkWrap: true,
               itemBuilder: (context, index) {
                 final article = provider.articles[index];
+
                 return NewsTemplate(
                   urlToImage: article.urlToImage,
                   title: article.title,
                   url: article.url,
                   description: article.description,
+                  publishedAt: article.publishedAt,
                 );
               });
         }

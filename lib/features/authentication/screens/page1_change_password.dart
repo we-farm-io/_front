@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:smart_farm/features/authentication/models/authentication_models.dart';
+import 'package:smart_farm/features/authentication/screens/page2_change_password.dart';
+import 'package:smart_farm/shared/utils/palette.dart';
 import 'package:smart_farm/shared/widgets/custom_button.dart';
 
+// ignore: must_be_immutable
 class Page1ChangePassword extends StatelessWidget {
-  final TextEditingController phoneController = TextEditingController();
-
-  Page1ChangePassword({super.key});
+  String email;
+  Page1ChangePassword({super.key, required this.email});
 
   @override
   Widget build(BuildContext context) {
-    final userViewModel = Provider.of<UserViewModel>(context);
-
     return Consumer<UserViewModel>(
-      builder: (context, value, child) => Scaffold(
+      builder: (context, userViewModel, child) => Scaffold(
         appBar: AppBar(),
         body: SafeArea(
           child: SingleChildScrollView(
@@ -30,63 +29,72 @@ class Page1ChangePassword extends StatelessWidget {
                 Container(
                   alignment: Alignment.centerLeft,
                   padding: const EdgeInsets.only(left: 25),
-                  child: const Text(
-                    'Change Password',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 30,
-                      fontFamily: 'Poppins',
+                  child: const Center(
+                    child: Text(
+                      'Change Password',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 30,
+                        fontFamily: 'Poppins',
+                      ),
                     ),
                   ),
                 ),
-                const SizedBox(height: 14),
+                const SizedBox(height: 32),
                 Container(
                   alignment: Alignment.centerLeft,
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: const Text(
-                    'Please enter your phone number. We will send a code to your number to reset your password',
+                    'We have sent you a link in your email that you can click on to change your password .',
+                    textAlign: TextAlign.center,
                     style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 14,
-                      fontFamily: 'Poppins',
-                    ),
+                        color: Colors.black,
+                        fontSize: 18,
+                        fontFamily: 'Poppins',
+                        fontWeight: FontWeight.w400),
                   ),
                 ),
-                const SizedBox(height: 14),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 25),
-                  child: Form(
-                    key: userViewModel.page1FormKey,
-                    child: InternationalPhoneNumberInput(
-                      onInputChanged: (PhoneNumber number) {},
-                      selectorConfig: const SelectorConfig(
-                        selectorType: PhoneInputSelectorType.DROPDOWN,
-                      ),
-                      textFieldController: phoneController,
-                      initialValue: PhoneNumber(isoCode: 'DZ'),
-                      keyboardType: const TextInputType.numberWithOptions(
-                          signed: true, decimal: true),
-                      inputBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter a phone number';
-                        }
-                        return null;
-                      },
-                    ),
+                const SizedBox(height: 32),
+                GestureDetector(
+                  child: const Text(
+                    'Resend',
+                    style: TextStyle(
+                        color: Palette.buttonGreen,
+                        fontSize: 20,
+                        fontFamily: 'Poppins',
+                        fontWeight: FontWeight.bold),
                   ),
-                ),
-                const SizedBox(height: 60),
-                CustomButton(
-                  buttonText: 'Next',
-                  onPressed: () {
-                    context.read<UserViewModel>().sendOTPProvider(
-                        context, userViewModel,
-                        phonenumber: phoneController.text.trim());
+                  onTap: () {
+                    userViewModel.sendPasswordResetEmail(
+                        context, userViewModel.email!);
                   },
+                ),
+                const SizedBox(height: 32),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                  child: CustomButton(
+                    buttonText: 'Check Email',
+                    onPressed: () {
+                      if (userViewModel.linkChecked()) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Page2ChangePassword(
+                              email: email,
+                            ),
+                          ),
+                        );
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text(
+                                'Please check the link sent to your email'),
+                          ),
+                        );
+                      }
+                    },
+                  ),
                 ),
                 const SizedBox(height: 10),
               ],

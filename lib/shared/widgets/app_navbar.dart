@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:smart_farm/features/home/providers/news_provider.dart';
+import 'package:smart_farm/features/store/screens/store.dart';
 import 'package:smart_farm/shared/widgets/app_sidebar.dart';
 import 'package:smart_farm/features/agroinsight/screens/agro_insight.dart';
 import 'package:smart_farm/features/home/screens/home_screen.dart';
 import 'package:smart_farm/features/plantdoc/screens/plant_doc.dart';
 import 'package:provider/provider.dart';
-import 'package:smart_farm/features/store/screens/store.dart';
 import 'package:smart_farm/features/weather/screens/weather.dart';
 
 class BottomNavigationBarProvider with ChangeNotifier {
@@ -51,10 +51,14 @@ class _NavBarState extends State<NavBar> {
 
     var provider = Provider.of<BottomNavigationBarProvider>(context);
     return Scaffold(
+        backgroundColor: Colors.white,
         drawer: const SideBar(),
         appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(70),
+          preferredSize: const Size.fromHeight(60),
           child: AppBar(
+            scrolledUnderElevation: 0,
+            backgroundColor: Colors.white,
+            shadowColor: Colors.white,
             leading: Builder(
               builder: (BuildContext context) {
                 return IconButton(
@@ -68,34 +72,22 @@ class _NavBarState extends State<NavBar> {
               },
             ),
             centerTitle: true,
-            title: Wrap(
+            title: const Wrap(
               direction: Axis.horizontal,
               children: [
                 Text("Agri",
                     style: TextStyle(
-                        fontFamily: 'Quicksand',
-                        color: const Color(0xFF98C13F),
-                        fontSize: 24,
-                        shadows: [
-                          Shadow(
-                            color: Colors.grey.withOpacity(0.25),
-                            offset: const Offset(0, 4),
-                            blurRadius: 4.0,
-                          )
-                        ])),
+                      fontFamily: 'Quicksand',
+                      color: Color(0xFF98C13F),
+                      fontSize: 24,
+                    )),
                 Text(
                   "Tech",
                   style: TextStyle(
-                      fontFamily: 'Quicksand',
-                      color: const Color(0xFF159148),
-                      fontSize: 24,
-                      shadows: [
-                        Shadow(
-                          color: Colors.black.withOpacity(0.25),
-                          offset: const Offset(0, 4),
-                          blurRadius: 4.0,
-                        )
-                      ]),
+                    fontFamily: 'Quicksand',
+                    color:  Color(0xFF159148),
+                    fontSize: 24,
+                  ),
                 ),
               ],
             ),
@@ -122,7 +114,7 @@ class _NavBarState extends State<NavBar> {
                   color: Colors.grey.withOpacity(0.25),
                   spreadRadius: 0,
                   blurRadius: 4,
-                  offset: const Offset(0, -6),
+                  offset: const Offset(0, -3),
                 )
               ]),
           child: NavigationBar(
@@ -130,7 +122,7 @@ class _NavBarState extends State<NavBar> {
             overlayColor: MaterialStateProperty.all(Colors.transparent),
             indicatorColor: Colors.transparent,
             labelBehavior: null,
-            height: 89,
+            height: 60,
             elevation: 0,
 
             // indicatorColor: Colors.green,
@@ -140,63 +132,78 @@ class _NavBarState extends State<NavBar> {
             },
             destinations: [
               NavigationDestination(
-                icon: SvgPicture.asset(
-                  'assets/icons/home_inactive.svg',
-                  width: 30,
-                  height: 30,
-                  colorFilter: ColorFilter.mode(
-                      provider.currentIndex == 0 ? iconActive : iconInActive,
-                      BlendMode.srcIn),
+                icon: Padding(
+                  padding: const EdgeInsets.only(top: 20),
+                  child: SvgPicture.asset(
+                    'assets/icons/home_inactive.svg',
+                    width: 30,
+                    height: 30,
+                    colorFilter: ColorFilter.mode(
+                        provider.currentIndex == 0 ? iconActive : iconInActive,
+                        BlendMode.srcIn),
+                  ),
                 ),
                 label: '',
                 tooltip: '',
               ),
               NavigationDestination(
-                icon: SvgPicture.asset(
-                  'assets/icons/plant_care_inactive.svg',
-                  width: 30,
-                  height: 30,
-                  colorFilter: ColorFilter.mode(
-                      provider.currentIndex == 1 ? iconActive : iconInActive,
-                      BlendMode.srcIn),
+                icon: Padding(
+                  padding: const EdgeInsets.only(top: 20),
+                  child: SvgPicture.asset(
+                    'assets/icons/plant_care_inactive.svg',
+                    width: 30,
+                    height: 30,
+                    colorFilter: ColorFilter.mode(
+                        provider.currentIndex == 1 ? iconActive : iconInActive,
+                        BlendMode.srcIn),
+                  ),
                 ),
                 label: '',
                 tooltip: '',
               ),
               NavigationDestination(
-                icon: SvgPicture.asset(
-                  'assets/icons/crop_prediction.svg',
-                  width: 30,
-                  height: 30,
-                  colorFilter: ColorFilter.mode(
-                      provider.currentIndex == 2
-                          ? iconActive
-                          : const Color(0xFFF0D64D),
-                      BlendMode.srcIn),
+                icon: Padding(
+                  padding: const EdgeInsets.only(top: 20),
+                  child: SvgPicture.asset(
+                    'assets/icons/crop_prediction.svg',
+                    width: 30,
+                    height: 30,
+                    colorFilter: ColorFilter.mode(
+                        provider.currentIndex == 2
+                            ? iconActive
+                            : const Color(0xFFF0D64D),
+                        BlendMode.srcIn),
+                  ),
                 ),
                 label: '',
                 tooltip: '',
               ),
               NavigationDestination(
-                icon: SvgPicture.asset(
-                  'assets/icons/store_inactive.svg',
-                  width: 30,
-                  height: 30,
-                  colorFilter: ColorFilter.mode(
-                      provider.currentIndex == 3 ? iconActive : iconInActive,
-                      BlendMode.srcIn),
+                icon: Padding(
+                  padding: const EdgeInsets.only(top: 20),
+                  child: SvgPicture.asset(
+                    'assets/icons/store_inactive.svg',
+                    width: 30,
+                    height: 30,
+                    colorFilter: ColorFilter.mode(
+                        provider.currentIndex == 3 ? iconActive : iconInActive,
+                        BlendMode.srcIn),
+                  ),
                 ),
                 label: '',
                 tooltip: '',
               ),
               NavigationDestination(
-                icon: SvgPicture.asset(
-                  'assets/icons/weather_inactive.svg',
-                  width: 30,
-                  height: 30,
-                  colorFilter: ColorFilter.mode(
-                      provider.currentIndex == 4 ? iconActive : iconInActive,
-                      BlendMode.srcIn),
+                icon: Padding(
+                  padding: const EdgeInsets.only(top: 20),
+                  child: SvgPicture.asset(
+                    'assets/icons/weather_inactive.svg',
+                    width: 30,
+                    height: 30,
+                    colorFilter: ColorFilter.mode(
+                        provider.currentIndex == 4 ? iconActive : iconInActive,
+                        BlendMode.srcIn),
+                  ),
                 ),
                 label: '',
                 tooltip: '',

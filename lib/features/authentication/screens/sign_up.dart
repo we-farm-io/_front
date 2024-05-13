@@ -16,7 +16,7 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController1 = TextEditingController();
   final TextEditingController passwordController2 = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
@@ -73,7 +73,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         CustomTextFormField(
                             hintText: 'Enter your username',
                             labelText: 'Username',
-                            controller: usernameController),
+                            controller: emailController),
                         const SizedBox(height: 20),
                         TextFormField(
                           controller: passwordController1,
@@ -236,9 +236,8 @@ class _SignUpPageState extends State<SignUpPage> {
                       context.read<UserViewModel>().signUpProvider(
                             context,
                             userViewModel,
-                            username: usernameController.text.trim(),
+                            email: emailController.text.trim(),
                             password: passwordController1.text.trim(),
-                            phonenumber: phoneController.text.trim(),
                             id: idController.text.trim(),
                           );
                     }
