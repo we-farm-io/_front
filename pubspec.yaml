@@ -86,7 +86,6 @@ flutter:
     - assets/icons/
     - assets/icons/store_icons/
     - assets/logos/
-    - assets/json/
     - assets/images/
     - assets/images/store/
     - assets/images/on_boarding_images/
