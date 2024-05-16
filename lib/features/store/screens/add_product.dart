@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:smart_farm/features/store/providers/products_provider.dart';
-import 'package:smart_farm/features/store/screens/store.dart';
 import 'package:smart_farm/features/store/widgets/input_shadow.dart';
 import 'package:smart_farm/features/store/widgets/input_shadow_with_suffix.dart';
 import 'package:smart_farm/features/store/widgets/maptest.dart';
@@ -179,7 +178,7 @@ class _AddProductState extends State<AddProduct> {
                       Navigator.of(context)
                           .push(
                         MaterialPageRoute(
-                            builder: (context) => NavigationPage()),
+                            builder: (context) => const NavigationPage()),
                       )
                           .then((value) {
                         AddressCombo valeur = value;

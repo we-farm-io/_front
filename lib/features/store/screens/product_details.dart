@@ -5,7 +5,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:smart_farm/features/store/models/product_model.dart';
 import 'package:smart_farm/features/store/providers/products_provider.dart';
-import 'package:smart_farm/features/store/screens/store.dart';
 import 'package:smart_farm/shared/widgets/app_navbar.dart';
 import 'package:smart_farm/shared/widgets/custom_button.dart';
 import 'package:url_launcher/url_launcher.dart';

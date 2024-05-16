@@ -1,6 +1,3 @@
-import 'dart:ffi';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pie_chart/pie_chart.dart';
@@ -252,7 +249,6 @@ class StatisticsPage extends StatelessWidget {
                   ),
                 ],
               ),
-              //TODO
               const SizedBox(
                 height: 20,
               ),
@@ -463,8 +459,6 @@ class StatisticsPage extends StatelessWidget {
                         height: 80,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-
-                          //TODO TODO OOTDSqjklsfmqljdjomk
                           children: [
                             Column(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -642,8 +636,6 @@ class StatisticsPage extends StatelessWidget {
                         height: 80,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-
-                          //TODO TODO OOTDSqjklsfmqljdjomk
                           children: [
                             Column(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -821,8 +813,6 @@ class StatisticsPage extends StatelessWidget {
                         height: 80,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-
-                          //TODO TODO OOTDSqjklsfmqljdjomk
                           children: [
                             Column(
                               mainAxisAlignment: MainAxisAlignment.center,

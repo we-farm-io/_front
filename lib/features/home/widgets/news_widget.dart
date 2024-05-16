@@ -67,7 +67,6 @@ class _NewsTemplateState extends State<NewsTemplate> {
               height: 8,
             ),
 
-            //TODO description is disabled for now
             // Text(
             //   widget.description ?? '',
             //   textDirection: TextDirection.ltr,

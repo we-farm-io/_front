@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:smart_farm/features/store/providers/products_provider.dart';
-import 'package:smart_farm/features/store/screens/store.dart';
 import 'package:smart_farm/features/store/widgets/custom_icon.dart';
 
 class MyProducts extends StatefulWidget {
@@ -34,10 +33,7 @@ void initState() {
               centerTitle: true,
               leading: IconButton(
                 onPressed: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => const StorePage()),
-                  );
+                  Navigator.pop(context);
                 },
                 icon: SvgPicture.asset('assets/icons/back_arrow.svg'),
               ),

@@ -6,6 +6,8 @@ import 'package:smart_farm/features/profile/screens/edit_profile.dart';
 import 'package:smart_farm/features/profile/screens/materials_page.dart';
 import 'package:smart_farm/features/profile/screens/statistics_page.dart';
 import 'package:smart_farm/features/profile/widgets/editprofilebutton.dart';
+import 'package:smart_farm/features/store/screens/my_products.dart';
+import 'package:smart_farm/features/to_do_list/screens/to_do_list_page.dart';
 
 void main() {
   runApp(const ProfilePage());
@@ -195,7 +197,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   "assets/icons/right_arrow.svg",
                 ),
                 onTap: () {
-                  // Add functionality for crops
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const ToDoListPage()));
                 },
               ),
               const SizedBox(height: 20),
@@ -234,7 +237,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   "assets/icons/right_arrow.svg",
                 ),
                 onTap: () {
-                  // Add functionality for crops
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const MyProducts()));
                 },
               ),
               ListTile(

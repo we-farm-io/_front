@@ -64,6 +64,7 @@ dependencies:
   flutter_staggered_grid_view: ^0.4.0
   url_launcher: ^6.0.9
   flutter_email_sender: ^5.0.1
+  easy_date_timeline: ^1.0.7
 
 dev_dependencies:
   flutter_test:
@@ -85,6 +86,7 @@ flutter:
     - assets/
     - assets/icons/
     - assets/icons/store_icons/
+    - assets/icons/tasks_icons/
     - assets/logos/
     - assets/images/
     - assets/images/store/
