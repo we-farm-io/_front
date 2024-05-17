@@ -20,6 +20,12 @@ class TextInput extends StatelessWidget {
       style: const TextStyle(fontFamily: 'poppins'),
       controller: controller,
       maxLines: null,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter $labelText';
+        }
+        return null;
+      },
       decoration: InputDecoration(
         fillColor: const Color.fromRGBO(220, 232, 214, 1),
         filled: true,

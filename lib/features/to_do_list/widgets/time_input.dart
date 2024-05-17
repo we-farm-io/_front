@@ -22,6 +22,12 @@ class TimeInput extends StatelessWidget {
       ),
       readOnly: true,
       controller: controller,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter $labelText';
+        }
+        return null;
+      },
       decoration: InputDecoration(
         fillColor: const Color.fromRGBO(220, 232, 214, 1),
         filled: true,

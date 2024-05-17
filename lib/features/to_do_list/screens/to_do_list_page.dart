@@ -1,9 +1,10 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:smart_farm/features/to_do_list/models/task.model.dart';
-import 'package:smart_farm/features/to_do_list/providers/tasks.provider.dart';
+import 'package:smart_farm/features/to_do_list/providers/tasks_provider.dart';
 import 'package:smart_farm/features/to_do_list/screens/add_task.dart';
 import 'package:smart_farm/features/to_do_list/widgets/task_box.dart';
 import 'package:smart_farm/features/to_do_list/widgets/time_line.dart';
@@ -22,8 +23,7 @@ class _ToDoListPageState extends State<ToDoListPage> {
   void initState() {
     super.initState();
     Future.delayed(Duration.zero, () {
-      Provider.of<TasksProvider>(context, listen: false)
-          .fetchTasks('All', DateFormat.yMMMEd().format(DateTime.now()));
+      Provider.of<TasksProvider>(context, listen: false).fetchTasks();
     });
   }
 
@@ -83,8 +83,7 @@ class _ToDoListPageState extends State<ToDoListPage> {
                       isSelected: tasksprovider.selectedFilter == 'All',
                       onPressed: () {
                         tasksprovider.setFilter('All');
-                        tasksprovider.fetchTasks(tasksprovider.selectedDate,
-                            tasksprovider.selectedFilter);
+                        tasksprovider.fetchTasks();
                       },
                     ),
                     const SizedBox(
@@ -95,8 +94,7 @@ class _ToDoListPageState extends State<ToDoListPage> {
                       isSelected: tasksprovider.selectedFilter == 'To Do',
                       onPressed: () {
                         tasksprovider.setFilter('To Do');
-                        tasksprovider.fetchTasks(tasksprovider.selectedDate,
-                            tasksprovider.selectedFilter);
+                        tasksprovider.fetchTasks();
                       },
                     ),
                     const SizedBox(
@@ -107,8 +105,7 @@ class _ToDoListPageState extends State<ToDoListPage> {
                       isSelected: tasksprovider.selectedFilter == 'In progress',
                       onPressed: () {
                         tasksprovider.setFilter('In progress');
-                        tasksprovider.fetchTasks(tasksprovider.selectedDate,
-                            tasksprovider.selectedFilter);
+                        tasksprovider.fetchTasks();
                       },
                     ),
                     const SizedBox(
@@ -119,8 +116,7 @@ class _ToDoListPageState extends State<ToDoListPage> {
                         isSelected: tasksprovider.selectedFilter == 'Done',
                         onPressed: () {
                           tasksprovider.setFilter('Done');
-                          tasksprovider.fetchTasks(tasksprovider.selectedDate,
-                              tasksprovider.selectedFilter);
+                          tasksprovider.fetchTasks();
                         }),
                   ],
                 ),
@@ -132,16 +128,41 @@ class _ToDoListPageState extends State<ToDoListPage> {
             SizedBox(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height * 0.41,
-              child: ListView.builder(
-                scrollDirection: Axis.vertical,
-                itemCount: tasksprovider.toDoList.length,
-                itemBuilder: (BuildContext context, int index) {
-                  Task task = tasksprovider.toDoList[index];
-                  return ListTile(
-                    title: TaskBox(
-                      task: task,
-                    ),
-                  );
+              child: FutureBuilder<List<Task>>(
+                future: tasksprovider.toDoList,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(
+                        color: Palette.buttonGreen,
+                      ),
+                    );
+                  } else if (snapshot.hasError) {
+                    return const Center(
+                      child: Text('Error loading tasks'),
+                    );
+                  } else {
+                    final todos = snapshot.data!;
+                    return todos.isEmpty
+                        ? const Center(
+                            child: Text(
+                              'No Tasks here',
+                              style: TextStyle(
+                                  fontFamily: 'poppins',
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          )
+                        : ListView.builder(
+                            itemCount: todos.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              final todo = todos[index];
+                              return TaskBox(
+                                task: todo,
+                              );
+                            },
+                          );
+                  }
                 },
               ),
             ),

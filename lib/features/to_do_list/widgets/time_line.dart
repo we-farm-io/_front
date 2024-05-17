@@ -2,7 +2,7 @@ import 'package:easy_date_timeline/easy_date_timeline.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:smart_farm/features/to_do_list/providers/tasks.provider.dart';
+import 'package:smart_farm/features/to_do_list/providers/tasks_provider.dart';
 
 class TimeLine extends StatefulWidget {
   const TimeLine({super.key});
@@ -19,8 +19,7 @@ class _TimeLineState extends State<TimeLine> {
         initialDate: DateTime.now(),
         onDateChange: (selectedDate) {
           tasksprovider.setDate(DateFormat.yMMMEd().format(selectedDate));
-          tasksprovider.fetchTasks(
-              tasksprovider.selectedDate, tasksprovider.selectedFilter);
+          tasksprovider.fetchTasks();
         },
         itemBuilder:
             (context, dayNumber, dayName, monthName, fullDate, isSelected) =>

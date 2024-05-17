@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smart_farm/features/store/data/static_list.dart';
+import 'package:smart_farm/features/store/data/store_static_list.dart';
 import 'package:smart_farm/features/store/models/product_model.dart';
 
 class ProductsProvider with ChangeNotifier {
