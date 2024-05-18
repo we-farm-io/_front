@@ -13,8 +13,7 @@ class ToDoDB {
     "startTime" TEXT NOT NULL,
     "endTime" TEXT NOT NULL,
     "date" TEXT NOT NULL,
-    "state" TEXT NOT NULL,
-    PRIMARY KEY("taskId" AUTOINCREMENT)
+    "state" TEXT NOT NULL
   );""");
   }
 

@@ -113,7 +113,7 @@ void initState() {
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+                              padding: const EdgeInsets.fromLTRB(8, 0, 0, 8),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [

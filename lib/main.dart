@@ -1,3 +1,4 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,8 @@ import 'package:smart_farm/features/plantdoc/providers/plantgrowth_provider.dart
 import 'package:smart_farm/features/store/providers/products_provider.dart';
 import 'package:smart_farm/features/to_do_list/providers/tasks_provider.dart';
 import 'package:smart_farm/features/weather/providers/weather_provider.dart';
+import 'package:smart_farm/shared/services/notifications/notifications_controller.dart';
+import 'package:smart_farm/shared/services/notifications/notifications_services.dart';
 import 'package:smart_farm/shared/services/shared_preferences_service.dart';
 import 'package:smart_farm/shared/widgets/app_navbar.dart';
 
@@ -29,6 +32,32 @@ Future main() async {
     await InAppWebViewController.setWebContentsDebuggingEnabled(kDebugMode);
   }
   await SharedPreferencesService.init();
+  // await AwesomeNotifications().initialize(
+  //     null,
+  //     [
+  //       NotificationChannel(
+  //         channelGroupKey: "group",
+  //         channelKey: "basic_channel",
+  //         channelName: "Notification",
+  //         channelDescription: "description",
+  //       )
+  //     ],
+  //     channelGroups: [
+  //       NotificationChannelGroup(
+  //           channelGroupKey: "channelGroupKey",
+  //           channelGroupName: "channelGroupName")
+  //     ],
+  //     debug: true);
+
+  // bool isAllowedToSendNotification =
+  //     await AwesomeNotifications().isNotificationAllowed();
+  // if (!isAllowedToSendNotification) {
+  //   AwesomeNotifications().requestPermissionToSendNotifications();
+  // }
+
+  NotificationsServices().initializeNotifications();
+  await NotificationsServices().requestNotificationPermissions();
+
 
   runApp(const MyApp());
 }
@@ -37,8 +66,26 @@ class InAppWebViewController {
   static setWebContentsDebuggingEnabled(bool kDebugMode) {}
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    AwesomeNotifications().setListeners(
+        onActionReceivedMethod: NotificationController.onActionReceivedMethod,
+        onNotificationCreatedMethod:
+            NotificationController.onNotificationCreatedMethod,
+        onNotificationDisplayedMethod:
+            NotificationController.onNotificationDisplayedMethod,
+        onDismissActionReceivedMethod:
+            NotificationController.onDismissActionReceivedMethod);
+  }
 
   // This widget is the root of your application.
   @override

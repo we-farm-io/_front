@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:smart_farm/features/store/providers/products_provider.dart';
 import 'package:smart_farm/features/store/widgets/input_shadow.dart';
@@ -15,6 +18,9 @@ class AddProduct extends StatefulWidget {
 }
 
 class _AddProductState extends State<AddProduct> {
+  // ignore: unused_field
+  File? _image;
+  final picker = ImagePicker();
   TextEditingController nameController = TextEditingController();
   TextEditingController priceController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
@@ -209,7 +215,9 @@ class _AddProductState extends State<AddProduct> {
                     suffixIcon:
                         Image.asset('assets/icons/store_icons/Upload.png'),
                     hintText: 'Upload image',
-                    onPressed: () {},
+                    onPressed: () {
+                      getImage();
+                    },
                   ),
                   const SizedBox(
                     height: 36,
@@ -306,5 +314,16 @@ class _AddProductState extends State<AddProduct> {
         );
       },
     );
+  }
+  Future getImage() async {
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
+      } else {
+        _image = null;
+      }
+    });
   }
 }

@@ -20,6 +20,16 @@ class ProductsProvider with ChangeNotifier {
   notifyListeners();
 }
 
+void search(String type, {String? searchString}) {
+    _products.clear();
+    if (searchString != null && searchString.isNotEmpty) {
+      _products.addAll(productList.where((product) => product.type == type && product.name.toLowerCase().contains(searchString.toLowerCase())));
+    } else {
+      _products.addAll(productList.where((product) => product.type == type));
+    }
+    notifyListeners();
+  }
+
   void addProduct({
   required String productID,
   required String name,
@@ -48,7 +58,6 @@ class ProductsProvider with ChangeNotifier {
   _products.add(newProduct);
   notifyListeners();
 }
-
 
   void deleteProduct(String productID) {
     productList.removeWhere((product) => product.productID == productID);

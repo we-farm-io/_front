@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
+import 'package:smart_farm/features/profile/screens/profile.dart';
 import 'package:smart_farm/features/to_do_list/models/task.model.dart';
 import 'package:smart_farm/features/to_do_list/providers/tasks_provider.dart';
 import 'package:smart_farm/features/to_do_list/screens/add_task.dart';
@@ -38,7 +39,8 @@ class _ToDoListPageState extends State<ToDoListPage> {
           centerTitle: true,
           leading: IconButton(
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const ProfilePage()));
             },
             icon: SvgPicture.asset('assets/icons/back_arrow.svg'),
           ),

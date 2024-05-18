@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:smart_farm/features/authentication/models/authentication_models.dart';
 import 'package:smart_farm/features/authentication/screens/login_page.dart';
 import 'package:smart_farm/shared/utils/palette.dart';
+import 'package:smart_farm/shared/widgets/app_navbar.dart';
 import 'package:smart_farm/shared/widgets/custom_button.dart';
 import 'package:smart_farm/shared/widgets/custom_textformfield.dart';
 
@@ -223,24 +224,32 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                CustomButton(
-                  buttonText: 'Sign Up',
-                  onPressed: () {
-                    if (!_checked) {
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                        content: Text(
-                            'Please accept the terms & conditions to sign up.'),
-                      ));
-                    } else {
-                      context.read<UserViewModel>().signUpProvider(
-                            context,
-                            userViewModel,
-                            email: emailController.text.trim(),
-                            password: passwordController1.text.trim(),
-                            id: idController.text.trim(),
-                          );
-                    }
-                  },
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                  child: CustomButton(
+                    buttonText: 'Sign Up',
+                    onPressed: () {
+                      if (!_checked) {
+                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content: Text(
+                              'Please accept the terms & conditions to sign up.'),
+                        ));
+                      } else {
+                        context.read<UserViewModel>().signUpProvider(
+                              context,
+                              userViewModel,
+                              email: emailController.text.trim(),
+                              password: passwordController1.text.trim(),
+                              id: idController.text.trim(),
+                            );
+                            Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const NavBar()),
+                        );
+                      }
+                    },
+                  ),
                 ),
                 const SizedBox(height: 12),
                 Row(

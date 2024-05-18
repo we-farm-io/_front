@@ -6,6 +6,7 @@ import 'package:smart_farm/features/to_do_list/providers/tasks_provider.dart';
 import 'package:smart_farm/features/to_do_list/screens/to_do_list_page.dart';
 import 'package:smart_farm/features/to_do_list/widgets/text_input.dart';
 import 'package:smart_farm/features/to_do_list/widgets/time_input.dart';
+import 'package:smart_farm/shared/services/notifications/notifications_services.dart';
 import 'package:smart_farm/shared/utils/palette.dart';
 import '../models/task.model.dart';
 
@@ -155,6 +156,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                         );
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => const ToDoListPage()));
+                        NotificationsServices().createTaskNotification(titleController.text, 'FINISH YOUR TASK!!');
                       }
                     }),
                   ),

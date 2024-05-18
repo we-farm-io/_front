@@ -40,7 +40,12 @@ class _StorePageState extends State<StorePage> {
             body: SingleChildScrollView(
               child: Column(
                 children: [
-                  const AppSearchBar(),
+                  AppSearchBar(
+                    onSubmitted: (String searchString) {
+                      productsProvider.search(selectedButton,
+                          searchString: searchString);
+                    },
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
