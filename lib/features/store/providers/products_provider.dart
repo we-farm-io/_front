@@ -55,7 +55,7 @@ void search(String type, {String? searchString}) {
     location: location,
   );
 
-  _products.add(newProduct);
+  productList.add(newProduct);
   notifyListeners();
 }
 

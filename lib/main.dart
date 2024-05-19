@@ -56,8 +56,6 @@ Future main() async {
   // }
 
   NotificationsServices().initializeNotifications();
-  await NotificationsServices().requestNotificationPermissions();
-
 
   runApp(const MyApp());
 }

@@ -66,7 +66,7 @@ class Page1ChangePassword extends StatelessWidget {
                   ),
                   onTap: () {
                     userViewModel.sendPasswordResetEmail(
-                        context, userViewModel.email!);
+                        context, email);
                   },
                 ),
                 const SizedBox(height: 32),

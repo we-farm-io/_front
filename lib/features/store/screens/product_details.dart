@@ -19,6 +19,7 @@ class ProductDetails extends StatelessWidget {
       builder: (context, productsProvider, child) {
         return Scaffold(
           appBar: AppBar(
+            forceMaterialTransparency: true,
             centerTitle: true,
             leading: IconButton(
               onPressed: () {

@@ -99,7 +99,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                       ),
                     ),
-                   // const SizedBox(height: 20),
+                    const SizedBox(height: 10),
                     ListTile(
                       visualDensity:
                           const VisualDensity(horizontal: -4, vertical: -4),
@@ -166,7 +166,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         // Add functionality for materials
                       },
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 10),
                     Container(
                       color: const Color(0xFFF6F6F6),
                       alignment: Alignment.centerLeft,
@@ -184,7 +184,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                       ),
                     ),
-                    //const SizedBox(height: 20),
+                    const SizedBox(height: 10),
                     ListTile(
                       visualDensity:
                           const VisualDensity(horizontal: -4, vertical: -4),
@@ -206,7 +206,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             builder: (context) => const ToDoListPage()));
                       },
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 10),
                     Container(
                       color: const Color(0xFFF6F6F6),
                       alignment: Alignment.centerLeft,
@@ -224,7 +224,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                       ),
                     ),
-                    //const SizedBox(height: 20),
+                    const SizedBox(height: 10),
                     ListTile(
                       visualDensity:
                           const VisualDensity(horizontal: -4, vertical: -4),
@@ -268,7 +268,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         // Add functionality for crops
                       },
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 10),
                     Container(
                       color: const Color(0xFFF6F6F6),
                       alignment: Alignment.centerLeft,
@@ -286,7 +286,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                       ),
                     ),
-                    //const SizedBox(height: 20),
+                    const SizedBox(height: 10),
                     ListTile(
                       visualDensity:
                           const VisualDensity(horizontal: -4, vertical: -4),

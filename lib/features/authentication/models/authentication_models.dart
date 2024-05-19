@@ -1,4 +1,4 @@
-// to implement reset password via mail go from line 153 to 177 :)
+// to implement reset password via mail go from line 153 :)
 
 // ignore_for_file: avoid_print, use_build_context_synchronously
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,10 +9,10 @@ import 'package:smart_farm/features/authentication/screens/success_change_passwo
 import 'package:smart_farm/shared/widgets/app_navbar.dart';
 
 class UserViewModel with ChangeNotifier {
-  final loginFormKey = GlobalKey<FormState>();
-  final signUpFormKey = GlobalKey<FormState>();
-  final page1FormKey = GlobalKey<FormState>();
-  final page2FormKey = GlobalKey<FormState>();
+  // final loginFormKey = GlobalKey<FormState>();
+  // final signUpFormKey = GlobalKey<FormState>();
+  // final page1FormKey = GlobalKey<FormState>();
+  // final page2FormKey = GlobalKey<FormState>();
 
   String? email;
   String? password;
@@ -63,7 +63,7 @@ class UserViewModel with ChangeNotifier {
   }) async {
     FocusManager.instance.primaryFocus?.unfocus();
 
-    if (loginFormKey.currentState?.validate() ?? false) {
+    //if (loginFormKey.currentState?.validate() ?? false) {
       // replace with actual verification
       // API implementation + errors managing
       userViewModel.setLoginCredentials(email, password);
@@ -91,13 +91,13 @@ class UserViewModel with ChangeNotifier {
               )));
         }
       }
-    } else if (email.isNotEmpty && password.isNotEmpty) {
+    //} else if (email.isNotEmpty && password.isNotEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Email or pasword is incorrect'),
         ),
       );
-    }
+    //}
   }
 
   void signUpProvider(BuildContext context, UserViewModel userViewModel,
@@ -106,7 +106,7 @@ class UserViewModel with ChangeNotifier {
       required String id}) async {
     FocusManager.instance.primaryFocus?.unfocus();
 
-    if (signUpFormKey.currentState?.validate() ?? false) {
+   // if (signUpFormKey.currentState?.validate() ?? false) {
       // replace with actual verification
       // API implementation + errors managing
 
@@ -147,20 +147,25 @@ class UserViewModel with ChangeNotifier {
           }
         }
       }
-    }
+   // }
   }
 
   bool isValidEmail(String email) {
-    // Replace with actual email verification 
+    // Replace with actual email verification
     final emailValide = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
     return emailValide.hasMatch(email);
   }
 
+  bool oldPasswordCorrect(String uid, String enteredPassword) {
+    //replace with actual verification
+    return enteredPassword == '123';
+  }
+
   void sendPasswordResetEmail(BuildContext context, String email) {
     // send password reset email here -----------------------------
-    try { 
+    try {
       // send mail
-    } catch (e) { 
+    } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Failed to send password reset email: $e'),
@@ -168,9 +173,9 @@ class UserViewModel with ChangeNotifier {
       );
     }
   }
-   // -------------------------------------------------------------
+  // -------------------------------------------------------------
 
-   bool linkChecked() {
+  bool linkChecked() {
     // Replace with actual verification
     return true;
   }
@@ -179,14 +184,14 @@ class UserViewModel with ChangeNotifier {
       {required String newpassword}) async {
     FocusManager.instance.primaryFocus?.unfocus();
 
-    if (page2FormKey.currentState!.validate()) {
-      userViewModel.setPassword(newpassword); // + modify in database
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const SuccessChangePassword(),
-        ),
-      );
-    }
+    //if (page2FormKey.currentState!.validate()) {
+    userViewModel.setPassword(newpassword); // + modify in database
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const SuccessChangePassword(),
+      ),
+    );
+    // }
   }
 }
