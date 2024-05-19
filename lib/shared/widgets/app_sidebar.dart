@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smart_farm/features/contact_us.dart/screen/contact_us.dart';
 import 'package:smart_farm/features/profile/screens/profile.dart';
 
 class SideBar extends StatelessWidget {
@@ -71,7 +72,10 @@ class SideBar extends StatelessWidget {
                     fontSize: 15,
                     fontFamily: 'Poppins'),
               ),
-              onTap: () => {},
+              onTap: () => {
+                 Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => ContactUs()))
+              },
             ),
             ListTile(
               leading: Image.asset("assets/icons/SideBarIcons/LogOut.png"),
