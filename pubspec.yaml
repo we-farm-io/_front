@@ -90,6 +90,7 @@ flutter:
     - assets/icons/
     - assets/icons/store_icons/
     - assets/icons/tasks_icons/
+    - assets/icons/settings/
     - assets/logos/
     - assets/images/
     - assets/images/store/

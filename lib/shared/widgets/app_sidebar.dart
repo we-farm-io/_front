@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smart_farm/features/contact_us.dart/screen/contact_us.dart';
 import 'package:smart_farm/features/profile/screens/profile.dart';
+import 'package:smart_farm/features/settings/screen/settings_page.dart';
 
 class SideBar extends StatelessWidget {
   const SideBar({
@@ -47,8 +48,8 @@ class SideBar extends StatelessWidget {
                     fontFamily: 'Poppins'),
               ),
               onTap: () => {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => const ProfilePage()))
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const ProfilePage()))
               },
             ),
             ListTile(
@@ -61,7 +62,10 @@ class SideBar extends StatelessWidget {
                     fontSize: 15,
                     fontFamily: 'Poppins'),
               ),
-              onTap: () => {},
+              onTap: () => {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const SettingsPage()))
+              },
             ),
             ListTile(
               leading: Image.asset("assets/icons/SideBarIcons/ContactUs.png"),
@@ -73,8 +77,8 @@ class SideBar extends StatelessWidget {
                     fontFamily: 'Poppins'),
               ),
               onTap: () => {
-                 Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => ContactUs()))
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) => ContactUs()))
               },
             ),
             ListTile(
