@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:smart_farm/features/home/providers/news_provider.dart';
 import 'package:smart_farm/features/store/screens/store.dart';
+import 'package:smart_farm/shared/services/notifications/notifications_services.dart';
 import 'package:smart_farm/shared/widgets/app_sidebar.dart';
 import 'package:smart_farm/features/agroinsight/screens/agro_insight.dart';
 import 'package:smart_farm/features/home/screens/home_screen.dart';
@@ -42,6 +43,7 @@ class _NavBarState extends State<NavBar> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Provider.of<NewsProvider>(context, listen: false).getNews();
     });
+     NotificationsServices().requestNotificationPermissions();
   }
 
   @override
@@ -85,7 +87,7 @@ class _NavBarState extends State<NavBar> {
                   "Tech",
                   style: TextStyle(
                     fontFamily: 'Quicksand',
-                    color:  Color(0xFF159148),
+                    color: Color(0xFF159148),
                     fontSize: 24,
                   ),
                 ),
@@ -108,7 +110,7 @@ class _NavBarState extends State<NavBar> {
           decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(30), topRight: Radius.circular(30)),
+                  topLeft: Radius.circular(15), topRight: Radius.circular(15)),
               boxShadow: [
                 BoxShadow(
                   color: Colors.grey.withOpacity(0.25),

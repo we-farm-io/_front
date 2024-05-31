@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:smart_farm/features/store/providers/products_provider.dart';
-import 'package:smart_farm/features/store/screens/store.dart';
-import 'package:smart_farm/features/store/widgets/custome_icon.dart';
+import 'package:smart_farm/features/store/widgets/custom_icon.dart';
 
 class MyProducts extends StatefulWidget {
   const MyProducts({super.key});
@@ -30,14 +29,22 @@ class _MyProductsState extends State<MyProducts> {
         builder: (context, productsProvider, child) {
       return Scaffold(
         appBar: AppBar(
+<<<<<<< HEAD
+=======
+          forceMaterialTransparency: true,
+>>>>>>> 016228f62510a86d1d63d614e5fcf0f40432fb43
           title: SvgPicture.asset('assets/logos/AgriTech.svg'),
           centerTitle: true,
           leading: IconButton(
             onPressed: () {
+<<<<<<< HEAD
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (context) => const StorePage()),
               );
+=======
+              Navigator.pop(context);
+>>>>>>> 016228f62510a86d1d63d614e5fcf0f40432fb43
             },
             icon: SvgPicture.asset('assets/icons/back_arrow.svg'),
           ),
@@ -59,7 +66,7 @@ class _MyProductsState extends State<MyProducts> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  CustomeIcon(
+                  CustomIcon(
                     text: 'Rent',
                     isSelected: selectedButton == 'Rent',
                     onPressed: () {
@@ -68,7 +75,7 @@ class _MyProductsState extends State<MyProducts> {
                     },
                     svgImage: 'assets/icons/store_icons/Rent.svg',
                   ),
-                  CustomeIcon(
+                  CustomIcon(
                     text: 'Buy',
                     isSelected: selectedButton == 'Buy',
                     onPressed: () {
@@ -118,7 +125,7 @@ class _MyProductsState extends State<MyProducts> {
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+                              padding: const EdgeInsets.fromLTRB(8, 0, 0, 8),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [

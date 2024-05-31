@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:smart_farm/features/authentication/models/authentication_models.dart';
 import 'package:smart_farm/features/authentication/screens/login_page.dart';
 import 'package:smart_farm/shared/utils/palette.dart';
+import 'package:smart_farm/shared/widgets/app_navbar.dart';
 import 'package:smart_farm/shared/widgets/custom_button.dart';
 import 'package:smart_farm/shared/widgets/custom_textformfield.dart';
 
@@ -16,6 +17,7 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController1 = TextEditingController();
   final TextEditingController passwordController2 = TextEditingController();
@@ -33,7 +35,6 @@ class _SignUpPageState extends State<SignUpPage> {
     return Consumer<UserViewModel>(
       builder: (context, value, child) => SafeArea(
         child: Scaffold(
-          appBar: AppBar(),
           body: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -47,7 +48,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: Form(
-                    key: userViewModel.signUpFormKey,
+                    key: _formKey,
                     child: Column(
                       children: [
                         InternationalPhoneNumberInput(
@@ -224,24 +225,35 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                CustomButton(
-                  buttonText: 'Sign Up',
-                  onPressed: () {
-                    if (!_checked) {
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                        content: Text(
-                            'Please accept the terms & conditions to sign up.'),
-                      ));
-                    } else {
-                      context.read<UserViewModel>().signUpProvider(
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                  child: CustomButton(
+                    buttonText: 'Sign Up',
+                    onPressed: () {
+                      if (!_checked) {
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(const SnackBar(
+                          content: Text(
+                              'Please accept the terms & conditions to sign up.'),
+                        ));
+                      } else {
+                        if (_formKey.currentState!.validate()) {
+                          context.read<UserViewModel>().signUpProvider(
+                                context,
+                                userViewModel,
+                                email: emailController.text.trim(),
+                                password: passwordController1.text.trim(),
+                                id: idController.text.trim(),
+                              );
+                          Navigator.pushReplacement(
                             context,
-                            userViewModel,
-                            email: emailController.text.trim(),
-                            password: passwordController1.text.trim(),
-                            id: idController.text.trim(),
+                            MaterialPageRoute(
+                                builder: (context) => const NavBar()),
                           );
-                    }
-                  },
+                        }
+                      }
+                    },
+                  ),
                 ),
                 const SizedBox(height: 12),
                 Row(

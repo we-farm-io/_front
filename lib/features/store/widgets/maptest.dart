@@ -32,14 +32,12 @@ class _StorePageState extends State<NavigationPage> {
   String? _address;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getCurrentLocation();
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
   }
 
@@ -55,7 +53,6 @@ class _StorePageState extends State<NavigationPage> {
             final navigator = Navigator.of(context);
             await getAddressFromLatLng();
             navigator.pop(AddressCombo(_address, destLocation));
-            //TODO implement the send location back to store window
             // Navigator.of(context).pushAndRemoveUntil(
             //     MaterialPageRoute(
             //       builder: (context) => NavigationScreen(

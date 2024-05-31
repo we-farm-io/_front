@@ -7,6 +7,7 @@ import 'package:smart_farm/shared/widgets/custom_button.dart';
 import 'package:smart_farm/shared/widgets/custom_textformfield.dart';
 
 class Page2ChangePassword extends StatelessWidget {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController passwordController1 = TextEditingController();
   final TextEditingController passwordController2 = TextEditingController();
 
@@ -14,10 +15,8 @@ class Page2ChangePassword extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Consumer<UserViewModel>(
       builder: (context, userViewModel, child) => Scaffold(
-        appBar: AppBar(),
         body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -42,7 +41,7 @@ class Page2ChangePassword extends StatelessWidget {
               ),
               const SizedBox(height: 30),
               Form(
-                key: userViewModel.page2FormKey,
+                key: _formKey,
                 child: Column(
                   children: [
                     Container(
@@ -97,9 +96,11 @@ class Page2ChangePassword extends StatelessWidget {
                 child: CustomButton(
                   buttonText: 'Next',
                   onPressed: () {
-                    context.read<UserViewModel>().changePasswordProvider(
-                        context, userViewModel,
-                        newpassword: passwordController1.text.trim());
+                    if (_formKey.currentState!.validate()) {
+                      context.read<UserViewModel>().changePasswordProvider(
+                          context, userViewModel,
+                          newpassword: passwordController1.text.trim());
+                    }
                   },
                 ),
               ),

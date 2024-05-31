@@ -67,6 +67,10 @@ dependencies:
   cloud_firestore: ^4.17.3
   firebase_storage: ^11.7.7
   uuid: ^4.4.0
+  easy_date_timeline: ^1.0.7
+  sqflite: ^2.3.3+1
+  path: ^1.9.0
+  awesome_notifications: ^0.9.3+1
 
 dev_dependencies:
   flutter_test:
@@ -88,6 +92,8 @@ flutter:
     - assets/
     - assets/icons/
     - assets/icons/store_icons/
+    - assets/icons/tasks_icons/
+    - assets/icons/settings/
     - assets/logos/
     - assets/images/
     - assets/images/store/

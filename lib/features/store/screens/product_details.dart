@@ -5,7 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:smart_farm/features/store/models/product_model.dart';
 import 'package:smart_farm/features/store/providers/products_provider.dart';
-import 'package:smart_farm/features/store/screens/store.dart';
+import 'package:smart_farm/shared/widgets/app_navbar.dart';
 import 'package:smart_farm/shared/widgets/custom_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -19,12 +19,13 @@ class ProductDetails extends StatelessWidget {
       builder: (context, productsProvider, child) {
         return Scaffold(
           appBar: AppBar(
+            forceMaterialTransparency: true,
             centerTitle: true,
             leading: IconButton(
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const StorePage()),
+                  MaterialPageRoute(builder: (context) => const NavBar()),
                 );
               },
               icon: SvgPicture.asset('assets/icons/back_arrow.svg'),
@@ -130,8 +131,10 @@ class ProductDetails extends StatelessWidget {
                             ),
                           ),
                           child: IconButton(
-                            onPressed: () {
-                              // Go to map page
+                            onPressed: () async {
+                              await launchUrl(Uri.parse(
+                                  //Todo implement the fetch product coordinates and link with firebase
+                                  'google.navigation:q=${35.7048287}, ${-0.653571}&key=AIzaSyDSbl052WrQ8pwywEKmNl5FLJAa21tXxa0'));
                             },
                             icon: const Icon(
                               Icons.add,

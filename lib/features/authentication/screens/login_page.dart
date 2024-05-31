@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:smart_farm/features/authentication/models/authentication_models.dart';
-import 'package:smart_farm/features/authentication/screens/page1_change_password.dart';
+import 'package:smart_farm/features/authentication/screens/enter_mail.dart';
 import 'package:smart_farm/features/authentication/screens/sign_up.dart';
 import 'package:smart_farm/shared/utils/palette.dart';
 import 'package:smart_farm/shared/widgets/custom_button.dart';
@@ -16,6 +16,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
@@ -33,7 +34,6 @@ class _LoginPageState extends State<LoginPage> {
 
     return Consumer<UserViewModel>(
       builder: (context, value, child) => Scaffold(
-        appBar: AppBar(),
         body: SafeArea(
           child: SingleChildScrollView(
             child: Column(
@@ -75,7 +75,7 @@ class _LoginPageState extends State<LoginPage> {
                   alignment: Alignment.centerLeft,
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: Form(
-                    key: userViewModel.loginFormKey,
+                    key: _formKey,
                     child: Column(
                       children: [
                         CustomTextFormField(
@@ -138,6 +138,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   onTap: () {
+<<<<<<< HEAD
                     final email = emailController.text.trim();
                     if (email.isEmpty || !userViewModel.isValidEmail(email)) {
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -156,6 +157,14 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       );
                     }
+=======
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => EnterMail(),
+                      ),
+                    );
+>>>>>>> 016228f62510a86d1d63d614e5fcf0f40432fb43
                   },
                 ),
                 const SizedBox(height: 20),
@@ -164,10 +173,12 @@ class _LoginPageState extends State<LoginPage> {
                   child: CustomButton(
                     buttonText: 'Log in',
                     onPressed: () {
-                      context.read<UserViewModel>().loginProvider(
-                          context, userViewModel,
-                          email: emailController.text.trim(),
-                          password: passwordController.text.trim());
+                      if (_formKey.currentState!.validate()) {
+                        context.read<UserViewModel>().loginProvider(
+                            context, userViewModel,
+                            email: emailController.text.trim(),
+                            password: passwordController.text.trim());
+                      }
                     },
                   ),
                 ),

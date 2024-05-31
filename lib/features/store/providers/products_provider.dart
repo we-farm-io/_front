@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:smart_farm/features/store/data/static_list.dart';
+import 'package:smart_farm/features/store/data/store_static_list.dart';
 import 'package:smart_farm/features/store/models/product_model.dart';
 
 class ProductsProvider with ChangeNotifier {
@@ -53,6 +53,47 @@ class ProductsProvider with ChangeNotifier {
     // ignore: no_leading_underscores_for_local_identifiers
     final FirebaseFirestore _firestore = FirebaseFirestore.instance;
     await _firestore.collection('products').add(product.toMap());
+    notifyListeners();
+  }
+
+  void search(String type, {String? searchString}) {
+    _products.clear();
+    if (searchString != null && searchString.isNotEmpty) {
+      _products.addAll(productList.where((product) =>
+          product.type == type &&
+          product.name.toLowerCase().contains(searchString.toLowerCase())));
+    } else {
+      _products.addAll(productList.where((product) => product.type == type));
+    }
+    notifyListeners();
+  }
+
+  void addProduct({
+    required String productID,
+    required String name,
+    required double price,
+    required String sellerPhone,
+    required String quantity,
+    required String description,
+    required String sellerId,
+    required String image,
+    required String type,
+    required Map<String, double> location,
+  }) {
+    Product newProduct = Product(
+      productID: productID,
+      name: name,
+      price: price,
+      sellerPhone: sellerPhone,
+      quantity: quantity,
+      description: description,
+      sellerId: sellerId,
+      image: image,
+      type: type,
+      location: location,
+    );
+
+    productList.add(newProduct);
     notifyListeners();
   }
 

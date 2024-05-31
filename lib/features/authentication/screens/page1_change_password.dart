@@ -15,7 +15,6 @@ class Page1ChangePassword extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<UserViewModel>(
       builder: (context, userViewModel, child) => Scaffold(
-        appBar: AppBar(),
         body: SafeArea(
           child: SingleChildScrollView(
             child: Column(
@@ -67,7 +66,7 @@ class Page1ChangePassword extends StatelessWidget {
                   ),
                   onTap: () {
                     userViewModel.sendPasswordResetEmail(
-                        context, userViewModel.email!);
+                        context, email);
                   },
                 ),
                 const SizedBox(height: 32),
