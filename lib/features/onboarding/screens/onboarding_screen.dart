@@ -193,7 +193,7 @@ class _NextSkipState extends State<NextSkip> {
                     Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const NavBar()));
+                            builder: (context) => const SignUpPage()));
                   }
                 }
               },

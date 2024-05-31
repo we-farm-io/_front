@@ -1,11 +1,19 @@
+import 'dart:io';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:smart_farm/features/plantdoc/models/plant_data.dart';
+import 'package:smart_farm/features/store/models/product_model.dart';
 import 'package:smart_farm/features/store/providers/products_provider.dart';
 import 'package:smart_farm/features/store/screens/store.dart';
 import 'package:smart_farm/features/store/widgets/input_shadow.dart';
 import 'package:smart_farm/features/store/widgets/input_shadow_with_suffix.dart';
 import 'package:smart_farm/shared/widgets/custom_button.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:uuid/uuid.dart';
 
 class AddProduct extends StatefulWidget {
   const AddProduct({super.key});
@@ -22,10 +30,21 @@ class _AddProductState extends State<AddProduct> {
   TextEditingController quantityController = TextEditingController();
   TextEditingController locationController = TextEditingController();
   TextEditingController imageController = TextEditingController();
+  final picker = ImagePicker();
+  // ignore: non_constant_identifier_names
+  File image_file = File("");
+  final storageRef =
+      FirebaseStorage.instanceFor(bucket: 'gs://farmai-e033e.appspot.com')
+          .ref();
+  var uuid = Uuid();
 
   @override
   Widget build(BuildContext context) {
-    const userID = "3"; // static one for test
+    // Get the current user
+    User? currentUser = FirebaseAuth.instance.currentUser;
+
+// Retrieve the user ID
+    String userID = currentUser!.uid;
     return Consumer<ProductsProvider>(
       builder: (context, productsProvider, child) {
         return Scaffold(
@@ -198,7 +217,10 @@ class _AddProductState extends State<AddProduct> {
                     suffixIcon:
                         Image.asset('assets/icons/store_icons/Upload.png'),
                     hintText: 'Upload image',
-                    onPressed: () {},
+                    onPressed: () async {
+                      _pickImageFromGallery();
+                      print(image_file);
+                    },
                   ),
                   const SizedBox(
                     height: 36,
@@ -210,25 +232,36 @@ class _AddProductState extends State<AddProduct> {
                           width: MediaQuery.of(context).size.width * 0.43,
                           child: CustomButton(
                               buttonText: 'Sell',
-                              onPressed: () {
-                                productsProvider.addProduct(
-                                  productID: // static one for test
-                                      (productsProvider.products.length + 1)
-                                          .toString(),
-                                  name: nameController.text.trim(),
-                                  price: priceController.text.trim(),
-                                  sellerPhone: numberController.text.trim(),
-                                  quantity: quantityController.text.trim(),
-                                  description:
-                                      descriptionController.text.trim(),
-                                  sellerId: userID,
-                                  image: '',
-                                  type: 'Buy',
-                                  location: {
-                                    'latitude': 37.7749,
-                                    'longitude': -122.4194
-                                  }, // replace here with values gotten with map APi
-                                );
+                              onPressed: () async {
+                                print(image_file);
+                                final mountainsRef =
+                                    storageRef.child("images/${uuid.v4()}.jpg");
+                                final uploadTask =
+                                    mountainsRef.putFile(image_file);
+                                final downloadUrl =
+                                    await uploadTask.whenComplete(() => null);
+                                final url = await mountainsRef.getDownloadURL();
+                                Product newProduct = Product(
+                                    productID: // static one for test
+                                        (productsProvider.products.length + 1)
+                                            .toString(),
+                                    name: nameController.text.trim(),
+                                    price: double.parse(
+                                        priceController.text.trim()),
+                                    sellerPhone: numberController.text.trim(),
+                                    quantity: quantityController.text.trim(),
+                                    description:
+                                        descriptionController.text.trim(),
+                                    sellerId: userID,
+                                    image: url,
+                                    type: 'Buy',
+                                    location: {
+                                      'latitude': 37.7749,
+                                      'longitude': -122.4194
+                                    });
+                                ProductsProvider().addProductToCollection(
+                                    newProduct); // replace here with values gotten with map APi
+
                                 showModalBottomSheet(
                                     context: context,
                                     builder: (BuildContext context) {
@@ -252,26 +285,36 @@ class _AddProductState extends State<AddProduct> {
                           width: MediaQuery.of(context).size.width * 0.43,
                           child: CustomButton(
                               buttonText: 'Rent',
-                              onPressed: () {
-                                productsProvider.addProduct(
-                                  productID: // static one for test
-                                      (productsProvider.products.length + 1)
-                                          .toString(),
-                                  name: nameController.text.trim(),
-                                  price: priceController.text.trim(),
-                                  sellerPhone: numberController.text.trim(),
-                                  quantity: quantityController.text.trim(),
-                                  description:
-                                      descriptionController.text.trim(),
-                                  sellerId: userID,
-                                  image:
-                                      '', // replace with uploaded image saved with firebase
-                                  type: 'Rent',
-                                  location: {
-                                    'latitude': 37.7749,
-                                    'longitude': -122.4194
-                                  }, // replace here with values gotten with map APi
-                                );
+                              onPressed: () async {
+                                final mountainsRef =
+                                    storageRef.child("images/${uuid.v4()}.jpg");
+                                final uploadTask =
+                                    mountainsRef.putFile(image_file);
+                                final downloadUrl =
+                                    await uploadTask.whenComplete(() => null);
+                                final url = await mountainsRef.getDownloadURL();
+                                Product newProduct = Product(
+                                    productID: // static one for test
+                                        (productsProvider.products.length + 1)
+                                            .toString(),
+                                    name: nameController.text.trim(),
+                                    price: double.parse(
+                                        priceController.text.trim()),
+                                    sellerPhone: numberController.text.trim(),
+                                    quantity: quantityController.text.trim(),
+                                    description:
+                                        descriptionController.text.trim(),
+                                    sellerId: userID,
+                                    image:
+                                        url, // replace with uploaded image saved with firebase
+                                    type: 'Rent',
+                                    location: {
+                                      'latitude': 37.7749,
+                                      'longitude': -122.4194
+                                    } // replace here with values gotten with map APi
+                                    );
+                                ProductsProvider()
+                                    .addProductToCollection(newProduct);
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -303,5 +346,20 @@ class _AddProductState extends State<AddProduct> {
         );
       },
     );
+  }
+
+  Future<File> _pickImageFromGallery() async {
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      setState(() {
+        image_file = File(pickedFile.path);
+      });
+
+      return image_file;
+      // Todo: You can prompt user to input disease, definition, and solution here.
+    } else {
+      return File("");
+    }
   }
 }

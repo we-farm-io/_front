@@ -16,13 +16,13 @@ class _MyProductsState extends State<MyProducts> {
   String selectedButton = 'Buy';
   String userID = "3"; // static one for test
   @override
-void initState() {
-  super.initState();
-  Future.delayed(Duration.zero, () {
-    Provider.of<ProductsProvider>(context, listen: false).fetchMyProducts('Buy', userID);
-  });
-}
-
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero, () {
+      Provider.of<ProductsProvider>(context, listen: false)
+          .fetchMyProducts('Buy', userID);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,27 +30,27 @@ void initState() {
         builder: (context, productsProvider, child) {
       return Scaffold(
         appBar: AppBar(
-              title: SvgPicture.asset('assets/logos/AgriTech.svg'),
-              centerTitle: true,
-              leading: IconButton(
-                onPressed: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => const StorePage()),
-                  );
-                },
-                icon: SvgPicture.asset('assets/icons/back_arrow.svg'),
+          title: SvgPicture.asset('assets/logos/AgriTech.svg'),
+          centerTitle: true,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const StorePage()),
+              );
+            },
+            icon: SvgPicture.asset('assets/icons/back_arrow.svg'),
+          ),
+          actions: [
+            Container(
+              padding: const EdgeInsets.only(right: 10),
+              child: IconButton(
+                icon: SvgPicture.asset('assets/icons/notification_active.svg'),
+                onPressed: () {}, // for notifications functionnality
               ),
-              actions: [
-                Container(
-                  padding: const EdgeInsets.only(right: 10),
-                  child: IconButton(
-                    icon: SvgPicture.asset('assets/icons/notification_active.svg'),
-                    onPressed: () {}, // for notifications functionnality
-                  ),
-                )
-              ],
-              ),
+            )
+          ],
+        ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
           child: Column(
@@ -63,16 +63,17 @@ void initState() {
                     text: 'Rent',
                     isSelected: selectedButton == 'Rent',
                     onPressed: () {
-                        selectedButton = 'Rent';
-                      productsProvider.fetchMyProducts( 'Rent', userID);
-                    },                    svgImage: 'assets/icons/store_icons/Rent.svg',
+                      selectedButton = 'Rent';
+                      productsProvider.fetchMyProducts('Rent', userID);
+                    },
+                    svgImage: 'assets/icons/store_icons/Rent.svg',
                   ),
                   CustomeIcon(
                     text: 'Buy',
                     isSelected: selectedButton == 'Buy',
                     onPressed: () {
-                        selectedButton = 'Buy';
-                      productsProvider.fetchMyProducts( 'Buy', userID);
+                      selectedButton = 'Buy';
+                      productsProvider.fetchMyProducts('Buy', userID);
                     },
                     svgImage: 'assets/icons/store_icons/AddProduct.svg',
                   ),
@@ -130,7 +131,7 @@ void initState() {
                                     ),
                                   ),
                                   Text(
-                                    product.price,
+                                    product.price as String,
                                     style: const TextStyle(
                                         fontFamily: 'poppins',
                                         fontSize: 18,
@@ -147,8 +148,10 @@ void initState() {
                                               0.25),
                                       child: GestureDetector(
                                         onTap: () {
-                                          productsProvider.deleteProduct(product.productID);
-                                          productsProvider.fetchMyProducts(selectedButton, userID);
+                                          productsProvider
+                                              .deleteProduct(product.productID);
+                                          productsProvider.fetchMyProducts(
+                                              selectedButton, userID);
                                         },
                                         child: Container(
                                             padding: const EdgeInsets.symmetric(

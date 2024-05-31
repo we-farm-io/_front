@@ -23,8 +23,7 @@ class _WeatherPageState extends State<WeatherPage> {
   }
 
   Future<void> _fetchWeatherData() async {
-    final weather = 
-        Provider.of<WeatherProvider>(context, listen: false);
+    final weather = Provider.of<WeatherProvider>(context, listen: false);
     final position = await _determinePosition(context);
     weather.fetchWeather(position);
   }
@@ -66,9 +65,7 @@ class _WeatherPageState extends State<WeatherPage> {
   Widget _buildLoadingIndicator() {
     return const Center(child: CircularProgressIndicator());
   }
-
 }
-
 
 Future<Position> _determinePosition(BuildContext context) async {
   bool serviceEnabled;
@@ -87,7 +84,10 @@ Future<Position> _determinePosition(BuildContext context) async {
               onPressed: () {
                 SystemNavigator.pop();
               },
-              child: const Text("Got it", style: TextStyle(color: Palette.buttonGreen),),
+              child: const Text(
+                "Got it",
+                style: TextStyle(color: Palette.buttonGreen),
+              ),
             ),
           ],
         );
@@ -110,7 +110,10 @@ Future<Position> _determinePosition(BuildContext context) async {
                 onPressed: () {
                   SystemNavigator.pop();
                 },
-              child: const Text("Got it", style: TextStyle(color: Palette.buttonGreen),),
+                child: const Text(
+                  "Got it",
+                  style: TextStyle(color: Palette.buttonGreen),
+                ),
               ),
             ],
           );
@@ -125,13 +128,17 @@ Future<Position> _determinePosition(BuildContext context) async {
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text("Location Permissions Denied"),
-          content: const Text("Location permissions are permanently denied, we cannot request permissions."),
+          content: const Text(
+              "Location permissions are permanently denied, we cannot request permissions."),
           actions: [
             TextButton(
               onPressed: () {
                 SystemNavigator.pop();
               },
-              child: const Text("Got it", style: TextStyle(color: Palette.buttonGreen),),
+              child: const Text(
+                "Got it",
+                style: TextStyle(color: Palette.buttonGreen),
+              ),
             ),
           ],
         );

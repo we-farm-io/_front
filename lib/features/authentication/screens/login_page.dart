@@ -20,6 +20,12 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController passwordController = TextEditingController();
 
   bool _hidePassword = true;
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -144,7 +150,9 @@ class _LoginPageState extends State<LoginPage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => Page1ChangePassword(email: email,),
+                          builder: (context) => Page1ChangePassword(
+                            email: email,
+                          ),
                         ),
                       );
                     }

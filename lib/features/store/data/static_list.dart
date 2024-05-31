@@ -13,7 +13,7 @@ List<Product> productList = [
   Product(
     productID: "0",
     name: "corn crop",
-    price: "650 da",
+    price: "650 da" as double,
     sellerPhone: "+213567890123",
     quantity: "20 kg",
     description:
@@ -26,7 +26,7 @@ List<Product> productList = [
   Product(
     productID: "1",
     name: "cow",
-    price: "250000 da",
+    price: "250000 da" as double,
     sellerPhone: "+213565890123",
     quantity: "1",
     description:
@@ -39,7 +39,7 @@ List<Product> productList = [
   Product(
     productID: "2",
     name: "different crops",
-    price: "1500 da",
+    price: "1500 da" as double,
     sellerPhone: "+213657890123",
     quantity: "60 kg",
     description:
@@ -52,7 +52,7 @@ List<Product> productList = [
   Product(
     productID: "3",
     name: "tractor",
-    price: "4000000 da",
+    price: "4000000 da" as double,
     sellerPhone: "+213765890123",
     quantity: "1",
     description:
@@ -65,7 +65,7 @@ List<Product> productList = [
   Product(
     productID: "4",
     name: "different crops",
-    price: "1500 da",
+    price: "1500 da" as double,
     sellerPhone: "+213657890123",
     quantity: "60 kg",
     description:
@@ -78,7 +78,7 @@ List<Product> productList = [
   Product(
     productID: "5",
     name: "cow",
-    price: "250000 da",
+    price: "250000 da" as double,
     sellerPhone: "+213565890123",
     quantity: "1",
     description:
@@ -91,7 +91,7 @@ List<Product> productList = [
   Product(
     productID: "6",
     name: "tractor",
-    price: "4000000 da",
+    price: "4000000 da" as double,
     sellerPhone: "+213765890123",
     quantity: "1",
     description:
@@ -104,7 +104,7 @@ List<Product> productList = [
   Product(
     productID: "7",
     name: "tractor",
-    price: "4000000 da",
+    price: "4000000 da" as double,
     sellerPhone: "+213765890123",
     quantity: "1",
     description:
@@ -117,7 +117,7 @@ List<Product> productList = [
   Product(
     productID: "8",
     name: "corn crop",
-    price: "650 da",
+    price: "650 da" as double,
     sellerPhone: "+213567890123",
     quantity: "20 kg",
     description:
@@ -130,7 +130,7 @@ List<Product> productList = [
   Product(
     productID: "9",
     name: "cow",
-    price: "250000 da",
+    price: "250000 da" as double,
     sellerPhone: "+213565890123",
     quantity: "1",
     description:
@@ -143,7 +143,7 @@ List<Product> productList = [
   Product(
     productID: "10",
     name: "tractor",
-    price: "4000000 da",
+    price: "4000000 da" as double,
     sellerPhone: "+213765890123",
     quantity: "1",
     description:
@@ -156,7 +156,7 @@ List<Product> productList = [
   Product(
     productID: "11",
     name: "tractor",
-    price: "4000000 da",
+    price: "4000000 da" as double,
     sellerPhone: "+213765890123",
     quantity: "1",
     description:
@@ -169,7 +169,7 @@ List<Product> productList = [
   Product(
     productID: "12",
     name: "corn crop",
-    price: "650 da",
+    price: "650 da" as double,
     sellerPhone: "+213567890123",
     quantity: "20 kg",
     description:
@@ -182,7 +182,7 @@ List<Product> productList = [
   Product(
     productID: "13",
     name: "cow",
-    price: "250000 da",
+    price: "250000 da" as double,
     sellerPhone: "+213565890123",
     quantity: "1",
     description:

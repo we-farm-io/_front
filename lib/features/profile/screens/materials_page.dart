@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:smart_farm/features/profile/models/entity.dart';
@@ -10,12 +12,63 @@ class MaterialsPage extends StatefulWidget {
   State<MaterialsPage> createState() => _MaterialsPageState();
 }
 
+User? currentUser = FirebaseAuth.instance.currentUser;
+List<Entity> materials = [];
+
 class _MaterialsPageState extends State<MaterialsPage> {
-  List<Entity> crops = [];
+  Future<void> addCropToUserProfile(String materialType, int quantity) async {
+    if (currentUser != null) {
+      String userId = currentUser!.uid;
+
+      DocumentReference cropDoc = FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .collection('materials')
+          .doc(materialType);
+
+      await FirebaseFirestore.instance.runTransaction((transaction) async {
+        DocumentSnapshot snapshot = await transaction.get(cropDoc);
+
+        if (!snapshot.exists) {
+          transaction.set(cropDoc, {'totalQuantity': quantity});
+        } else {
+          int newTotalQuantity =
+              (snapshot.data() as Map<String, dynamic>)['totalQuantity'] +
+                  quantity;
+          transaction.update(cropDoc, {'totalQuantity': newTotalQuantity});
+        }
+      });
+
+      print('Crop added successfully!');
+    } else {
+      throw Exception('No user is currently signed in.');
+    }
+  }
+
+  Future getUserCrops() async {
+    User? currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser != null) {
+      String userId = currentUser.uid;
+
+      QuerySnapshot snapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .collection('materials')
+          .get();
+
+      materials = snapshot.docs.map((doc) {
+        return Entity(
+            doc.id, (doc.data() as Map<String, dynamic>)['totalQuantity']);
+      }).toList();
+      print("list getted");
+    } else {
+      throw Exception('No user is currently signed in.');
+    }
+  }
 
   void _addCrop(BuildContext context) {
     String name = '';
-    String quantity = '';
+    int quantity = 0;
 
     showDialog(
       context: context,
@@ -32,8 +85,9 @@ class _MaterialsPageState extends State<MaterialsPage> {
                 decoration: const InputDecoration(labelText: 'Material Name'),
               ),
               TextField(
+                keyboardType: TextInputType.number,
                 onChanged: (value) {
-                  quantity = value;
+                  quantity = int.parse(value);
                 },
                 decoration: const InputDecoration(labelText: 'Quantity'),
               ),
@@ -42,9 +96,8 @@ class _MaterialsPageState extends State<MaterialsPage> {
           actions: <Widget>[
             TextButton(
               onPressed: () {
-                setState(() {
-                  crops.add(Entity(name, int.tryParse(quantity) ?? 0));
-                });
+                addCropToUserProfile(name, quantity);
+
                 Navigator.of(context).pop();
               },
               child: const Text('Add'),
@@ -71,101 +124,109 @@ class _MaterialsPageState extends State<MaterialsPage> {
           _addCrop(context);
         },
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: Stack(
+      body: FutureBuilder(
+          future: getUserCrops(),
+          builder: (context, snapshot) {
+            return Column(
               children: [
-                Positioned(
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  child: Container(
-                    color: const Color(0xFF0D986A),
-                    height: mediaQuery.size.height / 4,
-                  ),
-                ),
-                Positioned(
-                  top: 50,
-                  left: 10,
-                  child: Transform.scale(
-                    scaleX: 1.3,
-                    child: IconButton(
-                      icon: SvgPicture.asset("assets/icons/arrow-left.svg"),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                  ),
-                ),
-                Positioned(
-                  top: mediaQuery.size.height / 10,
-                  right: 0,
-                  left: 0,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                Expanded(
+                  child: Stack(
                     children: [
-                      const SizedBox(height: 20),
-                      CircleAvatar(
-                        backgroundColor: Colors.white,
-                        radius: 69,
-                        child: Image.asset(
-                            'assets/icons/Profile/materials_profile.png'),
+                      Positioned(
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        child: Container(
+                          color: const Color(0xFF0D986A),
+                          height: mediaQuery.size.height / 4,
+                        ),
                       ),
-                      const SizedBox(
-                        height: 10,
+                      Positioned(
+                        top: 50,
+                        left: 10,
+                        child: Transform.scale(
+                          scaleX: 1.3,
+                          child: IconButton(
+                            icon:
+                                SvgPicture.asset("assets/icons/arrow-left.svg"),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ),
                       ),
-                      const Text(
-                        "Materials",
-                        style: TextStyle(
-                            fontFamily: "Poppins",
-                            fontWeight: FontWeight.w600,
-                            fontSize: 20),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.all(0),
-                        height: 65 * mediaQuery.size.height / 100,
-                        child: ListView.builder(
-                            padding: const EdgeInsets.all(0),
-                            itemCount: crops.length,
-                            itemBuilder: (context, index) {
-                              return Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 30.0, vertical: 10),
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      alignment: Alignment.centerLeft,
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 30.0),
-                                        child: Text(
-                                          crops[index].name,
-                                          style: const TextStyle(
-                                              fontFamily: "Poppins",
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 20),
-                                        ),
+                      Positioned(
+                        top: mediaQuery.size.height / 10,
+                        right: 0,
+                        left: 0,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            const SizedBox(height: 20),
+                            CircleAvatar(
+                              backgroundColor: Colors.white,
+                              radius: 69,
+                              child: Image.asset(
+                                  'assets/icons/Profile/materials_profile.png'),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            const Text(
+                              "Materials",
+                              style: TextStyle(
+                                  fontFamily: "Poppins",
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 20),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.all(0),
+                              height: 65 * mediaQuery.size.height / 100,
+                              child: ListView.builder(
+                                  padding: const EdgeInsets.all(0),
+                                  itemCount: materials.length,
+                                  itemBuilder: (context, index) {
+                                    return Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 30.0, vertical: 10),
+                                      child: Column(
+                                        children: [
+                                          Container(
+                                            alignment: Alignment.centerLeft,
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 30.0),
+                                              child: Text(
+                                                materials[index].name,
+                                                style: const TextStyle(
+                                                    fontFamily: "Poppins",
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 20),
+                                              ),
+                                            ),
+                                          ),
+                                          CustomEntry(
+                                            hintText: materials[index]
+                                                .value
+                                                .toString(),
+                                          ),
+                                        ],
                                       ),
-                                    ),
-                                    CustomEntry(
-                                      hintText: crops[index].value.toString(),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            }),
+                                    );
+                                  }),
+                            ),
+                            // Add other widgets as needed
+                          ],
+                        ),
                       ),
-                      // Add other widgets as needed
                     ],
                   ),
                 ),
               ],
-            ),
-          ),
-        ],
-      ),
+            );
+          }),
     );
   }
 }

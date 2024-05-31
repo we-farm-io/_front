@@ -4,6 +4,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:smart_farm/features/authentication/models/user.dart';
+import 'package:smart_farm/features/authentication/screens/login_page.dart';
 import 'package:smart_farm/features/authentication/screens/success_auth.dart';
 import 'package:smart_farm/features/authentication/screens/success_change_password.dart';
 import 'package:smart_farm/shared/widgets/app_navbar.dart';
@@ -55,7 +56,7 @@ class UserViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  void loginProvider(
+  Future<UserCredential?> loginProvider(
     BuildContext context,
     UserViewModel userViewModel, {
     required String email,
@@ -68,12 +69,13 @@ class UserViewModel with ChangeNotifier {
       // API implementation + errors managing
       userViewModel.setLoginCredentials(email, password);
       try {
-        await FirebaseAuth.instance
+        final credential = await FirebaseAuth.instance
             .signInWithEmailAndPassword(email: email, password: password);
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const NavBar()),
         );
+        return credential;
       } on FirebaseAuthException catch (e) {
         if (e.code == 'user-not-found') {
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -90,6 +92,7 @@ class UserViewModel with ChangeNotifier {
                 style: TextStyle(fontSize: 18.0),
               )));
         }
+        return null;
       }
     } else if (email.isNotEmpty && password.isNotEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -151,16 +154,16 @@ class UserViewModel with ChangeNotifier {
   }
 
   bool isValidEmail(String email) {
-    // Replace with actual email verification 
+    // Replace with actual email verification
     final emailValide = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
     return emailValide.hasMatch(email);
   }
 
   void sendPasswordResetEmail(BuildContext context, String email) {
     // send password reset email here -----------------------------
-    try { 
+    try {
       // send mail
-    } catch (e) { 
+    } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Failed to send password reset email: $e'),
@@ -168,9 +171,9 @@ class UserViewModel with ChangeNotifier {
       );
     }
   }
-   // -------------------------------------------------------------
+  // -------------------------------------------------------------
 
-   bool linkChecked() {
+  bool linkChecked() {
     // Replace with actual verification
     return true;
   }
@@ -188,5 +191,32 @@ class UserViewModel with ChangeNotifier {
         ),
       );
     }
+  }
+
+  Future<void> signOut(
+    BuildContext context,
+    UserViewModel userViewModel,
+  ) async {
+    await FirebaseAuth.instance.signOut();
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(
+          builder: (context) =>
+              const LoginPage()), // Navigate to your login page
+      (Route<dynamic> route) => false, // Clear all existing routes
+    );
+  }
+}
+
+class AuthState with ChangeNotifier {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  User? _user;
+
+  User? get user => _user;
+
+  AuthState() {
+    _auth.authStateChanges().listen((user) {
+      _user = user;
+      notifyListeners(); // Notify listeners when user state changes
+    });
   }
 }

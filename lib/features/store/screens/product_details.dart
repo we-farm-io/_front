@@ -49,8 +49,11 @@ class ProductDetails extends StatelessWidget {
                       borderRadius: BorderRadius.circular(40),
                     ),
                     child: ClipRRect(
-                      borderRadius: BorderRadius.circular(24),
-                      child: Image.network(product.image, fit: BoxFit.cover,)),
+                        borderRadius: BorderRadius.circular(24),
+                        child: Image.network(
+                          product.image,
+                          fit: BoxFit.cover,
+                        )),
                   ),
                   const SizedBox(height: 8),
                   Text(
@@ -74,7 +77,7 @@ class ProductDetails extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        product.price,
+                        product.price.toString(),
                         style: const TextStyle(
                           fontFamily: 'poppins',
                           fontSize: 30,
@@ -115,7 +118,7 @@ class ProductDetails extends StatelessWidget {
                       children: [
                         const Text('Location Details'),
                         Container(
-                          height:MediaQuery.of(context).size.height,
+                          height: MediaQuery.of(context).size.height,
                           width: 72.0,
                           decoration: const BoxDecoration(
                             color: Color.fromRGBO(52, 199, 89, 1),

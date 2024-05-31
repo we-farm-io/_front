@@ -71,8 +71,8 @@ class _SignUpPageState extends State<SignUpPage> {
                         ),
                         const SizedBox(height: 20),
                         CustomTextFormField(
-                            hintText: 'Enter your username',
-                            labelText: 'Username',
+                            hintText: 'Enter your email',
+                            labelText: 'Email',
                             controller: emailController),
                         const SizedBox(height: 20),
                         TextFormField(

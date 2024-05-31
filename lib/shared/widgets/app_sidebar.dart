@@ -1,5 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:smart_farm/features/profile/screens/profile.dart';
+import 'package:smart_farm/features/authentication/models/authentication_models.dart';
 
 class SideBar extends StatelessWidget {
   const SideBar({
@@ -8,6 +11,18 @@ class SideBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final userViewModel = Provider.of<UserViewModel>(context);
+    // ignore: no_leading_underscores_for_local_identifiers
+    final FirebaseAuth __auth = FirebaseAuth.instance;
+    final currentUser = __auth.currentUser;
+    String getUsernameFromEmail(String? email) {
+      if (email != null) {
+        final parts = email.split('@');
+        return parts[0];
+      }
+      return "";
+    }
+
     return Drawer(
         backgroundColor: Colors.white,
         child: ListView(
@@ -15,16 +30,18 @@ class SideBar extends StatelessWidget {
           children: [
             UserAccountsDrawerHeader(
               decoration: const BoxDecoration(color: Color(0xFF0d986a)),
-              accountName: const Text(
-                "marcello",
-                style: TextStyle(
+              accountName: Text(
+                (currentUser != null
+                    ? getUsernameFromEmail(currentUser.email)
+                    : 'marcello'),
+                style: const TextStyle(
                     fontWeight: FontWeight.w500,
                     fontSize: 15,
                     fontFamily: 'Poppins'),
               ),
-              accountEmail: const Text(
-                "marcello@marcello.com",
-                style: TextStyle(
+              accountEmail: Text(
+                ('${currentUser != null ? currentUser.email : 'marcello@gmail.com'}'),
+                style: const TextStyle(
                     fontWeight: FontWeight.w500,
                     fontSize: 15,
                     fontFamily: 'Poppins'),
@@ -46,8 +63,8 @@ class SideBar extends StatelessWidget {
                     fontFamily: 'Poppins'),
               ),
               onTap: () => {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => const ProfilePage()))
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const ProfilePage()))
               },
             ),
             ListTile(
@@ -82,7 +99,9 @@ class SideBar extends StatelessWidget {
                     fontSize: 15,
                     fontFamily: 'Poppins'),
               ),
-              onTap: () => {},
+              onTap: () => {
+                context.read<UserViewModel>().signOut(context, userViewModel)
+              },
             )
           ],
         ));
