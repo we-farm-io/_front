@@ -20,26 +20,42 @@ class _MaterialsPageState extends State<MaterialsPage> {
     if (currentUser != null) {
       String userId = currentUser!.uid;
 
-      DocumentReference cropDoc = FirebaseFirestore.instance
+      DocumentReference materialDoc = FirebaseFirestore.instance
           .collection('users')
           .doc(userId)
           .collection('materials')
           .doc(materialType);
 
       await FirebaseFirestore.instance.runTransaction((transaction) async {
-        DocumentSnapshot snapshot = await transaction.get(cropDoc);
+        DocumentSnapshot snapshot = await transaction.get(materialDoc);
 
         if (!snapshot.exists) {
-          transaction.set(cropDoc, {'totalQuantity': quantity});
+          transaction.set(materialDoc, {'totalQuantity': quantity});
         } else {
           int newTotalQuantity =
               (snapshot.data() as Map<String, dynamic>)['totalQuantity'] +
                   quantity;
-          transaction.update(cropDoc, {'totalQuantity': newTotalQuantity});
+          transaction.update(materialDoc, {'totalQuantity': newTotalQuantity});
+        }
+      });
+      DocumentReference globaldoc =
+          FirebaseFirestore.instance.collection('materials').doc(materialType);
+      await FirebaseFirestore.instance.runTransaction((transaction) async {
+        DocumentSnapshot snapshot = await transaction.get(globaldoc);
+
+        if (!snapshot.exists) {
+          transaction.set(globaldoc, {'totalQuantity': quantity});
+        } else {
+          int newTotalQuantity =
+              (snapshot.data() as Map<String, dynamic>)['totalQuantity'] +
+                  quantity;
+          transaction.update(globaldoc, {'totalQuantity': newTotalQuantity});
         }
       });
 
       print('Crop added successfully!');
+      setState(() {});
+      _showSnackbar(context);
     } else {
       throw Exception('No user is currently signed in.');
     }
@@ -112,6 +128,20 @@ class _MaterialsPageState extends State<MaterialsPage> {
         );
       },
     );
+  }
+
+  void _showSnackbar(BuildContext context) {
+    const snackBar = SnackBar(
+      content: Text(
+        'Added Successfully!',
+        style: TextStyle(
+          color: Colors.white,
+        ),
+      ),
+      backgroundColor: Colors.green,
+    );
+
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
   @override

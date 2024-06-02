@@ -1,36 +1,81 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pie_chart/pie_chart.dart';
+import 'package:smart_farm/features/profile/screens/animals_page.dart';
 
-class StatisticsPage extends StatelessWidget {
+class StatisticsPage extends StatefulWidget {
   const StatisticsPage({super.key});
 
   @override
+  State<StatisticsPage> createState() => _StatisticsPageState();
+}
+
+String currentUser = FirebaseAuth.instance.currentUser!.uid;
+
+Map<String, dynamic> processQuerySnapshot(QuerySnapshot? querySnapshot) {
+  Map<String, double> documentMap = {};
+  double totalQuantity = 0;
+  if (querySnapshot != null) {
+    for (var doc in querySnapshot.docs) {
+      documentMap[doc.id] = doc['totalQuantity'].toDouble();
+      totalQuantity += doc['totalQuantity'];
+    }
+
+    return {
+      'documents': documentMap,
+      'total_quantity': totalQuantity,
+    };
+  } else {
+    print('was null');
+    return {
+      'documents': {"0": 10.0},
+      'total_quantity': totalQuantity
+    };
+  }
+}
+
+QuerySnapshot? cropsSnapchot;
+QuerySnapshot? animalsSnapchot;
+QuerySnapshot? materialsSnapchot;
+Future<void> _getdocuments() async {
+  print('starterd');
+  cropsSnapchot = await FirebaseFirestore.instance
+      .collection('users')
+      .doc(currentUser)
+      .collection('crops')
+      .get();
+  print("finish1");
+  animalsSnapchot = await FirebaseFirestore.instance
+      .collection('users')
+      .doc(currentUser)
+      .collection('animals')
+      .get();
+  materialsSnapchot = await FirebaseFirestore.instance
+      .collection('users')
+      .doc(currentUser)
+      .collection('materials')
+      .get();
+  print("ifnished");
+}
+
+class _StatisticsPageState extends State<StatisticsPage> {
+  Map<String, double> crops = {};
+  Map<String, double> animals = {};
+  Map<String, double> materials = {};
+  Map<String, double> totalmaterials = {};
+  Map<String, double> totalanimals = {};
+  Map<String, double> totalcrops = {};
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final crops = <String, double>{
-      "Potato": 58,
-      "Tomato": 24,
-      "Others": 18,
-    };
-    final animals = <String, double>{
-      "Sheep": 58,
-      "Cows": 24,
-      "Others": 18,
-    };
-    final materials = <String, double>{
-      "Axes": 58,
-      "Wheelbarrows": 24,
-      "Others": 18,
-    };
-    final totalmaterials = <String, double>{
-      "data": 16,
-    };
-    final totalanimals = <String, double>{
-      "data": 22,
-    };
-    final totalcrops = <String, double>{
-      "data": 62,
-    };
     final cropscolor = <Color>[
       const Color(0xff4318FF),
       const Color(0xff6AD2FF),
@@ -75,377 +120,760 @@ class StatisticsPage extends StatelessWidget {
               fontSize: 24),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 0),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              const SizedBox(
-                height: 20,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      boxShadow: [
-                        BoxShadow(
-                            color: Colors.black.withOpacity(0.25),
-                            blurRadius: 6.5),
-                      ],
-                      color: Colors.white,
-                    ),
-                    height: 120,
-                    width: MediaQuery.of(context).size.width / 3.3,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
+      body: FutureBuilder(
+          future: _getdocuments(),
+          builder: (context, snapshot) {
+            final Map<String, dynamic> processedanimals =
+                processQuerySnapshot(animalsSnapchot);
+            final Map<String, dynamic> processedmaterials =
+                processQuerySnapshot(materialsSnapchot);
+            final Map<String, dynamic> processedcrops =
+                processQuerySnapshot(cropsSnapchot);
+
+            crops = processedcrops['documents'];
+            animals = processedanimals['documents'];
+            materials = processedmaterials['documents'];
+            totalanimals = {
+              "data": processedanimals['total_quantity'] as double
+            };
+            totalcrops = {'data': processedcrops['total_quantity'] as double};
+            totalmaterials = {"data": processedmaterials['total_quantity']};
+            double? Total = totalanimals['data']! +
+                totalmaterials['data']! +
+                totalcrops['data']!;
+            print(Total);
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return CircularProgressIndicator();
+            } else if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}');
+            } else {
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 0),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            "6530",
-                            style: TextStyle(
-                                fontSize: 20,
-                                fontFamily: "Poppins",
-                                color: Color(0xFF280559),
-                                fontWeight: FontWeight.w600),
-                          ),
-                          const Text(
-                            "Crops",
-                            style: TextStyle(
-                                color: Color(0xFF92929D),
-                                fontFamily: "Poppins",
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              SvgPicture.asset(
-                                "assets/icons/Profile/increase.svg",
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              boxShadow: [
+                                BoxShadow(
+                                    color: Colors.black.withOpacity(0.25),
+                                    blurRadius: 6.5),
+                              ],
+                              color: Colors.white,
+                            ),
+                            height: 120,
+                            width: MediaQuery.of(context).size.width / 3.3,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Text(
+                                    "${totalcrops["data"]}",
+                                    style: const TextStyle(
+                                        fontSize: 20,
+                                        fontFamily: "Poppins",
+                                        color: Color(0xFF280559),
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                  const Text(
+                                    "Crops",
+                                    style: TextStyle(
+                                        color: Color(0xFF92929D),
+                                        fontFamily: "Poppins",
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16),
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      SvgPicture.asset(
+                                        "assets/icons/Profile/increase.svg",
+                                      ),
+                                      const Text(
+                                        "12%",
+                                        style: TextStyle(
+                                            fontFamily: "Poppins",
+                                            color: Color(0xFFA3A3A3),
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 16),
+                                      )
+                                    ],
+                                  )
+                                ],
                               ),
-                              const Text(
-                                "12%",
-                                style: TextStyle(
-                                    fontFamily: "Poppins",
-                                    color: Color(0xFFA3A3A3),
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 16),
-                              )
-                            ],
-                          )
+                            ),
+                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              boxShadow: [
+                                BoxShadow(
+                                    color: Colors.black.withOpacity(0.25),
+                                    blurRadius: 6.5),
+                              ],
+                              color: Colors.white,
+                            ),
+                            height: 120,
+                            width: MediaQuery.of(context).size.width / 3.3,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Text(
+                                    "${totalanimals["data"]}",
+                                    style: const TextStyle(
+                                        fontSize: 20,
+                                        fontFamily: "Poppins",
+                                        color: Color(0xFF280559),
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                  const Text(
+                                    "Animals",
+                                    style: TextStyle(
+                                        color: Color(0xFF92929D),
+                                        fontFamily: "Poppins",
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16),
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      SvgPicture.asset(
+                                        "assets/icons/Profile/increase.svg",
+                                      ),
+                                      const Text(
+                                        "12%",
+                                        style: TextStyle(
+                                            fontFamily: "Poppins",
+                                            color: Color(0xFFA3A3A3),
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 16),
+                                      )
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              boxShadow: [
+                                BoxShadow(
+                                    color: Colors.black.withOpacity(0.25),
+                                    blurRadius: 6.5),
+                              ],
+                              color: Colors.white,
+                            ),
+                            height: 120,
+                            width: MediaQuery.of(context).size.width / 3.3,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Text(
+                                    "${totalmaterials["data"]}",
+                                    style: const TextStyle(
+                                        fontSize: 20,
+                                        fontFamily: "Poppins",
+                                        color: Color(0xFF280559),
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                  const Text(
+                                    "Materials",
+                                    style: TextStyle(
+                                        overflow: TextOverflow.visible,
+                                        color: Color(0xFF92929D),
+                                        fontFamily: "Poppins",
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16),
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      SvgPicture.asset(
+                                        "assets/icons/Profile/increase.svg",
+                                      ),
+                                      const Text(
+                                        "12%",
+                                        style: TextStyle(
+                                            fontFamily: "Poppins",
+                                            color: Color(0xFFA3A3A3),
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 16),
+                                      )
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
                         ],
                       ),
-                    ),
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      boxShadow: [
-                        BoxShadow(
-                            color: Colors.black.withOpacity(0.25),
-                            blurRadius: 6.5),
-                      ],
-                      color: Colors.white,
-                    ),
-                    height: 120,
-                    width: MediaQuery.of(context).size.width / 3.3,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          const Text(
-                            "120",
-                            style: TextStyle(
-                                fontSize: 20,
-                                fontFamily: "Poppins",
-                                color: Color(0xFF280559),
-                                fontWeight: FontWeight.w600),
-                          ),
-                          const Text(
-                            "Animals",
-                            style: TextStyle(
-                                color: Color(0xFF92929D),
-                                fontFamily: "Poppins",
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              SvgPicture.asset(
-                                "assets/icons/Profile/increase.svg",
-                              ),
-                              const Text(
-                                "12%",
-                                style: TextStyle(
-                                    fontFamily: "Poppins",
-                                    color: Color(0xFFA3A3A3),
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 16),
-                              )
-                            ],
-                          )
-                        ],
+                      const SizedBox(
+                        height: 20,
                       ),
-                    ),
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      boxShadow: [
-                        BoxShadow(
-                            color: Colors.black.withOpacity(0.25),
-                            blurRadius: 6.5),
-                      ],
-                      color: Colors.white,
-                    ),
-                    height: 120,
-                    width: MediaQuery.of(context).size.width / 3.3,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          const Text(
-                            "1054",
-                            style: TextStyle(
-                                fontSize: 20,
-                                fontFamily: "Poppins",
-                                color: Color(0xFF280559),
-                                fontWeight: FontWeight.w600),
-                          ),
-                          const Text(
-                            "Materials",
-                            style: TextStyle(
-                                overflow: TextOverflow.visible,
-                                color: Color(0xFF92929D),
-                                fontFamily: "Poppins",
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              SvgPicture.asset(
-                                "assets/icons/Profile/increase.svg",
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.black.withOpacity(0.25),
+                                blurRadius: 6.5),
+                          ],
+                          color: Colors.white,
+                        ),
+                        width: MediaQuery.of(context).size.width - 20,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 20),
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(0, 0, 0, 30),
+                                    child: PieChart(
+                                      chartRadius: 70,
+                                      legendOptions: const LegendOptions(
+                                          showLegends: false),
+                                      dataMap: {
+                                        "data":
+                                            (totalmaterials["data"]! / Total) *
+                                                100
+                                      },
+                                      chartType: ChartType.ring,
+                                      baseChartColor: totalmaterialcolor[0]
+                                          .withOpacity(0.25),
+                                      colorList: totalmaterialcolor,
+                                      chartValuesOptions:
+                                          const ChartValuesOptions(
+                                        showChartValues: false,
+                                      ),
+                                      initialAngleInDegree: 0,
+                                      totalValue: 100,
+                                      centerWidget: Text(
+                                        "${((totalmaterials["data"]! / Total) * 100).toInt()}%",
+                                        style: const TextStyle(
+                                            fontFamily: "Poppins",
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                    ),
+                                  ),
+                                  const Text(
+                                    textAlign: TextAlign.center,
+                                    "Total\nMaterials",
+                                    style: TextStyle(
+                                        color: Color(0xFF464255),
+                                        fontFamily: "Poppins",
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                ],
                               ),
-                              const Text(
-                                "12%",
-                                style: TextStyle(
-                                    fontFamily: "Poppins",
-                                    color: Color(0xFFA3A3A3),
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 16),
-                              )
-                            ],
-                          )
-                        ],
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 20,
+                              ),
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(0, 0, 0, 30),
+                                    child: PieChart(
+                                      chartRadius: 70,
+                                      legendOptions: const LegendOptions(
+                                          showLegends: false),
+                                      dataMap: {
+                                        "data":
+                                            (totalanimals["data"]! / Total) *
+                                                100
+                                      },
+                                      chartType: ChartType.ring,
+                                      baseChartColor: totalanimalscolor[0]
+                                          .withOpacity(0.25),
+                                      colorList: totalanimalscolor,
+                                      chartValuesOptions:
+                                          const ChartValuesOptions(
+                                        showChartValues: false,
+                                      ),
+                                      initialAngleInDegree:
+                                          (totalmaterials["data"]! / Total) *
+                                              360,
+                                      totalValue: 100,
+                                      degreeOptions: const DegreeOptions(
+                                          initialAngle: 0, totalDegrees: 360),
+                                      centerWidget: Text(
+                                        "${((totalanimals["data"]! / Total) * 100).toInt()}%",
+                                        style: const TextStyle(
+                                            fontFamily: "Poppins",
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                    ),
+                                  ),
+                                  const Text(
+                                    textAlign: TextAlign.center,
+                                    "Total\nAnimals",
+                                    style: TextStyle(
+                                        color: Color(0xFF464255),
+                                        fontFamily: "Poppins",
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 20,
+                              ),
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(0, 0, 0, 30),
+                                    child: PieChart(
+                                      chartRadius: 70,
+                                      legendOptions: const LegendOptions(
+                                          showLegends: false),
+                                      dataMap: {
+                                        "data":
+                                            totalcrops["data"]! / Total * 100
+                                      },
+                                      chartType: ChartType.ring,
+                                      baseChartColor:
+                                          totalcropscolor[0].withOpacity(0.25),
+                                      colorList: totalcropscolor,
+                                      chartValuesOptions:
+                                          const ChartValuesOptions(
+                                        showChartValues: false,
+                                      ),
+                                      initialAngleInDegree:
+                                          (totalmaterials["data"]! +
+                                                  totalanimals["data"]!) /
+                                              Total *
+                                              360,
+                                      totalValue: 100,
+                                      centerWidget: Text(
+                                        "${((totalcrops["data"]! / Total) * 100).toInt()}%",
+                                        style: const TextStyle(
+                                            fontFamily: "Poppins",
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                    ),
+                                  ),
+                                  const Text(
+                                    textAlign: TextAlign.center,
+                                    "Total\nCrops",
+                                    style: TextStyle(
+                                        color: Color(0xFF464255),
+                                        fontFamily: "Poppins",
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.black.withOpacity(0.25), blurRadius: 6.5),
-                  ],
-                  color: Colors.white,
-                ),
-                width: MediaQuery.of(context).size.width - 20,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 20),
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 0, 0, 30),
-                            child: PieChart(
-                              chartRadius: 70,
-                              legendOptions:
-                                  const LegendOptions(showLegends: false),
-                              dataMap: totalmaterials,
-                              chartType: ChartType.ring,
-                              baseChartColor:
-                                  totalmaterialcolor[0].withOpacity(0.25),
-                              colorList: totalmaterialcolor,
-                              chartValuesOptions: const ChartValuesOptions(
-                                showChartValues: false,
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.black.withOpacity(0.25),
+                                blurRadius: 6.5),
+                          ],
+                          color: Colors.white,
+                        ),
+                        width: MediaQuery.of(context).size.width - 20,
+                        child: Column(
+                          children: [
+                            Container(
+                              alignment: Alignment.centerLeft,
+                              child: const Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 30, vertical: 20),
+                                child: Text(
+                                  "Crops Pie Chart",
+                                  style: TextStyle(
+                                      color: Color(0xff2B3674),
+                                      fontFamily: "Poppins",
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600),
+                                ),
                               ),
+                            ),
+                            PieChart(
+                              dataMap: crops,
+                              animationDuration:
+                                  const Duration(milliseconds: 800),
+                              chartRadius:
+                                  (MediaQuery.of(context).size.width + 40) / 3,
+                              colorList: cropscolor,
                               initialAngleInDegree: 0,
-                              totalValue: 100,
-                              centerWidget: Text(
-                                "${totalmaterials["data"]!.toInt()}%",
-                                style: const TextStyle(
-                                    fontFamily: "Poppins",
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w600),
+                              chartType: ChartType.disc,
+                              ringStrokeWidth: 32,
+                              legendOptions: const LegendOptions(
+                                showLegends: false,
                               ),
-                            ),
-                          ),
-                          const Text(
-                            textAlign: TextAlign.center,
-                            "Total\nMaterials",
-                            style: TextStyle(
-                                color: Color(0xFF464255),
-                                fontFamily: "Poppins",
-                                fontWeight: FontWeight.w600),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 20,
-                      ),
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 0, 0, 30),
-                            child: PieChart(
-                              chartRadius: 70,
-                              legendOptions:
-                                  const LegendOptions(showLegends: false),
-                              dataMap: totalanimals,
-                              chartType: ChartType.ring,
-                              baseChartColor:
-                                  totalanimalscolor[0].withOpacity(0.25),
-                              colorList: totalanimalscolor,
                               chartValuesOptions: const ChartValuesOptions(
                                 showChartValues: false,
                               ),
-                              initialAngleInDegree:
-                                  totalmaterials["data"]! * 360 / 100,
-                              totalValue: 100,
-                              degreeOptions: const DegreeOptions(
-                                  initialAngle: 0, totalDegrees: 360),
-                              centerWidget: Text(
-                                "${totalanimals["data"]!.toInt()}%",
-                                style: const TextStyle(
-                                    fontFamily: "Poppins",
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w600),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(0, 20, 0, 40),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  boxShadow: [
+                                    BoxShadow(
+                                        color: Colors.black.withOpacity(0.25),
+                                        blurRadius: 6.5),
+                                  ],
+                                  color: Colors.white,
+                                ),
+                                width: MediaQuery.of(context).size.width - 100,
+                                height: 80,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 3),
+                                              child: Icon(
+                                                Icons.circle,
+                                                size: 10,
+                                                color: cropscolor[0],
+                                              ),
+                                            ),
+                                            Column(
+                                              children: [
+                                                Text(
+                                                  crops.keys.toList()[0],
+                                                  style: const TextStyle(
+                                                      color: Color(0xffA3AED0),
+                                                      fontFamily: "Poppins",
+                                                      fontSize: 14),
+                                                ),
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                        Text(
+                                          "${crops.values.toList()[0].toInt().toString()}%",
+                                          style: const TextStyle(
+                                              color: Color(0xFF2B3674),
+                                              fontFamily: "Poppins",
+                                              fontWeight: FontWeight.bold),
+                                        )
+                                      ],
+                                    ),
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 3),
+                                              child: Icon(
+                                                Icons.circle,
+                                                size: 10,
+                                                color: cropscolor[1],
+                                              ),
+                                            ),
+                                            Column(
+                                              children: [
+                                                Text(
+                                                  crops.keys.toList()[0],
+                                                  style: const TextStyle(
+                                                      color: Color(0xffA3AED0),
+                                                      fontFamily: "Poppins",
+                                                      fontSize: 14),
+                                                ),
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                        Text(
+                                          "${crops.values.toList()[0].toInt().toString()}%",
+                                          style: const TextStyle(
+                                              color: Color(0xFF2B3674),
+                                              fontFamily: "Poppins",
+                                              fontWeight: FontWeight.bold),
+                                        )
+                                      ],
+                                    ),
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 3),
+                                              child: Icon(
+                                                Icons.circle,
+                                                size: 10,
+                                                color: cropscolor[2],
+                                              ),
+                                            ),
+                                            Column(
+                                              children: [
+                                                Text(
+                                                  crops.keys.toList()[0],
+                                                  style: const TextStyle(
+                                                      color: Color(0xffA3AED0),
+                                                      fontFamily: "Poppins",
+                                                      fontSize: 14),
+                                                ),
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                        Text(
+                                          "${crops.values.toList()[0].toInt().toString()}%",
+                                          style: const TextStyle(
+                                              color: Color(0xFF2B3674),
+                                              fontFamily: "Poppins",
+                                              fontWeight: FontWeight.bold),
+                                        )
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                          const Text(
-                            textAlign: TextAlign.center,
-                            "Total\nAnimals",
-                            style: TextStyle(
-                                color: Color(0xFF464255),
-                                fontFamily: "Poppins",
-                                fontWeight: FontWeight.w600),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 20,
+                      const SizedBox(
+                        height: 20,
                       ),
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 0, 0, 30),
-                            child: PieChart(
-                              chartRadius: 70,
-                              legendOptions:
-                                  const LegendOptions(showLegends: false),
-                              dataMap: totalcrops,
-                              chartType: ChartType.ring,
-                              baseChartColor:
-                                  totalcropscolor[0].withOpacity(0.25),
-                              colorList: totalcropscolor,
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.black.withOpacity(0.25),
+                                blurRadius: 6.5),
+                          ],
+                          color: Colors.white,
+                        ),
+                        width: MediaQuery.of(context).size.width - 20,
+                        child: Column(
+                          children: [
+                            Container(
+                              alignment: Alignment.centerLeft,
+                              child: const Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 30, vertical: 20),
+                                child: Text(
+                                  "Animals Pie Chart",
+                                  style: TextStyle(
+                                      color: Color(0xff2B3674),
+                                      fontFamily: "Poppins",
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              ),
+                            ),
+                            PieChart(
+                              dataMap: animals,
+                              animationDuration:
+                                  const Duration(milliseconds: 800),
+                              chartRadius:
+                                  (MediaQuery.of(context).size.width + 40) / 3,
+                              colorList: animalscolor,
+                              initialAngleInDegree: 0,
+                              chartType: ChartType.disc,
+                              ringStrokeWidth: 32,
+                              legendOptions: const LegendOptions(
+                                showLegends: false,
+                              ),
                               chartValuesOptions: const ChartValuesOptions(
                                 showChartValues: false,
                               ),
-                              initialAngleInDegree: (totalmaterials["data"]! +
-                                      totalanimals["data"]!) *
-                                  360 /
-                                  100,
-                              totalValue: 100,
-                              centerWidget: Text(
-                                "${totalcrops["data"]!.toInt()}%",
-                                style: const TextStyle(
-                                    fontFamily: "Poppins",
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w600),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(0, 20, 0, 40),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  boxShadow: [
+                                    BoxShadow(
+                                        color: Colors.black.withOpacity(0.25),
+                                        blurRadius: 6.5),
+                                  ],
+                                  color: Colors.white,
+                                ),
+                                width: MediaQuery.of(context).size.width - 100,
+                                height: 80,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 3),
+                                              child: Icon(
+                                                Icons.circle,
+                                                size: 10,
+                                                color: cropscolor[0],
+                                              ),
+                                            ),
+                                            Column(
+                                              children: [
+                                                Text(
+                                                  animals.keys.toList()[0],
+                                                  style: const TextStyle(
+                                                      color: Color(0xffA3AED0),
+                                                      fontFamily: "Poppins",
+                                                      fontSize: 14),
+                                                ),
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                        Text(
+                                          "${animals.values.toList()[0].toInt().toString()}%",
+                                          style: const TextStyle(
+                                              color: Color(0xFF2B3674),
+                                              fontFamily: "Poppins",
+                                              fontWeight: FontWeight.bold),
+                                        )
+                                      ],
+                                    ),
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 3),
+                                              child: Icon(
+                                                Icons.circle,
+                                                size: 10,
+                                                color: animalscolor[1],
+                                              ),
+                                            ),
+                                            Column(
+                                              children: [
+                                                Text(
+                                                  animals.keys.toList()[0],
+                                                  style: const TextStyle(
+                                                      color: Color(0xffA3AED0),
+                                                      fontFamily: "Poppins",
+                                                      fontSize: 14),
+                                                ),
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                        Text(
+                                          "${animals.values.toList()[0].toInt().toString()}%",
+                                          style: const TextStyle(
+                                              color: Color(0xFF2B3674),
+                                              fontFamily: "Poppins",
+                                              fontWeight: FontWeight.bold),
+                                        )
+                                      ],
+                                    ),
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 3),
+                                              child: Icon(
+                                                Icons.circle,
+                                                size: 10,
+                                                color: animalscolor[2],
+                                              ),
+                                            ),
+                                            Column(
+                                              children: [
+                                                Text(
+                                                  animals.keys.toList()[0],
+                                                  style: const TextStyle(
+                                                      color: Color(0xffA3AED0),
+                                                      fontFamily: "Poppins",
+                                                      fontSize: 14),
+                                                ),
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                        Text(
+                                          "${animals.values.toList()[0].toInt().toString()}%",
+                                          style: const TextStyle(
+                                              color: Color(0xFF2B3674),
+                                              fontFamily: "Poppins",
+                                              fontWeight: FontWeight.bold),
+                                        )
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                          const Text(
-                            textAlign: TextAlign.center,
-                            "Total\nCrops",
-                            style: TextStyle(
-                                color: Color(0xFF464255),
-                                fontFamily: "Poppins",
-                                fontWeight: FontWeight.w600),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.black.withOpacity(0.25), blurRadius: 6.5),
-                  ],
-                  color: Colors.white,
-                ),
-                width: MediaQuery.of(context).size.width - 20,
-                child: Column(
-                  children: [
-                    Container(
-                      alignment: Alignment.centerLeft,
-                      child: const Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-                        child: Text(
-                          "Crops Pie Chart",
-                          style: TextStyle(
-                              color: Color(0xff2B3674),
-                              fontFamily: "Poppins",
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600),
+                          ],
                         ),
                       ),
-                    ),
-                    PieChart(
-                      dataMap: crops,
-                      animationDuration: const Duration(milliseconds: 800),
-                      chartRadius: (MediaQuery.of(context).size.width + 40) / 3,
-                      colorList: cropscolor,
-                      initialAngleInDegree: 0,
-                      chartType: ChartType.disc,
-                      ringStrokeWidth: 32,
-                      legendOptions: const LegendOptions(
-                        showLegends: false,
+                      const SizedBox(
+                        height: 20,
                       ),
-                      chartValuesOptions: const ChartValuesOptions(
-                        showChartValues: false,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 20, 0, 40),
-                      child: Container(
+                      Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8),
                           boxShadow: [
@@ -455,487 +883,189 @@ class StatisticsPage extends StatelessWidget {
                           ],
                           color: Colors.white,
                         ),
-                        width: MediaQuery.of(context).size.width - 100,
-                        height: 80,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        width: MediaQuery.of(context).size.width - 20,
+                        child: Column(
                           children: [
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Row(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 3),
-                                      child: Icon(
-                                        Icons.circle,
-                                        size: 10,
-                                        color: cropscolor[0],
-                                      ),
-                                    ),
-                                    Column(
-                                      children: [
-                                        Text(
-                                          crops.keys.toList()[0],
-                                          style: const TextStyle(
-                                              color: Color(0xffA3AED0),
-                                              fontFamily: "Poppins",
-                                              fontSize: 14),
-                                        ),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                                Text(
-                                  "${crops.values.toList()[0].toInt().toString()}%",
-                                  style: const TextStyle(
-                                      color: Color(0xFF2B3674),
+                            Container(
+                              alignment: Alignment.centerLeft,
+                              child: const Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 30, vertical: 20),
+                                child: Text(
+                                  "Materials Pie Chart",
+                                  style: TextStyle(
+                                      color: Color(0xff2B3674),
                                       fontFamily: "Poppins",
-                                      fontWeight: FontWeight.bold),
-                                )
-                              ],
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              ),
                             ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Row(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 3),
-                                      child: Icon(
-                                        Icons.circle,
-                                        size: 10,
-                                        color: cropscolor[1],
-                                      ),
-                                    ),
-                                    Column(
-                                      children: [
-                                        Text(
-                                          crops.keys.toList()[1],
-                                          style: const TextStyle(
-                                              color: Color(0xffA3AED0),
-                                              fontFamily: "Poppins",
-                                              fontSize: 14),
-                                        ),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                                Text(
-                                  "${crops.values.toList()[1].toInt().toString()}%",
-                                  style: const TextStyle(
-                                      color: Color(0xFF2B3674),
-                                      fontFamily: "Poppins",
-                                      fontWeight: FontWeight.bold),
-                                )
-                              ],
+                            PieChart(
+                              dataMap: materials,
+                              animationDuration:
+                                  const Duration(milliseconds: 800),
+                              chartRadius:
+                                  (MediaQuery.of(context).size.width + 40) / 3,
+                              colorList: materialscolor,
+                              initialAngleInDegree: 0,
+                              chartType: ChartType.disc,
+                              ringStrokeWidth: 32,
+                              legendOptions: const LegendOptions(
+                                showLegends: false,
+                              ),
+                              chartValuesOptions: const ChartValuesOptions(
+                                showChartValues: false,
+                              ),
                             ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Row(
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(0, 20, 0, 40),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  boxShadow: [
+                                    BoxShadow(
+                                        color: Colors.black.withOpacity(0.25),
+                                        blurRadius: 6.5),
+                                  ],
+                                  color: Colors.white,
+                                ),
+                                width: MediaQuery.of(context).size.width - 100,
+                                height: 80,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
                                   children: [
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 3),
-                                      child: Icon(
-                                        Icons.circle,
-                                        size: 10,
-                                        color: cropscolor[2],
-                                      ),
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 3),
+                                              child: Icon(
+                                                Icons.circle,
+                                                size: 10,
+                                                color: materialscolor[0],
+                                              ),
+                                            ),
+                                            Column(
+                                              children: [
+                                                Text(
+                                                  materials.keys.toList()[0],
+                                                  style: const TextStyle(
+                                                      color: Color(0xffA3AED0),
+                                                      fontFamily: "Poppins",
+                                                      fontSize: 14),
+                                                ),
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                        Text(
+                                          "${materials.values.toList()[0].toInt().toString()}%",
+                                          style: const TextStyle(
+                                              color: Color(0xFF2B3674),
+                                              fontFamily: "Poppins",
+                                              fontWeight: FontWeight.bold),
+                                        )
+                                      ],
                                     ),
                                     Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
-                                        Text(
-                                          crops.keys.toList()[2],
-                                          style: const TextStyle(
-                                              color: Color(0xffA3AED0),
-                                              fontFamily: "Poppins",
-                                              fontSize: 14),
+                                        Row(
+                                          children: [
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 3),
+                                              child: Icon(
+                                                Icons.circle,
+                                                size: 10,
+                                                color: materialscolor[1],
+                                              ),
+                                            ),
+                                            Column(
+                                              children: [
+                                                Text(
+                                                  materials.keys.toList()[0],
+                                                  style: const TextStyle(
+                                                      color: Color(0xffA3AED0),
+                                                      fontFamily: "Poppins",
+                                                      fontSize: 14),
+                                                ),
+                                              ],
+                                            )
+                                          ],
                                         ),
+                                        Text(
+                                          "${materials.values.toList()[0].toInt().toString()}%",
+                                          style: const TextStyle(
+                                              color: Color(0xFF2B3674),
+                                              fontFamily: "Poppins",
+                                              fontWeight: FontWeight.bold),
+                                        )
                                       ],
-                                    )
-                                  ],
-                                ),
-                                Text(
-                                  "${crops.values.toList()[2].toInt().toString()}%",
-                                  style: const TextStyle(
-                                      color: Color(0xFF2B3674),
-                                      fontFamily: "Poppins",
-                                      fontWeight: FontWeight.bold),
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.black.withOpacity(0.25), blurRadius: 6.5),
-                  ],
-                  color: Colors.white,
-                ),
-                width: MediaQuery.of(context).size.width - 20,
-                child: Column(
-                  children: [
-                    Container(
-                      alignment: Alignment.centerLeft,
-                      child: const Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-                        child: Text(
-                          "Animals Pie Chart",
-                          style: TextStyle(
-                              color: Color(0xff2B3674),
-                              fontFamily: "Poppins",
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600),
-                        ),
-                      ),
-                    ),
-                    PieChart(
-                      dataMap: animals,
-                      animationDuration: const Duration(milliseconds: 800),
-                      chartRadius: (MediaQuery.of(context).size.width + 40) / 3,
-                      colorList: animalscolor,
-                      initialAngleInDegree: 0,
-                      chartType: ChartType.disc,
-                      ringStrokeWidth: 32,
-                      legendOptions: const LegendOptions(
-                        showLegends: false,
-                      ),
-                      chartValuesOptions: const ChartValuesOptions(
-                        showChartValues: false,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 20, 0, 40),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          boxShadow: [
-                            BoxShadow(
-                                color: Colors.black.withOpacity(0.25),
-                                blurRadius: 6.5),
-                          ],
-                          color: Colors.white,
-                        ),
-                        width: MediaQuery.of(context).size.width - 100,
-                        height: 80,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Row(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 3),
-                                      child: Icon(
-                                        Icons.circle,
-                                        size: 10,
-                                        color: cropscolor[0],
-                                      ),
                                     ),
                                     Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
-                                        Text(
-                                          animals.keys.toList()[0],
-                                          style: const TextStyle(
-                                              color: Color(0xffA3AED0),
-                                              fontFamily: "Poppins",
-                                              fontSize: 14),
+                                        Row(
+                                          children: [
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 3),
+                                              child: Icon(
+                                                Icons.circle,
+                                                size: 10,
+                                                color: materialscolor[2],
+                                              ),
+                                            ),
+                                            Column(
+                                              children: [
+                                                Text(
+                                                  materials.keys.toList()[0],
+                                                  style: const TextStyle(
+                                                      color: Color(0xffA3AED0),
+                                                      fontFamily: "Poppins",
+                                                      fontSize: 14),
+                                                ),
+                                              ],
+                                            )
+                                          ],
                                         ),
+                                        Text(
+                                          "${materials.values.toList()[0].toInt().toString()}%",
+                                          style: const TextStyle(
+                                              color: Color(0xFF2B3674),
+                                              fontFamily: "Poppins",
+                                              fontWeight: FontWeight.bold),
+                                        )
                                       ],
-                                    )
-                                  ],
-                                ),
-                                Text(
-                                  "${animals.values.toList()[0].toInt().toString()}%",
-                                  style: const TextStyle(
-                                      color: Color(0xFF2B3674),
-                                      fontFamily: "Poppins",
-                                      fontWeight: FontWeight.bold),
-                                )
-                              ],
-                            ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Row(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 3),
-                                      child: Icon(
-                                        Icons.circle,
-                                        size: 10,
-                                        color: animalscolor[1],
-                                      ),
                                     ),
-                                    Column(
-                                      children: [
-                                        Text(
-                                          animals.keys.toList()[1],
-                                          style: const TextStyle(
-                                              color: Color(0xffA3AED0),
-                                              fontFamily: "Poppins",
-                                              fontSize: 14),
-                                        ),
-                                      ],
-                                    )
                                   ],
                                 ),
-                                Text(
-                                  "${animals.values.toList()[1].toInt().toString()}%",
-                                  style: const TextStyle(
-                                      color: Color(0xFF2B3674),
-                                      fontFamily: "Poppins",
-                                      fontWeight: FontWeight.bold),
-                                )
-                              ],
-                            ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Row(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 3),
-                                      child: Icon(
-                                        Icons.circle,
-                                        size: 10,
-                                        color: animalscolor[2],
-                                      ),
-                                    ),
-                                    Column(
-                                      children: [
-                                        Text(
-                                          animals.keys.toList()[2],
-                                          style: const TextStyle(
-                                              color: Color(0xffA3AED0),
-                                              fontFamily: "Poppins",
-                                              fontSize: 14),
-                                        ),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                                Text(
-                                  "${animals.values.toList()[2].toInt().toString()}%",
-                                  style: const TextStyle(
-                                      color: Color(0xFF2B3674),
-                                      fontFamily: "Poppins",
-                                      fontWeight: FontWeight.bold),
-                                )
-                              ],
+                              ),
                             ),
                           ],
                         ),
                       ),
-                    ),
-                  ],
+                      const SizedBox(
+                        height: 20,
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.black.withOpacity(0.25), blurRadius: 6.5),
-                  ],
-                  color: Colors.white,
-                ),
-                width: MediaQuery.of(context).size.width - 20,
-                child: Column(
-                  children: [
-                    Container(
-                      alignment: Alignment.centerLeft,
-                      child: const Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-                        child: Text(
-                          "Materials Pie Chart",
-                          style: TextStyle(
-                              color: Color(0xff2B3674),
-                              fontFamily: "Poppins",
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600),
-                        ),
-                      ),
-                    ),
-                    PieChart(
-                      dataMap: materials,
-                      animationDuration: const Duration(milliseconds: 800),
-                      chartRadius: (MediaQuery.of(context).size.width + 40) / 3,
-                      colorList: materialscolor,
-                      initialAngleInDegree: 0,
-                      chartType: ChartType.disc,
-                      ringStrokeWidth: 32,
-                      legendOptions: const LegendOptions(
-                        showLegends: false,
-                      ),
-                      chartValuesOptions: const ChartValuesOptions(
-                        showChartValues: false,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 20, 0, 40),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          boxShadow: [
-                            BoxShadow(
-                                color: Colors.black.withOpacity(0.25),
-                                blurRadius: 6.5),
-                          ],
-                          color: Colors.white,
-                        ),
-                        width: MediaQuery.of(context).size.width - 100,
-                        height: 80,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Row(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 3),
-                                      child: Icon(
-                                        Icons.circle,
-                                        size: 10,
-                                        color: materialscolor[0],
-                                      ),
-                                    ),
-                                    Column(
-                                      children: [
-                                        Text(
-                                          materials.keys.toList()[0],
-                                          style: const TextStyle(
-                                              color: Color(0xffA3AED0),
-                                              fontFamily: "Poppins",
-                                              fontSize: 14),
-                                        ),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                                Text(
-                                  "${materials.values.toList()[0].toInt().toString()}%",
-                                  style: const TextStyle(
-                                      color: Color(0xFF2B3674),
-                                      fontFamily: "Poppins",
-                                      fontWeight: FontWeight.bold),
-                                )
-                              ],
-                            ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Row(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 3),
-                                      child: Icon(
-                                        Icons.circle,
-                                        size: 10,
-                                        color: materialscolor[1],
-                                      ),
-                                    ),
-                                    Column(
-                                      children: [
-                                        Text(
-                                          materials.keys.toList()[1],
-                                          style: const TextStyle(
-                                              color: Color(0xffA3AED0),
-                                              fontFamily: "Poppins",
-                                              fontSize: 14),
-                                        ),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                                Text(
-                                  "${materials.values.toList()[1].toInt().toString()}%",
-                                  style: const TextStyle(
-                                      color: Color(0xFF2B3674),
-                                      fontFamily: "Poppins",
-                                      fontWeight: FontWeight.bold),
-                                )
-                              ],
-                            ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Row(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 3),
-                                      child: Icon(
-                                        Icons.circle,
-                                        size: 10,
-                                        color: materialscolor[2],
-                                      ),
-                                    ),
-                                    Column(
-                                      children: [
-                                        Text(
-                                          materials.keys.toList()[2],
-                                          style: const TextStyle(
-                                              color: Color(0xffA3AED0),
-                                              fontFamily: "Poppins",
-                                              fontSize: 14),
-                                        ),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                                Text(
-                                  "${materials.values.toList()[2].toInt().toString()}%",
-                                  style: const TextStyle(
-                                      color: Color(0xFF2B3674),
-                                      fontFamily: "Poppins",
-                                      fontWeight: FontWeight.bold),
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-            ],
-          ),
-        ),
-      ),
+              );
+            }
+          }),
     );
   }
 }

@@ -11,7 +11,7 @@ class ProductsProvider with ChangeNotifier {
 
   List<Product> get products => _products;
 
-  void fetchProducts(String type) async {
+  Future<void> fetchProducts(String type) async {
     _products.clear();
     try {
       await _firestore
@@ -42,10 +42,35 @@ class ProductsProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void fetchMyProducts(String type, String id) {
+  void fetchMyProducts(String type, String id) async {
     _products.clear();
-    _products.addAll(productList
-        .where((product) => product.type == type && product.sellerId == id));
+    try {
+      await _firestore
+          .collection('products')
+          .where('sellerId', isEqualTo: id)
+          .where('type', isEqualTo: type)
+          .get()
+          .then((querySnapshot) {
+        querySnapshot.docs.forEach((doc) {
+          _products.add(Product(
+              productID: doc.id,
+              name: doc['name'],
+              description: doc['description'],
+              price: doc['price'],
+              sellerPhone: doc['sellerPhone'],
+              quantity: doc['quantity'],
+              sellerId: doc['sellerId'],
+              image: doc['image'],
+              type: doc['type'],
+              location: {"X": 12}));
+        });
+      });
+    } catch (error) {
+      // Handle errors here (e.g., print error message, show a snackbar to the user)
+      print("Error getting products: $error");
+      // Or return an empty list or a default value
+    }
+
     notifyListeners();
   }
 
@@ -56,15 +81,18 @@ class ProductsProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void search(String type, {String? searchString}) {
-    _products.clear();
+  void search(String type, {String? searchString}) async {
+    await fetchProducts(type);
+    print(_products);
+    List<Product> searchedOnes = [];
     if (searchString != null && searchString.isNotEmpty) {
-      _products.addAll(productList.where((product) =>
+      searchedOnes.addAll(_products.where((product) =>
           product.type == type &&
           product.name.toLowerCase().contains(searchString.toLowerCase())));
-    } else {
-      _products.addAll(productList.where((product) => product.type == type));
-    }
+      // print(searchedOnes);
+      _products = searchedOnes;
+      print(_products);
+    } else {}
     notifyListeners();
   }
 
@@ -97,8 +125,19 @@ class ProductsProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void deleteProduct(String productID) {
-    productList.removeWhere((product) => product.productID == productID);
+  void deleteProduct(String productID) async {
+    try {
+      // Get a reference to the document
+      DocumentReference docRef =
+          _firestore.collection(productsCollection).doc(productID);
+
+      // Delete the document
+      await docRef.delete();
+
+      print("Document with successfully deleted.");
+    } catch (e) {
+      print("Error deleting document: $e");
+    }
     notifyListeners();
   }
 }

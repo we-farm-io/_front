@@ -5,11 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:smart_farm/features/authentication/models/authentication_models.dart';
-<<<<<<< HEAD
-import 'package:smart_farm/features/authentication/screens/login_page.dart';
-=======
 import 'package:smart_farm/features/contact_us.dart/provider/report_provider.dart';
->>>>>>> 016228f62510a86d1d63d614e5fcf0f40432fb43
 import 'package:smart_farm/features/home/providers/news_provider.dart';
 import 'package:smart_farm/features/onboarding/screens/onboarding_screen.dart';
 import 'package:smart_farm/features/plantdoc/providers/plantgrowth_provider.dart';
@@ -21,6 +17,7 @@ import 'package:smart_farm/shared/services/notifications/notifications_controlle
 import 'package:smart_farm/shared/services/notifications/notifications_services.dart';
 import 'package:smart_farm/shared/services/shared_preferences_service.dart';
 import 'package:smart_farm/shared/widgets/app_navbar.dart';
+import 'package:smart_farm/features/authentication/screens/login_page.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -129,8 +126,7 @@ class _MyAppState extends State<MyApp> {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'AgriTech',
-        home: 
-        FutureBuilder<bool>(
+        home: FutureBuilder<bool>(
           future: SharedPreferencesService.onboardingCompleted,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
@@ -140,11 +136,7 @@ class _MyAppState extends State<MyApp> {
               // ignore: avoid_print
               print(snapshot.data);
               return onboardingCompleted
-<<<<<<< HEAD
                   ? const LoginPage()
-=======
-                  ? const NavBar()
->>>>>>> 016228f62510a86d1d63d614e5fcf0f40432fb43
                   : const Onboarding(); //boarding is disabled for now
             }
           },

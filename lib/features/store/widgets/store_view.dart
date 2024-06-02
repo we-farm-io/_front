@@ -25,7 +25,7 @@ class StoreView extends StatelessWidget {
         itemCount: products.length,
         itemBuilder: (context, index) {
           final product = products[index];
-          print(products);
+
           return GestureDetector(
             onTap: () {
               Navigator.push(

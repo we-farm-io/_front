@@ -138,33 +138,12 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   onTap: () {
-<<<<<<< HEAD
-                    final email = emailController.text.trim();
-                    if (email.isEmpty || !userViewModel.isValidEmail(email)) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Please enter a valid email address'),
-                        ),
-                      );
-                    } else {
-                      userViewModel.sendPasswordResetEmail(context, email);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => Page1ChangePassword(
-                            email: email,
-                          ),
-                        ),
-                      );
-                    }
-=======
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => EnterMail(),
                       ),
                     );
->>>>>>> 016228f62510a86d1d63d614e5fcf0f40432fb43
                   },
                 ),
                 const SizedBox(height: 20),

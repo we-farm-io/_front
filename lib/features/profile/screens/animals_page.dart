@@ -20,26 +20,41 @@ class _AnimalsPageState extends State<AnimalsPage> {
     if (currentUser != null) {
       String userId = currentUser!.uid;
 
-      DocumentReference cropDoc = FirebaseFirestore.instance
+      DocumentReference animalDoc = FirebaseFirestore.instance
           .collection('users')
           .doc(userId)
           .collection('animals')
           .doc(animalType);
 
       await FirebaseFirestore.instance.runTransaction((transaction) async {
-        DocumentSnapshot snapshot = await transaction.get(cropDoc);
+        DocumentSnapshot snapshot = await transaction.get(animalDoc);
 
         if (!snapshot.exists) {
-          transaction.set(cropDoc, {'totalQuantity': quantity});
+          transaction.set(animalDoc, {'totalQuantity': quantity});
         } else {
           int newTotalQuantity =
               (snapshot.data() as Map<String, dynamic>)['totalQuantity'] +
                   quantity;
-          transaction.update(cropDoc, {'totalQuantity': newTotalQuantity});
+          transaction.update(animalDoc, {'totalQuantity': newTotalQuantity});
         }
       });
+      DocumentReference globaldoc =
+          FirebaseFirestore.instance.collection('animals').doc(animalType);
+      await FirebaseFirestore.instance.runTransaction((transaction) async {
+        DocumentSnapshot snapshot = await transaction.get(globaldoc);
 
-      print('Crop added successfully!');
+        if (!snapshot.exists) {
+          transaction.set(globaldoc, {'totalQuantity': quantity});
+        } else {
+          int newTotalQuantity =
+              (snapshot.data() as Map<String, dynamic>)['totalQuantity'] +
+                  quantity;
+          transaction.update(globaldoc, {'totalQuantity': newTotalQuantity});
+        }
+      });
+      print('animal added successfully!');
+      setState(() {});
+      _showSnackbar(context);
     } else {
       throw Exception('No user is currently signed in.');
     }
@@ -63,6 +78,20 @@ class _AnimalsPageState extends State<AnimalsPage> {
     } else {
       throw Exception('No user is currently signed in.');
     }
+  }
+
+  void _showSnackbar(BuildContext context) {
+    const snackBar = SnackBar(
+      content: Text(
+        'Added Successfully!',
+        style: TextStyle(
+          color: Colors.white,
+        ),
+      ),
+      backgroundColor: Colors.green,
+    );
+
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
   void _addCrop(BuildContext context) {

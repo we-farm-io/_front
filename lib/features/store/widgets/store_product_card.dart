@@ -29,14 +29,6 @@ class _StoreProductCardState extends State<StoreProductCard> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-<<<<<<< HEAD
-              ClipRRect(
-                  borderRadius: BorderRadius.circular(16),
-                  child: Image.network(
-                    widget.imageurl,
-                    fit: BoxFit.fill,
-                  )),
-=======
               SizedBox(
                 height: 150,
                 child: ClipRRect(
@@ -46,18 +38,13 @@ class _StoreProductCardState extends State<StoreProductCard> {
                       fit: BoxFit.cover,
                     )),
               ),
->>>>>>> 016228f62510a86d1d63d614e5fcf0f40432fb43
               Container(
                 padding: const EdgeInsets.only(top: 5),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-<<<<<<< HEAD
                       widget.price.toString(),
-=======
-                      widget.price,
->>>>>>> 016228f62510a86d1d63d614e5fcf0f40432fb43
                       style: const TextStyle(
                           fontFamily: 'poppins',
                           fontSize: 18,

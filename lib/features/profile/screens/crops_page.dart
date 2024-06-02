@@ -38,8 +38,23 @@ class _CropsPageState extends State<CropsPage> {
           transaction.update(cropDoc, {'totalQuantity': newTotalQuantity});
         }
       });
+      DocumentReference globaldoc =
+          FirebaseFirestore.instance.collection('crops').doc(cropType);
+      await FirebaseFirestore.instance.runTransaction((transaction) async {
+        DocumentSnapshot snapshot = await transaction.get(globaldoc);
 
+        if (!snapshot.exists) {
+          transaction.set(globaldoc, {'totalQuantity': quantity});
+        } else {
+          int newTotalQuantity =
+              (snapshot.data() as Map<String, dynamic>)['totalQuantity'] +
+                  quantity;
+          transaction.update(globaldoc, {'totalQuantity': newTotalQuantity});
+        }
+      });
       print('Crop added successfully!');
+      setState(() {});
+      _showSnackbar(context);
     } else {
       throw Exception('No user is currently signed in.');
     }
@@ -63,6 +78,20 @@ class _CropsPageState extends State<CropsPage> {
     } else {
       throw Exception('No user is currently signed in.');
     }
+  }
+
+  void _showSnackbar(BuildContext context) {
+    const snackBar = SnackBar(
+      content: Text(
+        'Added Successfully!',
+        style: TextStyle(
+          color: Colors.white,
+        ),
+      ),
+      backgroundColor: Colors.green,
+    );
+
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
   void _addCrop(BuildContext context) {

@@ -1,14 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-<<<<<<< HEAD
 import 'package:provider/provider.dart';
-import 'package:smart_farm/features/profile/screens/profile.dart';
 import 'package:smart_farm/features/authentication/models/authentication_models.dart';
-=======
 import 'package:smart_farm/features/contact_us.dart/screen/contact_us.dart';
 import 'package:smart_farm/features/profile/screens/profile.dart';
 import 'package:smart_farm/features/settings/screen/settings_page.dart';
->>>>>>> 016228f62510a86d1d63d614e5fcf0f40432fb43
 
 class SideBar extends StatelessWidget {
   const SideBar({
