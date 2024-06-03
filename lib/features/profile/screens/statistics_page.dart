@@ -37,18 +37,19 @@ QuerySnapshot? animalsSnapchot;
 QuerySnapshot? materialsSnapchot;
 Future<void> _getdocuments() async {
   print('starterd');
-  cropsSnapchot = await FirebaseFirestore.instance
+  FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  cropsSnapchot = await _firestore
       .collection('users')
       .doc(currentUser)
       .collection('crops')
       .get();
   print("finish1");
-  animalsSnapchot = await FirebaseFirestore.instance
+  animalsSnapchot = await _firestore
       .collection('users')
       .doc(currentUser)
       .collection('animals')
       .get();
-  materialsSnapchot = await FirebaseFirestore.instance
+  materialsSnapchot = await _firestore
       .collection('users')
       .doc(currentUser)
       .collection('materials')

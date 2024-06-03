@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:smart_farm/features/authentication/screens/login_page.dart';
 import 'package:smart_farm/shared/widgets/app_navbar.dart';
 import 'package:smart_farm/shared/widgets/custom_button.dart';
 
@@ -45,7 +46,8 @@ class SuccessAuth extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const NavBar()),
+                      MaterialPageRoute(
+                          builder: (context) => const LoginPage()),
                     );
                   },
                 ),
