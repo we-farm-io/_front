@@ -54,10 +54,12 @@ class _MaterialsPageState extends State<MaterialsPage> {
       });
 
       print('Crop added successfully!');
-      setState(() {});
-      _showSnackbar(context);
+      if (mounted) {
+        setState(() {});
+        _showSnackbar(context);
+      }
     } else {
-      throw Exception('No user is currently signed in.');
+      throw Exception('No userqsd is currently signed in.');
     }
   }
 
@@ -222,27 +224,14 @@ class _MaterialsPageState extends State<MaterialsPage> {
                                           horizontal: 30.0, vertical: 10),
                                       child: Column(
                                         children: [
-                                          Container(
-                                            alignment: Alignment.centerLeft,
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 30.0),
-                                              child: Text(
-                                                materials[index].name,
-                                                style: const TextStyle(
-                                                    fontFamily: "Poppins",
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 20),
-                                              ),
-                                            ),
-                                          ),
                                           CustomEntry(
                                             hintText: materials[index]
                                                 .value
                                                 .toString(),
+                                            cropsName: materials[index].name,
                                           ),
                                         ],
+                                        
                                       ),
                                     );
                                   }),

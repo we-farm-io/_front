@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pie_chart/pie_chart.dart';
-import 'package:smart_farm/features/profile/screens/animals_page.dart';
 
 class StatisticsPage extends StatefulWidget {
   const StatisticsPage({super.key});
@@ -29,10 +28,7 @@ Map<String, dynamic> processQuerySnapshot(QuerySnapshot? querySnapshot) {
     };
   } else {
     print('was null');
-    return {
-      'documents': {"0": 10.0},
-      'total_quantity': totalQuantity
-    };
+    return {'documents': {}, 'total_quantity': totalQuantity};
   }
 }
 
@@ -62,6 +58,10 @@ Future<void> _getdocuments() async {
 
 class _StatisticsPageState extends State<StatisticsPage> {
   Map<String, double> crops = {};
+  Map<String, double> cropsvalues = {};
+  Map<String, double> animalsvalues = {};
+  Map<String, double> materialsvalues = {};
+
   Map<String, double> animals = {};
   Map<String, double> materials = {};
   Map<String, double> totalmaterials = {};
@@ -123,30 +123,90 @@ class _StatisticsPageState extends State<StatisticsPage> {
       body: FutureBuilder(
           future: _getdocuments(),
           builder: (context, snapshot) {
-            final Map<String, dynamic> processedanimals =
-                processQuerySnapshot(animalsSnapchot);
-            final Map<String, dynamic> processedmaterials =
-                processQuerySnapshot(materialsSnapchot);
-            final Map<String, dynamic> processedcrops =
-                processQuerySnapshot(cropsSnapchot);
-
-            crops = processedcrops['documents'];
-            animals = processedanimals['documents'];
-            materials = processedmaterials['documents'];
-            totalanimals = {
-              "data": processedanimals['total_quantity'] as double
-            };
-            totalcrops = {'data': processedcrops['total_quantity'] as double};
-            totalmaterials = {"data": processedmaterials['total_quantity']};
-            double? Total = totalanimals['data']! +
-                totalmaterials['data']! +
-                totalcrops['data']!;
-            print(Total);
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return CircularProgressIndicator();
+              return Center(child: CircularProgressIndicator());
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
             } else {
+              final Map<String, dynamic> processedanimals =
+                  processQuerySnapshot(animalsSnapchot);
+              final Map<String, dynamic> processedmaterials =
+                  processQuerySnapshot(materialsSnapchot);
+              final Map<String, dynamic> processedcrops =
+                  processQuerySnapshot(cropsSnapchot);
+
+              crops = processedcrops['documents'];
+              animals = processedanimals['documents'];
+              materials = processedmaterials['documents'];
+              totalanimals = {
+                "data": processedanimals['total_quantity'] as double
+              };
+              totalcrops = {'data': processedcrops['total_quantity'] as double};
+              totalmaterials = {"data": processedmaterials['total_quantity']};
+
+              double? total = totalanimals['data']! +
+                  totalmaterials['data']! +
+                  totalcrops['data']!;
+
+              ///
+// Assuming crops, animals, materials, totalcrops, totalanimals, and totalmaterials are defined appropriately
+
+// Sorting and adding values for crops
+              var sortedCrops = crops.entries.toList()
+                ..sort((a, b) => b.value.compareTo(a.value));
+              cropsvalues.addEntries({
+                "others": totalcrops["data"]! -
+                    ((sortedCrops.isEmpty ? 0 : sortedCrops[0].value) +
+                        (sortedCrops.length < 2 ? 0 : sortedCrops[1].value))
+              }.entries);
+
+              if (sortedCrops.isNotEmpty) {
+                cropsvalues.addEntries(
+                    {sortedCrops[0].key: sortedCrops[0].value}.entries);
+              }
+              if (sortedCrops.length >= 2) {
+                cropsvalues.addEntries(
+                    {sortedCrops[1].key: sortedCrops[1].value}.entries);
+              }
+
+// Sorting and adding values for animals
+              var sortedAnimals = animals.entries.toList()
+                ..sort((a, b) => b.value.compareTo(a.value));
+              animalsvalues.addEntries({
+                "others": totalanimals["data"]! -
+                    ((sortedAnimals.isEmpty ? 0 : sortedAnimals[0].value) +
+                        (sortedAnimals.length < 2 ? 0 : sortedAnimals[1].value))
+              }.entries);
+
+              if (sortedAnimals.isNotEmpty) {
+                animalsvalues.addEntries(
+                    {sortedAnimals[0].key: sortedAnimals[0].value}.entries);
+              }
+              if (sortedAnimals.length >= 2) {
+                animalsvalues.addEntries(
+                    {sortedAnimals[1].key: sortedAnimals[1].value}.entries);
+              }
+
+// Sorting and adding values for materials
+              var sortedMaterials = materials.entries.toList()
+                ..sort((a, b) => b.value.compareTo(a.value));
+              materialsvalues.addEntries({
+                "others": totalmaterials["data"]! -
+                    ((sortedMaterials.isEmpty ? 0 : sortedMaterials[0].value) +
+                        (sortedMaterials.length < 2
+                            ? 0
+                            : sortedMaterials[1].value))
+              }.entries);
+
+              if (sortedMaterials.isNotEmpty) {
+                materialsvalues.addEntries(
+                    {sortedMaterials[0].key: sortedMaterials[0].value}.entries);
+              }
+              if (sortedMaterials.length >= 2) {
+                materialsvalues.addEntries(
+                    {sortedMaterials[1].key: sortedMaterials[1].value}.entries);
+              }
+
               return Padding(
                 padding: const EdgeInsets.symmetric(vertical: 0),
                 child: SingleChildScrollView(
@@ -178,7 +238,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
                                   Text(
-                                    "${totalcrops["data"]}",
+                                    "${totalcrops["data"]} kg",
                                     style: const TextStyle(
                                         fontSize: 20,
                                         fontFamily: "Poppins",
@@ -357,7 +417,10 @@ class _StatisticsPageState extends State<StatisticsPage> {
                                           showLegends: false),
                                       dataMap: {
                                         "data":
-                                            (totalmaterials["data"]! / Total) *
+                                            (totalmaterials["data"]! / total ==
+                                                        0
+                                                    ? 1
+                                                    : total) *
                                                 100
                                       },
                                       chartType: ChartType.ring,
@@ -371,7 +434,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
                                       initialAngleInDegree: 0,
                                       totalValue: 100,
                                       centerWidget: Text(
-                                        "${((totalmaterials["data"]! / Total) * 100).toInt()}%",
+                                        "${((totalmaterials["data"]! / (total == 0 ? 1 : total)) * 100).toInt()}%",
                                         style: const TextStyle(
                                             fontFamily: "Poppins",
                                             fontSize: 18,
@@ -405,7 +468,9 @@ class _StatisticsPageState extends State<StatisticsPage> {
                                           showLegends: false),
                                       dataMap: {
                                         "data":
-                                            (totalanimals["data"]! / Total) *
+                                            (totalanimals["data"]! / total == 0
+                                                    ? 1
+                                                    : total) *
                                                 100
                                       },
                                       chartType: ChartType.ring,
@@ -417,13 +482,15 @@ class _StatisticsPageState extends State<StatisticsPage> {
                                         showChartValues: false,
                                       ),
                                       initialAngleInDegree:
-                                          (totalmaterials["data"]! / Total) *
+                                          (totalmaterials["data"]! / total == 0
+                                                  ? 1
+                                                  : total) *
                                               360,
                                       totalValue: 100,
                                       degreeOptions: const DegreeOptions(
                                           initialAngle: 0, totalDegrees: 360),
                                       centerWidget: Text(
-                                        "${((totalanimals["data"]! / Total) * 100).toInt()}%",
+                                        "${((totalanimals["data"]! / (total == 0 ? 1 : total)) * 100).toInt()}%",
                                         style: const TextStyle(
                                             fontFamily: "Poppins",
                                             fontSize: 18,
@@ -456,8 +523,9 @@ class _StatisticsPageState extends State<StatisticsPage> {
                                       legendOptions: const LegendOptions(
                                           showLegends: false),
                                       dataMap: {
-                                        "data":
-                                            totalcrops["data"]! / Total * 100
+                                        "data": totalcrops["data"]! /
+                                            (total == 0 ? 1 : total) *
+                                            100
                                       },
                                       chartType: ChartType.ring,
                                       baseChartColor:
@@ -467,14 +535,16 @@ class _StatisticsPageState extends State<StatisticsPage> {
                                           const ChartValuesOptions(
                                         showChartValues: false,
                                       ),
-                                      initialAngleInDegree:
-                                          (totalmaterials["data"]! +
-                                                  totalanimals["data"]!) /
-                                              Total *
-                                              360,
+                                      initialAngleInDegree: (totalmaterials[
+                                                          "data"]! +
+                                                      totalanimals["data"]!) /
+                                                  total ==
+                                              0
+                                          ? 1
+                                          : total * 360,
                                       totalValue: 100,
                                       centerWidget: Text(
-                                        "${((totalcrops["data"]! / Total) * 100).toInt()}%",
+                                        "${((totalcrops["data"]! / (total == 0 ? 1 : total)) * 100).toInt()}%",
                                         style: const TextStyle(
                                             fontFamily: "Poppins",
                                             fontSize: 18,
@@ -528,7 +598,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
                               ),
                             ),
                             PieChart(
-                              dataMap: crops,
+                              dataMap: cropsvalues,
                               animationDuration:
                                   const Duration(milliseconds: 800),
                               chartRadius:
@@ -562,6 +632,93 @@ class _StatisticsPageState extends State<StatisticsPage> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceEvenly,
                                   children: [
+                                    //Todo i need to loop this shit
+                                    if (crops.keys.toList().isNotEmpty)
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 3),
+                                                child: Icon(
+                                                  Icons.circle,
+                                                  size: 10,
+                                                  color: cropscolor[1],
+                                                ),
+                                              ),
+                                              Column(
+                                                children: [
+                                                  Text(
+                                                    cropsvalues.keys
+                                                        .toList()[1]
+                                                        .toString(),
+                                                    style: const TextStyle(
+                                                        color:
+                                                            Color(0xffA3AED0),
+                                                        fontFamily: "Poppins",
+                                                        fontSize: 14),
+                                                  ),
+                                                ],
+                                              )
+                                            ],
+                                          ),
+                                          Text(
+                                            "${((cropsvalues.values.toList()[1].toInt() / totalcrops["data"]! == 0 ? 1 : totalcrops["data"]!) * 100).toInt()}%",
+                                            style: const TextStyle(
+                                                color: Color(0xFF2B3674),
+                                                fontFamily: "Poppins",
+                                                fontWeight: FontWeight.bold),
+                                          )
+                                        ],
+                                      ),
+//todo this is the second column
+                                    if (crops.keys.toList().length >= 2)
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 3),
+                                                child: Icon(
+                                                  Icons.circle,
+                                                  size: 10,
+                                                  color: cropscolor[2],
+                                                ),
+                                              ),
+                                              Column(
+                                                children: [
+                                                  Text(
+                                                    cropsvalues.keys
+                                                        .toList()[2]
+                                                        .toString(),
+                                                    style: const TextStyle(
+                                                        color:
+                                                            Color(0xffA3AED0),
+                                                        fontFamily: "Poppins",
+                                                        fontSize: 14),
+                                                  ),
+                                                ],
+                                              )
+                                            ],
+                                          ),
+                                          Text(
+                                            "${((cropsvalues.values.toList()[2].toInt() / totalcrops["data"]! == 0 ? 1 : totalcrops["data"]!) * 100).toInt()}%",
+                                            style: const TextStyle(
+                                                color: Color(0xFF2B3674),
+                                                fontFamily: "Poppins",
+                                                fontWeight: FontWeight.bold),
+                                          )
+                                        ],
+                                      ),
+                                    //todo this is the others column put it's logic here
                                     Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
@@ -581,7 +738,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
                                             Column(
                                               children: [
                                                 Text(
-                                                  crops.keys.toList()[0],
+                                                  cropsvalues.keys.toList()[0],
                                                   style: const TextStyle(
                                                       color: Color(0xffA3AED0),
                                                       fontFamily: "Poppins",
@@ -592,7 +749,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
                                           ],
                                         ),
                                         Text(
-                                          "${crops.values.toList()[0].toInt().toString()}%",
+                                          "${((cropsvalues.values.toList()[0].toInt() / totalcrops["data"]! == 0 ? 1 : totalcrops["data"]!) * 100).toInt()}%",
                                           style: const TextStyle(
                                               color: Color(0xFF2B3674),
                                               fontFamily: "Poppins",
@@ -600,82 +757,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
                                         )
                                       ],
                                     ),
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 3),
-                                              child: Icon(
-                                                Icons.circle,
-                                                size: 10,
-                                                color: cropscolor[1],
-                                              ),
-                                            ),
-                                            Column(
-                                              children: [
-                                                Text(
-                                                  crops.keys.toList()[0],
-                                                  style: const TextStyle(
-                                                      color: Color(0xffA3AED0),
-                                                      fontFamily: "Poppins",
-                                                      fontSize: 14),
-                                                ),
-                                              ],
-                                            )
-                                          ],
-                                        ),
-                                        Text(
-                                          "${crops.values.toList()[0].toInt().toString()}%",
-                                          style: const TextStyle(
-                                              color: Color(0xFF2B3674),
-                                              fontFamily: "Poppins",
-                                              fontWeight: FontWeight.bold),
-                                        )
-                                      ],
-                                    ),
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 3),
-                                              child: Icon(
-                                                Icons.circle,
-                                                size: 10,
-                                                color: cropscolor[2],
-                                              ),
-                                            ),
-                                            Column(
-                                              children: [
-                                                Text(
-                                                  crops.keys.toList()[0],
-                                                  style: const TextStyle(
-                                                      color: Color(0xffA3AED0),
-                                                      fontFamily: "Poppins",
-                                                      fontSize: 14),
-                                                ),
-                                              ],
-                                            )
-                                          ],
-                                        ),
-                                        Text(
-                                          "${crops.values.toList()[0].toInt().toString()}%",
-                                          style: const TextStyle(
-                                              color: Color(0xFF2B3674),
-                                              fontFamily: "Poppins",
-                                              fontWeight: FontWeight.bold),
-                                        )
-                                      ],
-                                    ),
+                                    //todo loooooooooooooooooooooop
                                   ],
                                 ),
                               ),
@@ -715,7 +797,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
                               ),
                             ),
                             PieChart(
-                              dataMap: animals,
+                              dataMap: animalsvalues,
                               animationDuration:
                                   const Duration(milliseconds: 800),
                               chartRadius:
@@ -749,6 +831,94 @@ class _StatisticsPageState extends State<StatisticsPage> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceEvenly,
                                   children: [
+                                    //here
+                                    //todo Animals todo
+                                    if (animals.keys.toList().isNotEmpty)
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 3),
+                                                child: Icon(
+                                                  Icons.circle,
+                                                  size: 10,
+                                                  color: animalscolor[1],
+                                                ),
+                                              ),
+                                              Column(
+                                                children: [
+                                                  Text(
+                                                    animalsvalues.keys
+                                                        .toList()[1]
+                                                        .toString(),
+                                                    style: const TextStyle(
+                                                        color:
+                                                            Color(0xffA3AED0),
+                                                        fontFamily: "Poppins",
+                                                        fontSize: 14),
+                                                  ),
+                                                ],
+                                              )
+                                            ],
+                                          ),
+                                          Text(
+                                            "${((animalsvalues.values.toList()[1].toInt() / totalanimals["data"]! == 0 ? 1 : totalanimals["data"]!) * 100).toInt()}%",
+                                            style: const TextStyle(
+                                                color: Color(0xFF2B3674),
+                                                fontFamily: "Poppins",
+                                                fontWeight: FontWeight.bold),
+                                          )
+                                        ],
+                                      ),
+//todo this is the second column
+                                    if (animals.keys.toList().length >= 2)
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 3),
+                                                child: Icon(
+                                                  Icons.circle,
+                                                  size: 10,
+                                                  color: animalscolor[2],
+                                                ),
+                                              ),
+                                              Column(
+                                                children: [
+                                                  Text(
+                                                    animalsvalues.keys
+                                                        .toList()[2]
+                                                        .toString(),
+                                                    style: const TextStyle(
+                                                        color:
+                                                            Color(0xffA3AED0),
+                                                        fontFamily: "Poppins",
+                                                        fontSize: 14),
+                                                  ),
+                                                ],
+                                              )
+                                            ],
+                                          ),
+                                          Text(
+                                            "${((animalsvalues.values.toList()[2].toInt() / totalanimals["data"]! == 0 ? 1 : totalanimals["data"]!) * 100).toInt()}%",
+                                            style: const TextStyle(
+                                                color: Color(0xFF2B3674),
+                                                fontFamily: "Poppins",
+                                                fontWeight: FontWeight.bold),
+                                          )
+                                        ],
+                                      ),
+                                    //todo this is the others column put it's logic here
                                     Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
@@ -762,13 +932,14 @@ class _StatisticsPageState extends State<StatisticsPage> {
                                               child: Icon(
                                                 Icons.circle,
                                                 size: 10,
-                                                color: cropscolor[0],
+                                                color: animalscolor[0],
                                               ),
                                             ),
                                             Column(
                                               children: [
                                                 Text(
-                                                  animals.keys.toList()[0],
+                                                  animalsvalues.keys
+                                                      .toList()[0],
                                                   style: const TextStyle(
                                                       color: Color(0xffA3AED0),
                                                       fontFamily: "Poppins",
@@ -779,7 +950,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
                                           ],
                                         ),
                                         Text(
-                                          "${animals.values.toList()[0].toInt().toString()}%",
+                                          "${((animalsvalues.values.toList()[0].toInt() / totalanimals["data"]! == 0 ? 1 : totalanimals["data"]!) * 100).toInt()}%",
                                           style: const TextStyle(
                                               color: Color(0xFF2B3674),
                                               fontFamily: "Poppins",
@@ -787,82 +958,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
                                         )
                                       ],
                                     ),
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 3),
-                                              child: Icon(
-                                                Icons.circle,
-                                                size: 10,
-                                                color: animalscolor[1],
-                                              ),
-                                            ),
-                                            Column(
-                                              children: [
-                                                Text(
-                                                  animals.keys.toList()[0],
-                                                  style: const TextStyle(
-                                                      color: Color(0xffA3AED0),
-                                                      fontFamily: "Poppins",
-                                                      fontSize: 14),
-                                                ),
-                                              ],
-                                            )
-                                          ],
-                                        ),
-                                        Text(
-                                          "${animals.values.toList()[0].toInt().toString()}%",
-                                          style: const TextStyle(
-                                              color: Color(0xFF2B3674),
-                                              fontFamily: "Poppins",
-                                              fontWeight: FontWeight.bold),
-                                        )
-                                      ],
-                                    ),
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 3),
-                                              child: Icon(
-                                                Icons.circle,
-                                                size: 10,
-                                                color: animalscolor[2],
-                                              ),
-                                            ),
-                                            Column(
-                                              children: [
-                                                Text(
-                                                  animals.keys.toList()[0],
-                                                  style: const TextStyle(
-                                                      color: Color(0xffA3AED0),
-                                                      fontFamily: "Poppins",
-                                                      fontSize: 14),
-                                                ),
-                                              ],
-                                            )
-                                          ],
-                                        ),
-                                        Text(
-                                          "${animals.values.toList()[0].toInt().toString()}%",
-                                          style: const TextStyle(
-                                              color: Color(0xFF2B3674),
-                                              fontFamily: "Poppins",
-                                              fontWeight: FontWeight.bold),
-                                        )
-                                      ],
-                                    ),
+                                    //todo loooooooooooooooooooooop
                                   ],
                                 ),
                               ),
@@ -902,7 +998,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
                               ),
                             ),
                             PieChart(
-                              dataMap: materials,
+                              dataMap: materialsvalues,
                               animationDuration:
                                   const Duration(milliseconds: 800),
                               chartRadius:
@@ -936,6 +1032,93 @@ class _StatisticsPageState extends State<StatisticsPage> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceEvenly,
                                   children: [
+                                    //todo materials todo
+                                    if (materials.keys.toList().isNotEmpty)
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 3),
+                                                child: Icon(
+                                                  Icons.circle,
+                                                  size: 10,
+                                                  color: materialscolor[1],
+                                                ),
+                                              ),
+                                              Column(
+                                                children: [
+                                                  Text(
+                                                    materialsvalues.keys
+                                                        .toList()[1]
+                                                        .toString(),
+                                                    style: const TextStyle(
+                                                        color:
+                                                            Color(0xffA3AED0),
+                                                        fontFamily: "Poppins",
+                                                        fontSize: 14),
+                                                  ),
+                                                ],
+                                              )
+                                            ],
+                                          ),
+                                          Text(
+                                            "${((materialsvalues.values.toList()[1].toInt() / (totalmaterials["data"] == 0 ? 1 : totalmaterials["data"]!)) * 100).toInt()}%",
+                                            style: const TextStyle(
+                                                color: Color(0xFF2B3674),
+                                                fontFamily: "Poppins",
+                                                fontWeight: FontWeight.bold),
+                                          )
+                                        ],
+                                      ),
+//todo this is the second column
+                                    if (materials.keys.toList().length >= 2)
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 3),
+                                                child: Icon(
+                                                  Icons.circle,
+                                                  size: 10,
+                                                  color: materialscolor[2],
+                                                ),
+                                              ),
+                                              Column(
+                                                children: [
+                                                  Text(
+                                                    materialsvalues.keys
+                                                        .toList()[2]
+                                                        .toString(),
+                                                    style: const TextStyle(
+                                                        color:
+                                                            Color(0xffA3AED0),
+                                                        fontFamily: "Poppins",
+                                                        fontSize: 14),
+                                                  ),
+                                                ],
+                                              )
+                                            ],
+                                          ),
+                                          Text(
+                                            "${((materialsvalues.values.toList()[2].toInt() / (totalmaterials["data"] == 0 ? 1 : totalmaterials["data"]!)) * 100).toInt()}%",
+                                            style: const TextStyle(
+                                                color: Color(0xFF2B3674),
+                                                fontFamily: "Poppins",
+                                                fontWeight: FontWeight.bold),
+                                          )
+                                        ],
+                                      ),
+                                    //todo this is the others column put it's logic here
                                     Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
@@ -955,7 +1138,8 @@ class _StatisticsPageState extends State<StatisticsPage> {
                                             Column(
                                               children: [
                                                 Text(
-                                                  materials.keys.toList()[0],
+                                                  materialsvalues.keys
+                                                      .toList()[0],
                                                   style: const TextStyle(
                                                       color: Color(0xffA3AED0),
                                                       fontFamily: "Poppins",
@@ -966,83 +1150,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
                                           ],
                                         ),
                                         Text(
-                                          "${materials.values.toList()[0].toInt().toString()}%",
-                                          style: const TextStyle(
-                                              color: Color(0xFF2B3674),
-                                              fontFamily: "Poppins",
-                                              fontWeight: FontWeight.bold),
-                                        )
-                                      ],
-                                    ),
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 3),
-                                              child: Icon(
-                                                Icons.circle,
-                                                size: 10,
-                                                color: materialscolor[1],
-                                              ),
-                                            ),
-                                            Column(
-                                              children: [
-                                                Text(
-                                                  materials.keys.toList()[0],
-                                                  style: const TextStyle(
-                                                      color: Color(0xffA3AED0),
-                                                      fontFamily: "Poppins",
-                                                      fontSize: 14),
-                                                ),
-                                              ],
-                                            )
-                                          ],
-                                        ),
-                                        Text(
-                                          "${materials.values.toList()[0].toInt().toString()}%",
-                                          style: const TextStyle(
-                                              color: Color(0xFF2B3674),
-                                              fontFamily: "Poppins",
-                                              fontWeight: FontWeight.bold),
-                                        )
-                                      ],
-                                    ),
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 3),
-                                              child: Icon(
-                                                Icons.circle,
-                                                size: 10,
-                                                color: materialscolor[2],
-                                              ),
-                                            ),
-                                            Column(
-                                              children: [
-                                                Text(
-                                                  materials.keys.toList()[0],
-                                                  style: const TextStyle(
-                                                      color: Color(0xffA3AED0),
-                                                      fontFamily: "Poppins",
-                                                      fontSize: 14),
-                                                ),
-                                              ],
-                                            )
-                                          ],
-                                        ),
-                                        Text(
-                                          "${materials.values.toList()[0].toInt().toString()}%",
+                                          "${((materialsvalues.values.toList()[0].toInt() / (totalmaterials["data"] == 0 ? 1 : totalmaterials["data"]!)) * 100).toInt()}%",
                                           style: const TextStyle(
                                               color: Color(0xFF2B3674),
                                               fontFamily: "Poppins",

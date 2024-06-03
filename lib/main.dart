@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:smart_farm/features/authentication/models/authentication_models.dart';
 import 'package:smart_farm/features/contact_us.dart/provider/report_provider.dart';
@@ -13,11 +14,14 @@ import 'package:smart_farm/features/settings/provider/settings_provider.dart';
 import 'package:smart_farm/features/store/providers/products_provider.dart';
 import 'package:smart_farm/features/to_do_list/providers/tasks_provider.dart';
 import 'package:smart_farm/features/weather/providers/weather_provider.dart';
+import 'package:smart_farm/l10n/l10n.dart';
+import 'package:smart_farm/shared/services/locale_provider.dart';
 import 'package:smart_farm/shared/services/notifications/notifications_controller.dart';
 import 'package:smart_farm/shared/services/notifications/notifications_services.dart';
 import 'package:smart_farm/shared/services/shared_preferences_service.dart';
 import 'package:smart_farm/shared/widgets/app_navbar.dart';
 import 'package:smart_farm/features/authentication/screens/login_page.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -96,6 +100,9 @@ class _MyAppState extends State<MyApp> {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
+          create: (context) => LocaleProvider(),
+        ),
+        ChangeNotifierProvider(
           create: (context) => PlantProvider(),
         ),
         ChangeNotifierProvider(
@@ -123,25 +130,36 @@ class _MyAppState extends State<MyApp> {
           create: (context) => SettingsProvider(),
         ),
       ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'AgriTech',
-        home: FutureBuilder<bool>(
-          future: SharedPreferencesService.onboardingCompleted,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const CircularProgressIndicator();
-            } else {
-              final bool onboardingCompleted = snapshot.data ?? false;
-              // ignore: avoid_print
-              print(snapshot.data);
-              return onboardingCompleted
-                  ? const LoginPage()
-                  : const Onboarding(); //boarding is disabled for now
-            }
-          },
-        ),
-      ),
+      child:
+          Consumer<LocaleProvider>(builder: (context, localeProvider, child) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          supportedLocales: L10n.all,
+          locale: localeProvider.locale,
+          localizationsDelegates: const [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+            AppLocalizations.delegate
+          ],
+          title: 'AgriTech',
+          home: FutureBuilder<bool>(
+            future: SharedPreferencesService.onboardingCompleted,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const CircularProgressIndicator();
+              } else {
+                final bool onboardingCompleted = snapshot.data ?? false;
+                // ignore: avoid_print
+                print(snapshot.data);
+                return onboardingCompleted
+                    ? const LoginPage()
+                    : const Onboarding(); //boarding is disabled for now
+              }
+            },
+          ),
+        );
+      }),
     );
   }
 }

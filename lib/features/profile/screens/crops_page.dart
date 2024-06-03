@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:smart_farm/features/profile/models/entity.dart';
 import 'package:smart_farm/features/profile/widgets/customentry.dart';
@@ -218,22 +219,10 @@ class _CropsPageState extends State<CropsPage> {
                                       horizontal: 30.0, vertical: 10),
                                   child: Column(
                                     children: [
-                                      Container(
-                                        alignment: Alignment.centerLeft,
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 30.0),
-                                          child: Text(
-                                            crops[index].name,
-                                            style: const TextStyle(
-                                                fontFamily: "Poppins",
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 20),
-                                          ),
-                                        ),
-                                      ),
+                                      
                                       CustomEntry(
                                         hintText: crops[index].value.toString(),
+                                        cropsName: crops[index].name,
                                       ),
                                     ],
                                   ),

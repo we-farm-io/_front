@@ -219,24 +219,11 @@ class _AnimalsPageState extends State<AnimalsPage> {
                                           horizontal: 30.0, vertical: 10),
                                       child: Column(
                                         children: [
-                                          Container(
-                                            alignment: Alignment.centerLeft,
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 30.0),
-                                              child: Text(
-                                                animals[index].name,
-                                                style: const TextStyle(
-                                                    fontFamily: "Poppins",
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 20),
-                                              ),
-                                            ),
-                                          ),
+                                         
                                           CustomEntry(
                                             hintText:
                                                 animals[index].value.toString(),
+                                                cropsName: animals[index].name,
                                           ),
                                         ],
                                       ),

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:smart_farm/features/settings/provider/settings_provider.dart';
+import 'package:smart_farm/features/settings/screen/language_page.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:smart_farm/shared/widgets/app_navbar.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -29,33 +31,46 @@ class SettingsPage extends StatelessWidget {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('Settings',
-                    style: TextStyle(
-                        fontFamily: 'Poppins',
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold)),
+                Text(
+                  AppLocalizations.of(context)!.settings,
+                  style: TextStyle(
+                    fontFamily: 'Poppins',
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
                 const SizedBox(height: 24),
                 settingsItem(
-                  title: 'Weather',
+                  title: AppLocalizations.of(context)!.weather,
                   value: settingsProvider.weatherNotifications,
                   onChanged: settingsProvider.setWeatherNotifications,
                   asset: Image.asset('assets/icons/settings/Spinach.png'),
                 ),
                 const SizedBox(height: 24),
                 settingsItem(
-                    title: 'Schedule',
+                    title: AppLocalizations.of(context)!.schedule,
                     value: settingsProvider.scheduleNotifications,
                     onChanged: settingsProvider.setScheduleNotifications,
                     asset: Image.asset('assets/icons/settings/Schedule.png')),
                 const SizedBox(height: 24),
                 settingsItem(
-                  title: 'Government Support',
+                  title: AppLocalizations.of(context)!.government_support,
                   value: settingsProvider.governmentSupportNotifications,
                   asset: Padding(
                     padding: const EdgeInsets.only(left: 8.0),
                     child: SvgPicture.asset('assets/icons/settings/Gov.svg'),
                   ),
                   onChanged: settingsProvider.setGovernmentSupportNotifications,
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => LanguagePage(),
+                      ),
+                    );
+                  },
+                  child: Text(AppLocalizations.of(context)!.change_language),
                 ),
               ],
             );

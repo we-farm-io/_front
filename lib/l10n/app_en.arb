@@ -1,0 +1,54 @@
+{
+    "@@locale": "en",
+    "change_language": "Change Language",
+    "@change_language": {
+        "description": "The title of the change language page"
+    },
+    "english": "English",
+    "@english": {
+        "description": "Label for the English language button"
+    },
+    "arabic": "Arabic",
+    "@arabic": {
+        "description": "Label for the Arabic language button"
+    },
+    "settings": "Settings",
+    "@settings": {
+        "description": "Title for the settings page"
+    },
+    "weather": "Weather",
+    "@weather": {
+        "description": "Title for the weather settings item"
+    },
+    "schedule": "Schedule",
+    "@schedule": {
+        "description": "Title for the schedule settings item"
+    },
+    "government_support": "Government Support",
+    "@government_support": {
+        "description": "Title for the government support settings item"
+    },
+    "welcome_back" : "Welcome Back",
+    "@welcome_back" : {
+        "description": "welcome back message to the app for the login screen"
+    },
+    "loginto_account" : "Log into your account",
+    "@loginto_account" : {
+        "description": "label text for the login screen "
+
+    }
+,
+    "email" : "Email",
+    "@email"  : {
+        "description": "email hint text"
+    },
+    "password" : "Password",
+    "@password" : {
+        "description": "password hint text"
+    },
+
+    "forgot_password" : "Forgot Password ?",
+    "@forgot_password" : {
+        "description": ""
+    }
+}

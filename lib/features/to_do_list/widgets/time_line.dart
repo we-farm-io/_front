@@ -21,9 +21,7 @@ class _TimeLineState extends State<TimeLine> {
           tasksprovider.setDate(DateFormat.yMMMEd().format(selectedDate));
           tasksprovider.fetchTasks();
         },
-        itemBuilder:
-            (context, dayNumber, dayName, monthName, fullDate, isSelected) =>
-                Container(
+        itemBuilder: (context, fullDate, isSelected, function) => Container(
           margin: const EdgeInsets.symmetric(horizontal: 7),
           height: 100,
           width: 75,
@@ -45,7 +43,8 @@ class _TimeLineState extends State<TimeLine> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Text(
-                monthName,
+                DateFormat.MMMM().format(
+                    DateTime(fullDate.year, fullDate.month)), //month name
                 style: TextStyle(
                     color: isSelected ? Colors.white : Colors.black,
                     fontFamily: 'poppins',
@@ -53,7 +52,7 @@ class _TimeLineState extends State<TimeLine> {
                     fontWeight: FontWeight.bold),
               ),
               Text(
-                dayNumber,
+                fullDate.day.toString(), //number
                 style: TextStyle(
                     color: isSelected ? Colors.white : Colors.black,
                     fontFamily: 'poppins',
@@ -61,7 +60,8 @@ class _TimeLineState extends State<TimeLine> {
                     fontWeight: FontWeight.bold),
               ),
               Text(
-                dayName,
+                DateFormat.EEEE().format(DateTime(
+                    fullDate.year, fullDate.month, fullDate.day + 1)), //name
                 style: TextStyle(
                     color: isSelected ? Colors.white : Colors.black,
                     fontFamily: 'poppins',

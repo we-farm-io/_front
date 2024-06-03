@@ -1,0 +1,32 @@
+{
+    "@@locale": "ar",
+    "change_language": "تغيير اللغة",
+    "@change_language": {
+        "description": "عنوان صفحة تغيير اللغة"
+    },
+    "english": "الإنجليزية",
+    "@english": {
+        "description": "عنوان الزر للغة الإنجليزية"
+    },
+    "arabic": "العربية",
+    "@arabic": {
+        "description": "عنوان الزر للغة العربية"
+    },
+    "settings": "الإعدادات",
+    "@settings": {
+        "description": "عنوان صفحة الإعدادات"
+    },
+   
+    "weather": "الطقس",
+    "@weather": {
+        "description": "عنوان عنصر الإعدادات للطقس"
+    },
+    "schedule": "الجدول الزمني",
+    "@schedule": {
+        "description": "عنوان عنصر الإعدادات للجدول الزمني"
+    },
+    "government_support": "الدعم الحكومي",
+    "@government_support": {
+        "description": "عنوان عنصر الإعدادات للدعم الحكومي"
+    }
+}
