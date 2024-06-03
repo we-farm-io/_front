@@ -96,11 +96,11 @@ class Page2ChangePassword extends StatelessWidget {
                 child: CustomButton(
                   buttonText: 'Next',
                   onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      context.read<UserViewModel>().changePasswordProvider(
-                          context, userViewModel,
-                          newpassword: passwordController1.text.trim());
-                    }
+                    //{if (_formKey.currentState!.validate()) {
+                    //context.read<UserViewModel>().changePasswordProvider(
+                    //  context, userViewModel,
+                    //newPassword: passwordController1.text.trim());
+                    //}}
                   },
                 ),
               ),

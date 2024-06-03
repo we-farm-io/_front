@@ -18,6 +18,7 @@ class UserViewModel with ChangeNotifier {
 
   String? email;
   String? password;
+
   String? id;
   String? errorMessage;
   String? phonenumber;
@@ -45,12 +46,6 @@ class UserViewModel with ChangeNotifier {
   }
 
   void setPhoneNumber(String phonenumber) {
-    errorMessage = null;
-    notifyListeners();
-  }
-
-  void setPassword(String password) {
-    this.password = password;
     errorMessage = null;
     notifyListeners();
   }
@@ -180,7 +175,7 @@ class UserViewModel with ChangeNotifier {
 
   bool oldPasswordCorrect(String uid, String enteredPassword) {
     //replace with actual verification
-    return enteredPassword == '123';
+    return true;
   }
 
   Future<void> sendPasswordResetEmail(
@@ -233,19 +228,53 @@ class UserViewModel with ChangeNotifier {
     return true;
   }
 
-  void changePasswordProvider(BuildContext context, UserViewModel userViewModel,
-      {required String newpassword}) async {
+  Future<void> changePasswordProvider(
+      BuildContext context, UserViewModel userViewModel,
+      {required String currentPassword, required String newPassword}) async {
     FocusManager.instance.primaryFocus?.unfocus();
 
     //if (page2FormKey.currentState!.validate()) {
-    userViewModel.setPassword(newpassword); // + modify in database
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const SuccessChangePassword(),
-      ),
-    );
-    // }
+
+    try {
+      // Get the current user
+      User? user = FirebaseAuth.instance.currentUser;
+
+      // Re-authenticate the user with their current password
+      AuthCredential credential = EmailAuthProvider.credential(
+        email: user!.email!,
+        password: currentPassword,
+      );
+
+      await user.reauthenticateWithCredential(credential);
+
+      // Update the user's password
+      await user.updatePassword(newPassword);
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const SuccessChangePassword(),
+        ),
+      );
+      print('Password changed successfully!');
+    } on FirebaseAuthException catch (e) {
+      // Handle errors
+      if (e.code == 'invalid-credential') {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            backgroundColor: Color.fromARGB(255, 255, 64, 64),
+            content: Text(
+              "invalid current password ",
+              style: TextStyle(
+                  fontSize: 18.0, color: Color.fromARGB(255, 235, 232, 232)),
+            )));
+        print('Error: Wrong password');
+      } else if (e.code == 'weak-password') {
+        print('Error: Weak password');
+      } else {
+        print('Error: ${e.code} - ${e.message}');
+      } // + modify in database
+
+      // }
+    }
   }
 
   Future<void> signOut(

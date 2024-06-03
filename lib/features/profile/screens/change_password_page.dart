@@ -13,7 +13,7 @@ class ChangePasswordProfile extends StatelessWidget {
   final TextEditingController newpasswordController2 = TextEditingController();
 
   ChangePasswordProfile({super.key});
- 
+
   @override
   Widget build(BuildContext context) {
     String userID = "3"; // static one for test
@@ -111,13 +111,12 @@ class ChangePasswordProfile extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 25.0),
                 child: CustomButton(
                   buttonText: 'Next',
-                  onPressed: () {
+                  onPressed: () async {
                     if (_formKey.currentState!.validate()) {
                       context.read<UserViewModel>().changePasswordProvider(
                           context, userViewModel,
-                          newpassword: newpasswordController1.text.trim());
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => const Success()));
+                          currentPassword: oldpasswordController.text.trim(),
+                          newPassword: newpasswordController1.text.trim());
                     }
                   },
                 ),
