@@ -36,10 +36,12 @@ class EnterMail extends StatelessWidget {
               SvgPicture.asset(
                   'assets/images/authentication_images/changepass4.svg',
                   height: 300),
-              const SizedBox(height: 32,),
+              const SizedBox(
+                height: 32,
+              ),
               Container(
                 alignment: Alignment.centerLeft,
-                padding: const EdgeInsets.only(left:25),
+                padding: const EdgeInsets.only(left: 25),
                 child: const Text(
                   'Enter your email to recieve reset password link',
                   style: TextStyle(
@@ -72,13 +74,10 @@ class EnterMail extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 25.0),
                 child: CustomButton(
                   buttonText: 'Next',
-                  onPressed: () {
+                  onPressed: () async {
                     if (_formKey.currentState!.validate()) {
-                      userViewModel.sendPasswordResetEmail(
+                      await userViewModel.sendPasswordResetEmail(
                           context, emailController.text.trim());
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => Page1ChangePassword(
-                              email: emailController.text.trim())));
                     }
                   },
                 ),

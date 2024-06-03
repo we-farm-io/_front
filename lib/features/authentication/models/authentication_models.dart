@@ -1,6 +1,7 @@
 // to implement reset password via mail go from line 153 :)
 
 // ignore_for_file: avoid_print, use_build_context_synchronously
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:smart_farm/features/authentication/models/user.dart';
@@ -19,6 +20,7 @@ class UserViewModel with ChangeNotifier {
   String? password;
   String? id;
   String? errorMessage;
+  String? phonenumber;
   // ignore: unused_element
   Userclass? _userFromFirebaseUser(User user) {
     // ignore: unnecessary_null_comparison
@@ -32,10 +34,12 @@ class UserViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  void setSignUpCredentials(String email, String password, String id) {
+  void setSignUpCredentials(
+      String email, String password, String id, String phonenumber) {
     this.email = email;
     this.password = password;
     this.id = id;
+    this.phonenumber = phonenumber;
     errorMessage = null;
     notifyListeners();
   }
@@ -65,92 +69,107 @@ class UserViewModel with ChangeNotifier {
     FocusManager.instance.primaryFocus?.unfocus();
 
     //if (loginFormKey.currentState?.validate() ?? false) {
-      // replace with actual verification
-      // API implementation + errors managing
-      userViewModel.setLoginCredentials(email, password);
-      try {
-        final credential = await FirebaseAuth.instance
-            .signInWithEmailAndPassword(email: email, password: password);
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const NavBar()),
-        );
-        return credential;
-      } on FirebaseAuthException catch (e) {
-        if (e.code == 'user-not-found') {
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-              backgroundColor: Colors.orangeAccent,
-              content: Text(
-                "No User Found for that Email",
-                style: TextStyle(fontSize: 18.0),
-              )));
-        } else if (e.code == 'wrong-password') {
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-              backgroundColor: Colors.orangeAccent,
-              content: Text(
-                "Wrong Password Provided by User",
-                style: TextStyle(fontSize: 18.0),
-              )));
-        }
-        return null;
-      }
-    //} else if (email.isNotEmpty && password.isNotEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Email or pasword is incorrect'),
-        ),
+    // replace with actual verification
+    // API implementation + errors managing
+    userViewModel.setLoginCredentials(email, password);
+    try {
+      final credential = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password);
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const NavBar()),
       );
-    //}
+      return credential;
+    } on FirebaseAuthException catch (e) {
+      print(e.code);
+      if (e.code == 'user-not-found') {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            backgroundColor: Colors.orangeAccent,
+            content: Text(
+              "No User Found for that Email",
+              style: TextStyle(fontSize: 18.0),
+            )));
+      } else if (e.code == 'invalid-credential') {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            backgroundColor: Colors.orangeAccent,
+            content: Text(
+              "invalid credentials",
+              style: TextStyle(fontSize: 18.0),
+            )));
+      }
+      return null;
+    }
   }
 
   void signUpProvider(BuildContext context, UserViewModel userViewModel,
-      {required String email,
+      {required String phonenumber,
+      required String email,
       required String password,
       required String id}) async {
     FocusManager.instance.primaryFocus?.unfocus();
 
-   // if (signUpFormKey.currentState?.validate() ?? false) {
-      // replace with actual verification
-      // API implementation + errors managing
-
-      userViewModel.setSignUpCredentials(email, password, id);
-      if (password.length < 8) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            backgroundColor: Colors.orangeAccent,
-            content: Text(
-              "Password Provided is too short",
-              style: TextStyle(fontSize: 18.0),
-            )));
-      } else {
-        try {
-          UserCredential usercredential = await FirebaseAuth.instance
-              .createUserWithEmailAndPassword(email: email, password: password);
-          // ignore: unused_local_variable
-          User? user = usercredential.user;
+    userViewModel.setSignUpCredentials(email, password, id, phonenumber);
+    if (password.length < 8) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          backgroundColor: Colors.orangeAccent,
+          content: Text(
+            "Password Provided is too short",
+            style: TextStyle(fontSize: 18.0),
+          )));
+    } else {
+      try {
+        UserCredential usercredential = await FirebaseAuth.instance
+            .createUserWithEmailAndPassword(email: email, password: password);
+        // ignore: unused_local_variable
+        if (usercredential.user != null) {
+          print("entered here");
+          String userId = usercredential.user!.uid;
+          print("user id $userId");
+          final usersCollection =
+              FirebaseFirestore.instance.collection('users');
+          await usersCollection.doc(userId).set({
+            'email': email,
+            "phoneNumber": phonenumber,
+            'createdAt': FieldValue.serverTimestamp(),
+            "agriculture_id": id,
+          });
+          print("routing success");
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const SuccessAuth()),
           );
-          // Navigate to the next screen upon successful sign-up
-        } on FirebaseAuthException catch (e) {
-          if (e.code == 'weak-password') {
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                backgroundColor: Colors.orangeAccent,
-                content: Text(
-                  "Password Provided is too Weak",
-                  style: TextStyle(fontSize: 18.0),
-                )));
-          } else if (e.code == "email-already-in-use") {
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                backgroundColor: Colors.orangeAccent,
-                content: Text(
-                  "Email Already is used",
-                  style: TextStyle(fontSize: 18.0),
-                )));
-          }
+        } else {
+          print("id null");
+        }
+
+        // Navigate to the next screen upon successful sign-up
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'weak-password') {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              backgroundColor: Colors.orangeAccent,
+              content: Text(
+                "Password Provided is too Weak",
+                style: TextStyle(fontSize: 18.0),
+              )));
+        } else if (e.code == "email-already-in-use") {
+          print(e.code);
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              backgroundColor: Colors.orangeAccent,
+              content: Text(
+                "Email Already is used",
+                style: TextStyle(fontSize: 18.0),
+              )));
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              backgroundColor: Colors.orangeAccent,
+              content: Text(
+                e.code,
+                style: const TextStyle(fontSize: 18.0),
+              )));
         }
       }
-   // }
+    }
+    // }
   }
 
   bool isValidEmail(String email) {
@@ -164,16 +183,47 @@ class UserViewModel with ChangeNotifier {
     return enteredPassword == '123';
   }
 
-  void sendPasswordResetEmail(BuildContext context, String email) {
+  Future<void> sendPasswordResetEmail(
+      BuildContext context, String _email) async {
     // send password reset email here -----------------------------
-    try {
-      // send mail
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Failed to send password reset email: $e'),
-        ),
-      );
+    QuerySnapshot query = await FirebaseFirestore.instance
+        .collection('users')
+        .where("email", isEqualTo: _email)
+        .get();
+    if (query.docs.isNotEmpty) {
+      // Email is already used... }
+
+      try {
+        await FirebaseAuth.instance.sendPasswordResetEmail(email: _email);
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            backgroundColor: Color.fromARGB(255, 80, 255, 64),
+            content: Text(
+              "we sent you a recovery email ",
+              style: TextStyle(fontSize: 18.0, color: Colors.black),
+            )));
+        // If the email exists, Firebase will send a password reset email
+      } on FirebaseAuthException catch (e) {
+        if (e.code == "invalid-email") {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              backgroundColor: Color.fromARGB(255, 255, 64, 64),
+              content: Text(
+                "invalid email ",
+                style: TextStyle(
+                    fontSize: 18.0, color: Color.fromARGB(255, 235, 232, 232)),
+              )));
+        } else {
+          // Handle other errors
+          print(e.code);
+        }
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          backgroundColor: Color.fromARGB(255, 255, 64, 64),
+          content: Text(
+            "Please verify your email ",
+            style: TextStyle(
+                fontSize: 18.0, color: Color.fromARGB(255, 235, 232, 232)),
+          )));
     }
   }
   // -------------------------------------------------------------

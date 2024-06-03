@@ -30,7 +30,7 @@ Map<String, dynamic> processQuerySnapshot(QuerySnapshot? querySnapshot) {
   } else {
     print('was null');
     return {
-      'documents': {"0": 10.0},
+      'documents': {"": 0.0},
       'total_quantity': totalQuantity
     };
   }
@@ -41,18 +41,19 @@ QuerySnapshot? animalsSnapchot;
 QuerySnapshot? materialsSnapchot;
 Future<void> _getdocuments() async {
   print('starterd');
-  cropsSnapchot = await FirebaseFirestore.instance
+  FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  cropsSnapchot = await _firestore
       .collection('users')
       .doc(currentUser)
       .collection('crops')
       .get();
   print("finish1");
-  animalsSnapchot = await FirebaseFirestore.instance
+  animalsSnapchot = await _firestore
       .collection('users')
       .doc(currentUser)
       .collection('animals')
       .get();
-  materialsSnapchot = await FirebaseFirestore.instance
+  materialsSnapchot = await _firestore
       .collection('users')
       .doc(currentUser)
       .collection('materials')
@@ -356,9 +357,9 @@ class _StatisticsPageState extends State<StatisticsPage> {
                                       legendOptions: const LegendOptions(
                                           showLegends: false),
                                       dataMap: {
-                                        "data":
-                                            (totalmaterials["data"]! / Total) *
-                                                100
+                                        "data": (totalmaterials["data"]! /
+                                                (Total == 0 ? 1 : Total)) *
+                                            100
                                       },
                                       chartType: ChartType.ring,
                                       baseChartColor: totalmaterialcolor[0]

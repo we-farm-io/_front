@@ -23,7 +23,7 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController passwordController2 = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController idController = TextEditingController();
-
+  String? countryIsoCode;
   bool _checked = false;
   bool _hidePassword1 = true;
   bool _hidePassword2 = true;
@@ -52,7 +52,11 @@ class _SignUpPageState extends State<SignUpPage> {
                     child: Column(
                       children: [
                         InternationalPhoneNumberInput(
-                          onInputChanged: (PhoneNumber number) {},
+                          onInputChanged: (PhoneNumber number) {
+                            setState(() {
+                              countryIsoCode = number.isoCode ?? '';
+                            });
+                          },
                           selectorConfig: const SelectorConfig(
                             selectorType: PhoneInputSelectorType.DROPDOWN,
                           ),
@@ -66,7 +70,15 @@ class _SignUpPageState extends State<SignUpPage> {
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter a phone number';
+                            } else if (countryIsoCode == "DZ" &&
+                                (value.length < 9 || value.length > 10) &&
+                                (!RegExp(r'^[765]').hasMatch(
+                                    value.startsWith('0')
+                                        ? value.substring(1)
+                                        : value))) {
+                              return 'invalid phone number';
                             }
+
                             return null;
                           },
                         ),
@@ -156,9 +168,19 @@ class _SignUpPageState extends State<SignUpPage> {
                         ),
                         const SizedBox(height: 20),
                         CustomTextFormField(
-                            hintText: 'Enter your ID',
-                            labelText: 'User ID',
-                            controller: idController),
+                          hintText: 'Enter your ID',
+                          labelText: 'User ID',
+                          controller: idController,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "please Enter your id";
+                            }
+                            if (value.length != 15) {
+                              return "invalid id length";
+                            }
+                            return null;
+                          },
+                        ),
                         const SizedBox(height: 20),
                       ],
                     ),
@@ -241,15 +263,11 @@ class _SignUpPageState extends State<SignUpPage> {
                           context.read<UserViewModel>().signUpProvider(
                                 context,
                                 userViewModel,
+                                phonenumber: phoneController.text.trim(),
                                 email: emailController.text.trim(),
                                 password: passwordController1.text.trim(),
                                 id: idController.text.trim(),
                               );
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const NavBar()),
-                          );
                         }
                       }
                     },
