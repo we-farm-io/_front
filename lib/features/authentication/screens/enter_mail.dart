@@ -6,6 +6,7 @@ import 'package:smart_farm/features/authentication/screens/login_page.dart';
 import 'package:smart_farm/features/authentication/screens/page1_change_password.dart';
 import 'package:smart_farm/shared/widgets/custom_button.dart';
 import 'package:smart_farm/shared/widgets/custom_textformfield.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EnterMail extends StatelessWidget {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -42,8 +43,8 @@ class EnterMail extends StatelessWidget {
               Container(
                 alignment: Alignment.centerLeft,
                 padding: const EdgeInsets.only(left: 25),
-                child: const Text(
-                  'Enter your email to recieve reset password link',
+                child: Text(
+                  AppLocalizations.of(context)!.enter_your_email_to_recieve_reset_password_link,
                   style: TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
@@ -61,8 +62,8 @@ class EnterMail extends StatelessWidget {
                       alignment: Alignment.centerLeft,
                       padding: const EdgeInsets.symmetric(horizontal: 25),
                       child: CustomTextFormField(
-                        hintText: 'Enter your email',
-                        labelText: 'email',
+                        hintText: AppLocalizations.of(context)!.enter_your_email,
+                        labelText: AppLocalizations.of(context)!.email,
                         controller: emailController,
                       ),
                     ),
@@ -73,7 +74,7 @@ class EnterMail extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25.0),
                 child: CustomButton(
-                  buttonText: 'Next',
+                  buttonText: AppLocalizations.of(context)!.next,
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
                       await userViewModel.sendPasswordResetEmail(

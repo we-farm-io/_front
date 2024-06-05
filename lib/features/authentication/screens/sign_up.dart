@@ -4,10 +4,11 @@ import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:provider/provider.dart';
 import 'package:smart_farm/features/authentication/models/authentication_models.dart';
 import 'package:smart_farm/features/authentication/screens/login_page.dart';
+import 'package:smart_farm/shared/services/locale_provider.dart';
 import 'package:smart_farm/shared/utils/palette.dart';
-import 'package:smart_farm/shared/widgets/app_navbar.dart';
 import 'package:smart_farm/shared/widgets/custom_button.dart';
 import 'package:smart_farm/shared/widgets/custom_textformfield.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -31,6 +32,7 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     final userViewModel = Provider.of<UserViewModel>(context);
+    final localization = AppLocalizations.of(context)!;
 
     return Consumer<UserViewModel>(
       builder: (context, value, child) => SafeArea(
@@ -52,6 +54,8 @@ class _SignUpPageState extends State<SignUpPage> {
                     child: Column(
                       children: [
                         InternationalPhoneNumberInput(
+                          hintText:
+                              AppLocalizations.of(context)!.phoneNumberLogin,
                           onInputChanged: (PhoneNumber number) {
                             setState(() {
                               countryIsoCode = number.isoCode ?? '';
@@ -69,14 +73,14 @@ class _SignUpPageState extends State<SignUpPage> {
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Please enter a phone number';
+                              return localization.pleaseEnterAPhoneNumber;
                             } else if (countryIsoCode == "DZ" &&
                                 (value.length < 9 || value.length > 10) &&
                                 (!RegExp(r'^[765]').hasMatch(
                                     value.startsWith('0')
                                         ? value.substring(1)
                                         : value))) {
-                              return 'invalid phone number';
+                              return localization.invalidPhoneNumber;
                             }
 
                             return null;
@@ -84,15 +88,15 @@ class _SignUpPageState extends State<SignUpPage> {
                         ),
                         const SizedBox(height: 20),
                         CustomTextFormField(
-                            hintText: 'Enter your email',
-                            labelText: 'Email',
+                            hintText: localization.enterYourEmail,
+                            labelText: localization.email,
                             controller: emailController),
                         const SizedBox(height: 20),
                         TextFormField(
                           controller: passwordController1,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'This field is required';
+                              return localization.thisFieldIsRequired;
                             }
                             return null;
                           },
@@ -111,8 +115,9 @@ class _SignUpPageState extends State<SignUpPage> {
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
                             ),
-                            hintText: 'Enter your password',
-                            labelText: 'Password',
+                            hintText:
+                                AppLocalizations.of(context)!.enterYourPassword,
+                            labelText: AppLocalizations.of(context)!.password,
                             contentPadding: const EdgeInsets.all(14),
                             labelStyle: const TextStyle(
                               fontFamily: 'Poppins',
@@ -130,10 +135,12 @@ class _SignUpPageState extends State<SignUpPage> {
                           controller: passwordController2,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'This field is required';
+                              return AppLocalizations.of(context)!
+                                  .thisFieldIsRequired;
                             } else if (passwordController1.text !=
                                 passwordController2.text) {
-                              return 'Passwords do not match';
+                              return AppLocalizations.of(context)!
+                                  .passwordsDoNotMatch;
                             }
                             return null;
                           },
@@ -152,8 +159,10 @@ class _SignUpPageState extends State<SignUpPage> {
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
                             ),
-                            hintText: 'Enter your password',
-                            labelText: 'Confirm Password',
+                            hintText:
+                                AppLocalizations.of(context)!.enterYourPassword,
+                            labelText:
+                                AppLocalizations.of(context)!.confirmPassword,
                             contentPadding: const EdgeInsets.all(14),
                             labelStyle: const TextStyle(
                               fontFamily: 'Poppins',
@@ -168,19 +177,22 @@ class _SignUpPageState extends State<SignUpPage> {
                         ),
                         const SizedBox(height: 20),
                         CustomTextFormField(
-                          hintText: 'Enter your ID',
-                          labelText: 'User ID',
+                          hintText: AppLocalizations.of(context)!.enterYourID,
+                          labelText: AppLocalizations.of(context)!.userID,
                           controller: idController,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return "please Enter your id";
+                              return AppLocalizations.of(context)!
+                                  .pleaseEnterYourID;
                             }
                             if (value.length != 15) {
-                              return "invalid id length";
+                              return AppLocalizations.of(context)!
+                                  .invalidIDLength;
                             }
                             return null;
                           },
                         ),
+//here we are
                         const SizedBox(height: 20),
                       ],
                     ),
@@ -203,37 +215,40 @@ class _SignUpPageState extends State<SignUpPage> {
                         ),
                       ),
                       const SizedBox(width: 10),
-                      const Flexible(
+                      Flexible(
                         child: Text.rich(
                           TextSpan(
                             children: [
                               TextSpan(
-                                text: 'By signing up you agree to our ',
-                                style: TextStyle(
+                                text:
+                                    "${AppLocalizations.of(context)!.bySigningUpYouAgreeToOur} ",
+                                style: const TextStyle(
                                   fontFamily: 'Poppins',
                                   fontSize: 12,
                                   color: Color.fromRGBO(121, 116, 126, 1),
                                 ),
                               ),
                               TextSpan(
-                                text: 'terms & conditions of use ',
-                                style: TextStyle(
+                                text: AppLocalizations.of(context)!
+                                    .termsAndConditionsOfUse,
+                                style: const TextStyle(
                                   fontFamily: 'Poppins', fontSize: 12,
                                   color: Palette.buttonGreen,
                                   //decoration: TextDecoration.underline,
                                 ),
                               ),
                               TextSpan(
-                                text: 'and',
-                                style: TextStyle(
+                                text: " ${AppLocalizations.of(context)!.and} ",
+                                style: const TextStyle(
                                   fontFamily: 'Poppins',
                                   fontSize: 12,
                                   color: Color.fromRGBO(121, 116, 126, 1),
                                 ),
                               ),
                               TextSpan(
-                                text: ' privacy policy',
-                                style: TextStyle(
+                                text:
+                                    AppLocalizations.of(context)!.privacyPolicy,
+                                style: const TextStyle(
                                   fontFamily: 'Poppins', fontSize: 12,
                                   color: Palette.buttonGreen,
                                   //decoration: TextDecoration.underline,
@@ -246,17 +261,17 @@ class _SignUpPageState extends State<SignUpPage> {
                     ],
                   ),
                 ),
+                // here we start
                 const SizedBox(height: 20),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
                   child: CustomButton(
-                    buttonText: 'Sign Up',
+                    buttonText: AppLocalizations.of(context)!.signUp,
                     onPressed: () {
                       if (!_checked) {
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(const SnackBar(
-                          content: Text(
-                              'Please accept the terms & conditions to sign up.'),
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text(AppLocalizations.of(context)!
+                              .pleaseAcceptTheTermsAndConditionsToSignUp),
                         ));
                       } else {
                         if (_formKey.currentState!.validate()) {
@@ -275,31 +290,55 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
                 const SizedBox(height: 12),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  textDirection: TextDirection.ltr,
                   children: [
-                    const Text(
-                      'Already have an account? ',
-                      style: TextStyle(
-                          fontFamily: 'Poppins',
-                          color: Color.fromRGBO(175, 175, 175, 1)),
-                    ),
-                    GestureDetector(
-                      child: Container(
-                        alignment: Alignment.centerLeft,
-                        child: const Text(
-                          'Log in',
-                          style: TextStyle(
+                    TextButton(
+                        onPressed: () {
+                          if (Provider.of<LocaleProvider>(context,
+                                      listen: false)
+                                  .locale
+                                  .toString() ==
+                              "en") {
+                            Provider.of<LocaleProvider>(context, listen: false)
+                                .setLocale(const Locale("ar"));
+                          } else {
+                            Provider.of<LocaleProvider>(context, listen: false)
+                                .setLocale(const Locale("en"));
+                          }
+                        },
+                        child: Text(
+                            style: const TextStyle(color: Colors.green),
+                            Provider.of<LocaleProvider>(context, listen: false)
+                                .locale
+                                .toString())),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          AppLocalizations.of(context)!.alreadyHaveAnAccount,
+                          style: const TextStyle(
                               fontFamily: 'Poppins',
-                              color: Palette.buttonGreen),
+                              color: Color.fromRGBO(175, 175, 175, 1)),
                         ),
-                      ),
-                      onTap: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const LoginPage()),
-                        );
-                      },
+                        GestureDetector(
+                          child: Container(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              AppLocalizations.of(context)!.logIn,
+                              style: const TextStyle(
+                                  fontFamily: 'Poppins',
+                                  color: Palette.buttonGreen),
+                            ),
+                          ),
+                          onTap: () {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const LoginPage()),
+                            );
+                          },
+                        ),
+                      ],
                     ),
                   ],
                 ),

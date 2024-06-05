@@ -5,6 +5,7 @@ import 'package:smart_farm/features/authentication/models/authentication_models.
 import 'package:smart_farm/shared/utils/palette.dart';
 import 'package:smart_farm/shared/widgets/custom_button.dart';
 import 'package:smart_farm/shared/widgets/custom_textformfield.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Page2ChangePassword extends StatelessWidget {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -29,8 +30,8 @@ class Page2ChangePassword extends StatelessWidget {
               Container(
                 alignment: Alignment.centerLeft,
                 padding: const EdgeInsets.only(left: 25),
-                child: const Text(
-                  'Change Password',
+                child: Text(
+                  AppLocalizations.of(context)!.change_password,
                   style: TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
@@ -48,8 +49,8 @@ class Page2ChangePassword extends StatelessWidget {
                       alignment: Alignment.centerLeft,
                       padding: const EdgeInsets.symmetric(horizontal: 25),
                       child: CustomTextFormField(
-                        hintText: 'Enter your new password',
-                        labelText: 'new password',
+                        hintText: AppLocalizations.of(context)!.enter_your_new_password,
+                        labelText: AppLocalizations.of(context)!.new_password,
                         controller: passwordController1,
                       ),
                     ),
@@ -61,10 +62,10 @@ class Page2ChangePassword extends StatelessWidget {
                         controller: passwordController2,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'This field is required';
+                            return AppLocalizations.of(context)!.this_field_is_required;
                           } else if (passwordController2.text !=
                               passwordController1.text) {
-                            return 'Passwords do not match';
+                            return AppLocalizations.of(context)!.passwords_do_not_match;
                           }
                           return null;
                         },
@@ -72,8 +73,8 @@ class Page2ChangePassword extends StatelessWidget {
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
-                          hintText: 'Enter your new password',
-                          labelText: 'Confirm password',
+                          hintText: AppLocalizations.of(context)!.enter_your_new_password,
+                          labelText: AppLocalizations.of(context)!.confirm_password,
                           labelStyle: const TextStyle(
                             fontFamily: 'Poppins',
                             color: Colors.grey,
@@ -94,7 +95,7 @@ class Page2ChangePassword extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25.0),
                 child: CustomButton(
-                  buttonText: 'Next',
+                  buttonText: AppLocalizations.of(context)!.next,
                   onPressed: () {
                     //{if (_formKey.currentState!.validate()) {
                     //context.read<UserViewModel>().changePasswordProvider(

@@ -19,6 +19,7 @@ import 'package:smart_farm/shared/utils/palette.dart';
 import 'package:smart_farm/shared/widgets/custom_button.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:uuid/uuid.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AddProduct extends StatefulWidget {
   const AddProduct({super.key});
@@ -37,23 +38,23 @@ class _AddProductState extends State<AddProduct> {
   TextEditingController locationController = TextEditingController();
   TextEditingController imageController = TextEditingController();
   final picker = ImagePicker();
-  // ignore: non_constant_identifier_names
-  File image_file = File("");
+  File imageFile = File("");
   final storageRef =
       FirebaseStorage.instanceFor(bucket: 'gs://farmai-e033e.appspot.com')
           .ref();
-  var uuid = Uuid();
-  LatLng coordinate = LatLng(0, 0);
+  var uuid = const Uuid();
+  LatLng coordinate = const LatLng(0, 0);
+
   @override
   Widget build(BuildContext context) {
-    // Get the current user
+    AppLocalizations locale = AppLocalizations.of(context)!;
     User? currentUser = FirebaseAuth.instance.currentUser;
-
-// Retrieve the user ID
     String userID = currentUser!.uid;
+
     return Consumer<ProductsProvider>(
       builder: (context, productsProvider, child) {
         return Scaffold(
+          backgroundColor: Colors.white,
           appBar: AppBar(
             forceMaterialTransparency: true,
             title: SvgPicture.asset('assets/logos/AgriTech.svg'),
@@ -62,7 +63,10 @@ class _AddProductState extends State<AddProduct> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              icon: SvgPicture.asset('assets/icons/back_arrow.svg'),
+              icon: SvgPicture.asset(
+                'assets/icons/back_arrow.svg',
+                matchTextDirection: true,
+              ),
             ),
             actions: [
               Container(
@@ -70,7 +74,7 @@ class _AddProductState extends State<AddProduct> {
                 child: IconButton(
                   icon:
                       SvgPicture.asset('assets/icons/notification_active.svg'),
-                  onPressed: () {}, // for notifications functionnality
+                  onPressed: () {}, // for notifications functionality
                 ),
               )
             ],
@@ -88,22 +92,23 @@ class _AddProductState extends State<AddProduct> {
                         SizedBox(
                           width: MediaQuery.of(context).size.width * 0.17,
                         ),
-                        const Text(
-                          'Add your product',
-                          style: TextStyle(
-                              fontFamily: 'poppins',
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold),
+                        Text(
+                          locale.addYourProduct,
+                          style: const TextStyle(
+                            fontFamily: 'poppins',
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                         const SizedBox(
                           width: 20,
                         ),
-                        Image.asset('assets/images/store/Group.png')
+                        Image.asset('assets/images/store/Group.png'),
                       ],
                     ),
-                    const Text(
-                      'Product name',
-                      style: TextStyle(
+                    Text(
+                      locale.productName,
+                      style: const TextStyle(
                         fontFamily: 'poppins',
                         fontSize: 14,
                       ),
@@ -113,14 +118,14 @@ class _AddProductState extends State<AddProduct> {
                     ),
                     TextInput(
                       controller: nameController,
-                      hintText: 'Add product name',
+                      hintText: locale.productNameHint,
                     ),
                     const SizedBox(
                       height: 16,
                     ),
-                    const Text(
-                      'Price',
-                      style: TextStyle(
+                    Text(
+                      locale.price,
+                      style: const TextStyle(
                         fontFamily: 'poppins',
                         fontSize: 14,
                       ),
@@ -130,14 +135,14 @@ class _AddProductState extends State<AddProduct> {
                     ),
                     TextInput(
                       controller: priceController,
-                      hintText: 'Add price',
+                      hintText: locale.priceHint,
                     ),
                     const SizedBox(
                       height: 16,
                     ),
-                    const Text(
-                      'Quantity',
-                      style: TextStyle(
+                    Text(
+                      locale.quantity,
+                      style: const TextStyle(
                         fontFamily: 'poppins',
                         fontSize: 14,
                       ),
@@ -147,14 +152,14 @@ class _AddProductState extends State<AddProduct> {
                     ),
                     TextInput(
                       controller: quantityController,
-                      hintText: 'Add quantity',
+                      hintText: locale.quantityHint,
                     ),
                     const SizedBox(
                       height: 16,
                     ),
-                    const Text(
-                      'Description',
-                      style: TextStyle(
+                    Text(
+                      locale.description,
+                      style: const TextStyle(
                         fontFamily: 'poppins',
                         fontSize: 14,
                       ),
@@ -165,14 +170,14 @@ class _AddProductState extends State<AddProduct> {
                     TextInput(
                       theMaxLines: null,
                       controller: descriptionController,
-                      hintText: 'Add description',
+                      hintText: locale.descriptionHint,
                     ),
                     const SizedBox(
                       height: 16,
                     ),
-                    const Text(
-                      'Phone number',
-                      style: TextStyle(
+                    Text(
+                      locale.phoneNumberLogin,
+                      style: const TextStyle(
                         fontFamily: 'poppins',
                         fontSize: 14,
                       ),
@@ -182,14 +187,14 @@ class _AddProductState extends State<AddProduct> {
                     ),
                     TextInput(
                       controller: numberController,
-                      hintText: 'Add your phone number',
+                      hintText: locale.phoneNumberHint,
                     ),
                     const SizedBox(
                       height: 16,
                     ),
-                    const Text(
-                      'Location',
-                      style: TextStyle(
+                    Text(
+                      locale.location,
+                      style: const TextStyle(
                         fontFamily: 'poppins',
                         fontSize: 14,
                       ),
@@ -202,7 +207,7 @@ class _AddProductState extends State<AddProduct> {
                       controller: locationController,
                       suffixIcon: SvgPicture.asset(
                           'assets/icons/store_icons/location.svg'),
-                      hintText: 'Add your location',
+                      hintText: locale.locationHint,
                       onPressed: () {
                         Navigator.of(context)
                             .push(
@@ -216,7 +221,7 @@ class _AddProductState extends State<AddProduct> {
                               locationController.text = valeur.address!;
                               if (valeur.coordinates != null) {
                                 coordinate = valeur.coordinates!;
-                              } else {}
+                              }
                             });
                           }
                         });
@@ -225,9 +230,9 @@ class _AddProductState extends State<AddProduct> {
                     const SizedBox(
                       height: 16,
                     ),
-                    const Text(
-                      'Product image',
-                      style: TextStyle(
+                    Text(
+                      locale.productImage,
+                      style: const TextStyle(
                         fontFamily: 'poppins',
                         fontSize: 14,
                       ),
@@ -237,10 +242,10 @@ class _AddProductState extends State<AddProduct> {
                     ),
                     InputWithSuffix(
                       readOnly: true,
-                      controller: nameController,
+                      controller: imageController,
                       suffixIcon:
                           Image.asset('assets/icons/store_icons/Upload.png'),
-                      hintText: 'Upload image',
+                      hintText: locale.uploadImageHint,
                       onPressed: () async {
                         _pickImageFromGallery();
                         imageController.text = "${nameController.text}_image";
@@ -253,90 +258,85 @@ class _AddProductState extends State<AddProduct> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.43,
-                            child: CustomButton(
-                                buttonText: 'Sell',
-                                onPressed: () async {
-                                  if (_formKey.currentState!.validate()) {
-                                    final mountainsRef = storageRef
-                                        .child("images/${uuid.v4()}.jpg");
-                                    final uploadTask =
-                                        mountainsRef.putFile(image_file);
-                                    // ignore: unused_local_variable
-                                    final downloadUrl = await uploadTask
-                                        .whenComplete(() => null);
-                                    final url =
-                                        await mountainsRef.getDownloadURL();
-                                    Product newProduct = Product(
-                                        productID: // static one for test
-                                            (productsProvider.products.length +
-                                                    1)
-                                                .toString(),
-                                        name: nameController.text.trim(),
-                                        price: double.parse(
-                                            priceController.text.trim()),
-                                        sellerPhone:
-                                            numberController.text.trim(),
-                                        quantity:
-                                            quantityController.text.trim(),
-                                        description:
-                                            descriptionController.text.trim(),
-                                        sellerId: userID,
-                                        image: url,
-                                        type: 'Buy',
-                                        location: {
-                                          'latitude': coordinate.latitude,
-                                          'longitude': coordinate.longitude
-                                        });
-                                    ProductsProvider().addProductToCollection(
-                                        newProduct); // replace here with values gotten with map APi
-                                    Navigator.of(context).pop();
-                                    _showSuccessDialog();
-                                  }
-                                })),
+                          width: MediaQuery.of(context).size.width * 0.43,
+                          child: CustomButton(
+                            buttonText: locale.sell,
+                            onPressed: () async {
+                              if (_formKey.currentState!.validate()) {
+                                final mountainsRef =
+                                    storageRef.child("images/${uuid.v4()}.jpg");
+                                final uploadTask =
+                                    mountainsRef.putFile(imageFile);
+                                final downloadUrl =
+                                    await uploadTask.whenComplete(() => null);
+                                final url = await mountainsRef.getDownloadURL();
+                                Product newProduct = Product(
+                                  productID:
+                                      (productsProvider.products.length + 1)
+                                          .toString(),
+                                  name: nameController.text.trim(),
+                                  price:
+                                      double.parse(priceController.text.trim()),
+                                  sellerPhone: numberController.text.trim(),
+                                  quantity: quantityController.text.trim(),
+                                  description:
+                                      descriptionController.text.trim(),
+                                  sellerId: userID,
+                                  image: url,
+                                  type: 'Buy',
+                                  location: {
+                                    'latitude': coordinate.latitude,
+                                    'longitude': coordinate.longitude
+                                  },
+                                );
+                                ProductsProvider()
+                                    .addProductToCollection(newProduct);
+                                Navigator.of(context).pop();
+                                _showSuccessDialog();
+                              }
+                            },
+                          ),
+                        ),
                         SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.43,
-                            child: CustomButton(
-                                buttonText: 'Rent',
-                                onPressed: () async {
-                                  if (_formKey.currentState!.validate()) {
-                                    final mountainsRef = storageRef
-                                        .child("images/${uuid.v4()}.jpg");
-                                    final uploadTask =
-                                        mountainsRef.putFile(image_file);
-                                    final downloadUrl = await uploadTask
-                                        .whenComplete(() => null);
-                                    final url =
-                                        await mountainsRef.getDownloadURL();
-                                    Product newProduct = Product(
-                                        productID: // static one for test
-                                            (productsProvider.products.length +
-                                                    1)
-                                                .toString(),
-                                        name: nameController.text.trim(),
-                                        price: double.parse(
-                                            priceController.text.trim()),
-                                        sellerPhone:
-                                            numberController.text.trim(),
-                                        quantity:
-                                            quantityController.text.trim(),
-                                        description:
-                                            descriptionController.text.trim(),
-                                        sellerId: userID,
-                                        image:
-                                            url, // replace with uploaded image saved with firebase
-                                        type: 'Rent',
-                                        location: {
-                                          'latitude': 37.7749,
-                                          'longitude': -122.4194
-                                        } // replace here with values gotten with map APi
-                                        );
-                                    ProductsProvider()
-                                        .addProductToCollection(newProduct);
-                                    Navigator.of(context).pop();
-                                    _showSuccessDialog();
-                                  }
-                                }))
+                          width: MediaQuery.of(context).size.width * 0.43,
+                          child: CustomButton(
+                            buttonText: locale.rent,
+                            onPressed: () async {
+                              if (_formKey.currentState!.validate()) {
+                                final mountainsRef =
+                                    storageRef.child("images/${uuid.v4()}.jpg");
+                                final uploadTask =
+                                    mountainsRef.putFile(imageFile);
+                                final downloadUrl =
+                                    await uploadTask.whenComplete(() => null);
+                                final url = await mountainsRef.getDownloadURL();
+                                Product newProduct = Product(
+                                  productID:
+                                      (productsProvider.products.length + 1)
+                                          .toString(),
+                                  name: nameController.text.trim(),
+                                  price:
+                                      double.parse(priceController.text.trim()),
+                                  sellerPhone: numberController.text.trim(),
+                                  quantity: quantityController.text.trim(),
+                                  description:
+                                      descriptionController.text.trim(),
+                                  sellerId: userID,
+                                  image: url,
+                                  type: 'Rent',
+                                  location: {
+                                    'latitude': coordinate.latitude,
+                                    'longitude': coordinate.longitude
+                                  },
+                                );
+                                ProductsProvider()
+                                    .addProductToCollection(newProduct);
+                                Navigator.of(context).pop();
+                                _showSuccessDialog();
+                              }
+                            },
+                          ),
+                        ),
                       ],
                     ),
                     const SizedBox(
@@ -357,35 +357,37 @@ class _AddProductState extends State<AddProduct> {
 
     if (pickedFile != null) {
       setState(() {
-        image_file = File(pickedFile.path);
+        imageFile = File(pickedFile.path);
       });
 
-      return image_file;
-      // Todo: You can prompt user to input disease, definition, and solution here.
+      return imageFile;
     } else {
       return File("");
     }
   }
 
   void _showSuccessDialog() {
+    AppLocalizations locale = AppLocalizations.of(context)!;
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: SvgPicture.asset('assets/icons/Vector_Done.svg'),
-          content: const Text(
-            'Product added successfully',
-            style: TextStyle(fontFamily: 'poppins'),
+          content: Text(
+            locale.productAddedSuccessfully,
+            style: const TextStyle(fontFamily: 'poppins'),
           ),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: const Text(
-                'OK',
-                style: TextStyle(
-                    fontFamily: 'poppins', color: Palette.buttonGreen),
+              child: Text(
+                locale.ok,
+                style: const TextStyle(
+                  fontFamily: 'poppins',
+                  color: Palette.buttonGreen,
+                ),
               ),
             ),
           ],

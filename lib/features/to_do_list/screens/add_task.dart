@@ -9,6 +9,8 @@ import 'package:smart_farm/features/to_do_list/widgets/time_input.dart';
 import 'package:smart_farm/shared/services/notifications/notifications_services.dart';
 import 'package:smart_farm/shared/utils/palette.dart';
 import '../models/task.model.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AddTaskPage extends StatefulWidget {
   const AddTaskPage({super.key});
@@ -48,9 +50,9 @@ class _AddTaskPageState extends State<AddTaskPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    "Add Task",
-                    style: TextStyle(
+                  Text(
+                    AppLocalizations.of(context)!.addTask,
+                    style: const TextStyle(
                       fontFamily: 'poppins',
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -58,19 +60,19 @@ class _AddTaskPageState extends State<AddTaskPage> {
                   ),
                   const SizedBox(height: 16),
                   TextInput(
-                    labelText: 'Title',
+                    labelText: AppLocalizations.of(context)!.title,
                     prefixIcon: SvgPicture.asset(
                         'assets/icons/tasks_icons/title_icon.svg'),
                     controller: titleController,
                   ),
                   const SizedBox(height: 16),
                   TextInput(
-                    labelText: 'Description',
+                    labelText: AppLocalizations.of(context)!.description,
                     controller: descriptionController,
                   ),
                   const SizedBox(height: 16),
                   TimeInput(
-                    labelText: 'Start Time',
+                    labelText: AppLocalizations.of(context)!.startTime,
                     suffixIcon: const Icon(Icons.access_time_rounded,
                         color: Palette.buttonGreen),
                     controller: startTimeController,
@@ -93,7 +95,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                   ),
                   const SizedBox(height: 16),
                   TimeInput(
-                    labelText: 'End Time',
+                    labelText: AppLocalizations.of(context)!.endTime,
                     suffixIcon: const Icon(Icons.access_time_rounded,
                         color: Palette.buttonGreen),
                     controller: endTimeController,
@@ -116,7 +118,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                   ),
                   const SizedBox(height: 16),
                   TimeInput(
-                    labelText: 'Date ',
+                    labelText: AppLocalizations.of(context)!.date,
                     suffixIcon: SvgPicture.asset(
                         'assets/icons/tasks_icons/calendar_icon.svg'),
                     controller: dateController,
@@ -156,7 +158,9 @@ class _AddTaskPageState extends State<AddTaskPage> {
                         );
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => const ToDoListPage()));
-                        NotificationsServices().createTaskNotification(titleController.text, 'FINISH YOUR TASK!!');
+                        NotificationsServices().createTaskNotification(
+                            titleController.text,
+                            AppLocalizations.of(context)!.finishYourTask);
                       }
                     }),
                   ),
@@ -191,9 +195,9 @@ class Button extends StatelessWidget {
       ),
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 13),
-        child: const Text(
-          "Create task",
-          style: TextStyle(
+        child: Text(
+          AppLocalizations.of(context)!.createTask,
+          style: const TextStyle(
               fontFamily: 'Poppins',
               color: Colors.white,
               fontSize: 17,

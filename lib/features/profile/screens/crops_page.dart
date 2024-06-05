@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:smart_farm/features/profile/models/entity.dart';
 import 'package:smart_farm/features/profile/widgets/customentry.dart';
+import 'package:smart_farm/shared/utils/palette.dart';
 
 class CropsPage extends StatefulWidget {
   const CropsPage({super.key});
@@ -95,19 +97,21 @@ class _CropsPageState extends State<CropsPage> {
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
-  void _addCrop(BuildContext context) {
-    String name = '';
-    int quantity = 0;
+  void _addCrop(BuildContext context, String defaultname, int defaultquantity,
+      String action, String buttonaction) {
+    String name = defaultname;
+    int quantity = defaultquantity;
 
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Add Crop'),
+          title: Text('${action} Crop'),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               TextField(
+                controller: TextEditingController(text: name),
                 onChanged: (value) {
                   name = value;
                 },
@@ -115,6 +119,7 @@ class _CropsPageState extends State<CropsPage> {
               ),
               TextField(
                 keyboardType: TextInputType.number,
+                controller: TextEditingController(text: quantity.toString()),
                 onChanged: (value) {
                   quantity = int.parse(value);
                 },
@@ -129,7 +134,7 @@ class _CropsPageState extends State<CropsPage> {
 
                 Navigator.of(context).pop();
               },
-              child: const Text('Add'),
+              child: Text('${buttonaction}'),
             ),
             TextButton(
               onPressed: () {
@@ -147,10 +152,11 @@ class _CropsPageState extends State<CropsPage> {
   Widget build(BuildContext context) {
     MediaQueryData mediaQuery = MediaQuery.of(context);
     return Scaffold(
+      backgroundColor: Colors.white,
       floatingActionButton: IconButton(
         icon: SvgPicture.asset("assets/icons/Profile/message-add.svg"),
         onPressed: () {
-          _addCrop(context);
+          _addCrop(context, '', 0, "Add", "Add");
         },
       ),
       body: FutureBuilder(
@@ -219,11 +225,95 @@ class _CropsPageState extends State<CropsPage> {
                                       horizontal: 30.0, vertical: 10),
                                   child: Column(
                                     children: [
-                                      
-                                      CustomEntry(
-                                        hintText: crops[index].value.toString(),
-                                        cropsName: crops[index].name,
-                                      ),
+                                      Slidable(
+                                        key: const ValueKey(0),
+                                        startActionPane: ActionPane(
+                                          motion: const ScrollMotion(),
+                                          dismissible: DismissiblePane(
+                                            onDismissed: () {
+                                              _addCrop(
+                                                  context,
+                                                  crops[index].name,
+                                                  crops[index].value,
+                                                  "Edit",
+                                                  "Save");
+                                            },
+                                          ),
+                                          children: [
+                                            SlidableAction(
+                                              onPressed: (context) {},
+                                              icon: Icons.edit,
+                                            )
+                                          ],
+                                        ),
+                                        endActionPane: ActionPane(
+                                          motion: const ScrollMotion(),
+                                          dismissible: DismissiblePane(
+                                            onDismissed: () {},
+                                          ),
+                                          children: const  [],
+                                        ),
+                                        child: Column(
+                                          children: [
+                                            Container(
+                                              alignment: Alignment.centerLeft,
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 30.0),
+                                                child: Text(
+                                                  crops[index].name,
+                                                  style: const TextStyle(
+                                                      fontFamily: "Poppins",
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 20),
+                                                ),
+                                              ),
+                                            ),
+                                            TextField(
+                                              readOnly: true,
+                                              inputFormatters: <TextInputFormatter>[
+                                                FilteringTextInputFormatter
+                                                    .digitsOnly,
+                                              ],
+                                              keyboardType: const TextInputType
+                                                  .numberWithOptions(
+                                                  decimal: false),
+                                              controller:
+                                                  TextEditingController(),
+                                              style: const TextStyle(
+                                                  fontFamily: "Poppins",
+                                                  fontWeight: FontWeight.w600,
+                                                  fontSize: 20),
+                                              decoration: InputDecoration(
+                                                border: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(12),
+                                                ),
+                                                hintText: crops[index]
+                                                    .value
+                                                    .toString(),
+                                                hintStyle: const TextStyle(
+                                                    fontFamily: 'Poppins',
+                                                    color: Colors.black),
+                                                contentPadding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 40,
+                                                        vertical: 10),
+                                                focusedBorder:
+                                                    OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(12),
+                                                  borderSide: const BorderSide(
+                                                      color:
+                                                          Palette.buttonGreen),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      )
                                     ],
                                   ),
                                 );

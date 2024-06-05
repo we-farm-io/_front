@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:smart_farm/features/weather/providers/weather_provider.dart';
 import 'package:smart_farm/features/weather/widgets/weather_view.dart';
 import 'package:smart_farm/shared/utils/palette.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class WeatherPage extends StatefulWidget {
   const WeatherPage({super.key});
@@ -32,6 +33,7 @@ class _WeatherPageState extends State<WeatherPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Colors.white,
         body: Stack(children: [
           Image.asset('assets/images/weather/wallpaper.png'),
           SingleChildScrollView(
@@ -47,7 +49,7 @@ class _WeatherPageState extends State<WeatherPage> {
                           if (weather.weather == null) {
                             return _buildLoadingIndicator();
                           } else {
-                            return weatherView(weather);
+                            return weatherView(weather, context);
                           }
                         },
                       );
@@ -65,54 +67,30 @@ class _WeatherPageState extends State<WeatherPage> {
   Widget _buildLoadingIndicator() {
     return const Center(child: CircularProgressIndicator());
   }
-}
 
-Future<Position> _determinePosition(BuildContext context) async {
-  bool serviceEnabled;
-  LocationPermission permission;
+  Future<Position> _determinePosition(BuildContext context) async {
+    bool serviceEnabled;
+    LocationPermission permission;
 
-  serviceEnabled = await Geolocator.isLocationServiceEnabled();
-  if (!serviceEnabled) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text("Location Services Disabled"),
-          content: const Text("Please enable location services."),
-          actions: [
-            TextButton(
-              onPressed: () {
-                SystemNavigator.pop();
-              },
-              child: const Text(
-                "Got it",
-                style: TextStyle(color: Palette.buttonGreen),
-              ),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  permission = await Geolocator.checkPermission();
-  if (permission == LocationPermission.denied) {
-    permission = await Geolocator.requestPermission();
-    if (permission == LocationPermission.denied) {
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
       showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: const Text("Location Permissions Denied"),
-            content: const Text("Please grant location permissions."),
+            title: Text(
+              AppLocalizations.of(context)!.locationServicesDisabled,
+            ),
+            content: Text(
+                AppLocalizations.of(context)!.pleaseEnableLocationServices),
             actions: [
               TextButton(
                 onPressed: () {
                   SystemNavigator.pop();
                 },
-                child: const Text(
-                  "Got it",
-                  style: TextStyle(color: Palette.buttonGreen),
+                child: Text(
+                  AppLocalizations.of(context)!.gotIt,
+                  style: const TextStyle(color: Palette.buttonGreen),
                 ),
               ),
             ],
@@ -120,31 +98,60 @@ Future<Position> _determinePosition(BuildContext context) async {
         },
       );
     }
-  }
-
-  if (permission == LocationPermission.deniedForever) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text("Location Permissions Denied"),
-          content: const Text(
-              "Location permissions are permanently denied, we cannot request permissions."),
-          actions: [
-            TextButton(
-              onPressed: () {
-                SystemNavigator.pop();
-              },
-              child: const Text(
-                "Got it",
-                style: TextStyle(color: Palette.buttonGreen),
-              ),
-            ),
-          ],
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title:
+                  Text(AppLocalizations.of(context)!.locationPermissionsDenied),
+              content: Text(
+                  AppLocalizations.of(context)!.pleaseGrantLocationPermissions),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    SystemNavigator.pop();
+                  },
+                  child: Text(
+                    AppLocalizations.of(context)!.gotIt,
+                    style: const TextStyle(color: Palette.buttonGreen),
+                  ),
+                ),
+              ],
+            );
+          },
         );
-      },
-    );
-  }
+      }
+    }
 
-  return await Geolocator.getCurrentPosition();
+    if (permission == LocationPermission.deniedForever) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title:
+                Text(AppLocalizations.of(context)!.locationPermissionsDenied),
+            content: Text(
+                AppLocalizations.of(context)!.locationPermissionsDeniedForever),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  SystemNavigator.pop();
+                },
+                child: Text(
+                  AppLocalizations.of(context)!.gotIt,
+                  style: const TextStyle(color: Palette.buttonGreen),
+                ),
+              ),
+            ],
+          );
+        },
+      );
+    }
+
+    return await Geolocator.getCurrentPosition();
+  }
 }

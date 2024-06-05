@@ -8,6 +8,7 @@ import 'package:smart_farm/shared/utils/palette.dart';
 import 'package:smart_farm/shared/widgets/custom_button.dart';
 import 'package:smart_farm/shared/widgets/custom_textformfield.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:smart_farm/shared/services/locale_provider.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -31,6 +32,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    bool isEnglish = Localizations.localeOf(context).languageCode == 'en';
     final userViewModel = Provider.of<UserViewModel>(context);
 
     return Consumer<UserViewModel>(
@@ -46,11 +48,13 @@ class _LoginPageState extends State<LoginPage> {
                 SvgPicture.asset('assets/logos/AgriTech.svg'),
                 const SizedBox(height: 40),
                 Container(
-                  alignment: Alignment.centerLeft,
-                  padding: const EdgeInsets.only(left: 25),
-                  child: const Text(
-                    'Welcome Back',
-                    style: TextStyle(
+                  alignment: isEnglish ? Alignment.topLeft : Alignment.topRight,
+                  padding: isEnglish
+                      ? const EdgeInsets.only(left: 25)
+                      : const EdgeInsets.only(right: 25),
+                  child: Text(
+                    AppLocalizations.of(context)!.welcome_back,
+                    style: const TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
                       fontSize: 30,
@@ -60,11 +64,13 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 const SizedBox(height: 14),
                 Container(
-                  alignment: Alignment.centerLeft,
-                  padding: const EdgeInsets.only(left: 25),
-                  child: const Text(
-                    'Log into your account',
-                    style: TextStyle(
+                  alignment: isEnglish ? Alignment.topLeft : Alignment.topRight,
+                  padding: isEnglish
+                      ? const EdgeInsets.only(left: 25)
+                      : const EdgeInsets.only(right: 25),
+                  child: Text(
+                    AppLocalizations.of(context)!.loginto_account,
+                    style: const TextStyle(
                       color: Colors.black,
                       fontSize: 14,
                       fontFamily: 'Poppins',
@@ -80,8 +86,9 @@ class _LoginPageState extends State<LoginPage> {
                     child: Column(
                       children: [
                         CustomTextFormField(
-                            hintText: 'Enter your email',
-                            labelText: 'Email',
+                            hintText:
+                                AppLocalizations.of(context)!.enter_your_email,
+                            labelText: AppLocalizations.of(context)!.email,
                             controller: emailController),
                         const SizedBox(height: 26),
                         TextFormField(
@@ -107,8 +114,9 @@ class _LoginPageState extends State<LoginPage> {
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
                             ),
-                            hintText: 'Enter your password',
-                            labelText: 'Password',
+                            hintText: AppLocalizations.of(context)!
+                                .enter_your_password,
+                            labelText: AppLocalizations.of(context)!.password,
                             contentPadding: const EdgeInsets.all(14),
                             labelStyle: const TextStyle(
                               fontFamily: 'Poppins',
@@ -128,11 +136,14 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(height: 11.46),
                 GestureDetector(
                   child: Container(
-                    alignment: Alignment.centerLeft,
-                    padding: const EdgeInsets.only(left: 25),
-                    child: const Text(
-                      'Forgot password?',
-                      style: TextStyle(
+                    alignment:
+                        isEnglish ? Alignment.topLeft : Alignment.topRight,
+                    padding: isEnglish
+                        ? const EdgeInsets.only(left: 25)
+                        : const EdgeInsets.only(right: 25),
+                    child: Text(
+                      AppLocalizations.of(context)!.forgot_password,
+                      style: const TextStyle(
                         fontFamily: 'Poppins',
                         color: Palette.buttonGreen,
                       ),
@@ -151,47 +162,71 @@ class _LoginPageState extends State<LoginPage> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: CustomButton(
-                    buttonText: 'Log in',
+                    buttonText: AppLocalizations.of(context)!.log_in,
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
                         context.read<UserViewModel>().loginProvider(
                             context, userViewModel,
                             email: emailController.text.trim(),
-                            password: passwordController.text.trim());
+                            password: passwordController.text);
                       }
                     },
                   ),
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 20),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  textDirection: TextDirection.ltr,
                   children: [
-                    const Text(
-                      'Don’t have an account? ',
-                      style: TextStyle(
-                        fontFamily: 'Poppins',
-                        color: Color.fromRGBO(175, 175, 175, 1),
-                      ),
-                    ),
-                    GestureDetector(
-                      child: const Text(
-                        'Sign up',
-                        style: TextStyle(
-                          fontFamily: 'Poppins',
-                          color: Palette.buttonGreen,
+                    TextButton(
+                        onPressed: () {
+                          if (Provider.of<LocaleProvider>(context,
+                                      listen: false)
+                                  .locale
+                                  .toString() ==
+                              "en") {
+                            Provider.of<LocaleProvider>(context, listen: false)
+                                .setLocale(const Locale("ar"));
+                          } else {
+                            Provider.of<LocaleProvider>(context, listen: false)
+                                .setLocale(const Locale("en"));
+                          }
+                        },
+                        child: Text(
+                            style: const TextStyle(color: Colors.green),
+                            Provider.of<LocaleProvider>(context, listen: false)
+                                .locale
+                                .toString())),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          AppLocalizations.of(context)!.dont_have_an_account,
+                          style: const TextStyle(
+                            fontFamily: 'Poppins',
+                            color: Colors.grey,
+                          ),
                         ),
-                      ),
-                      onTap: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const SignUpPage()),
-                        );
-                      },
+                        GestureDetector(
+                          child: Text(
+                            AppLocalizations.of(context)!.sign_up,
+                            style: const TextStyle(
+                              fontFamily: 'Poppins',
+                              color: Palette.buttonGreen,
+                            ),
+                          ),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const SignUpPage(),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
                     ),
                   ],
                 ),
-                const SizedBox(height: 30),
               ],
             ),
           ),

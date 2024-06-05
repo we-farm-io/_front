@@ -5,6 +5,7 @@ import 'package:smart_farm/features/contact_us.dart/provider/report_provider.dar
 import 'package:smart_farm/features/contact_us.dart/widgets/send_button.dart';
 import 'package:smart_farm/features/contact_us.dart/widgets/input.dart';
 import 'package:smart_farm/shared/widgets/app_navbar.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ContactUs extends StatelessWidget {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -22,9 +23,9 @@ class ContactUs extends StatelessWidget {
       return Scaffold(
         appBar: AppBar(
           forceMaterialTransparency: true,
-          title: const Text(
-            'Contact us',
-            style: TextStyle(
+          title: Text(
+            AppLocalizations.of(context)!.contactUs,
+            style: const TextStyle(
                 fontSize: 20,
                 fontFamily: 'Poppins',
                 fontWeight: FontWeight.bold),
@@ -54,28 +55,28 @@ class ContactUs extends StatelessWidget {
                       SizedBox(
                           width: MediaQuery.of(context).size.width * 0.4,
                           child: Input(
-                              hintText: 'First Name*',
+                              hintText: AppLocalizations.of(context)!.firstName,
                               controller: firstNameController)),
                       SizedBox(
                           width: MediaQuery.of(context).size.width * 0.4,
                           child: Input(
-                              hintText: 'Last Name*',
+                              hintText: AppLocalizations.of(context)!.lastName,
                               controller: lastNameController)),
                     ],
                   ),
                   const SizedBox(
                     height: 20,
                   ),
-                  Input(hintText: 'Email*', controller: emailController),
+                  Input(hintText: AppLocalizations.of(context)!.email, controller: emailController),
                   const SizedBox(
                     height: 20,
                   ),
-                  Input(hintText: 'Phone Number*', controller: phoneController),
+                  Input(hintText: AppLocalizations.of(context)!.phoneNumber, controller: phoneController),
                   const SizedBox(
                     height: 20,
                   ),
                   Input(
-                    hintText: 'Your message...*',
+                    hintText: AppLocalizations.of(context)!.yourMessage,
                     controller: messageController,
                     maxLines: 3,
                   ),
@@ -83,7 +84,7 @@ class ContactUs extends StatelessWidget {
                     height: MediaQuery.of(context).size.height * 0.13,
                   ),
                   SendButton(
-                      buttonText: 'Send Message',
+                      buttonText: AppLocalizations.of(context)!.sendMessage,
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
                           reportProvider.createReport(
@@ -113,9 +114,9 @@ class ContactUs extends StatelessWidget {
       builder: (BuildContext context) {
         return AlertDialog(
           title: SvgPicture.asset('assets/icons/Vector_Done.svg'),
-          content: const Text(
-            'Message sent successfully!',
-            style: TextStyle(fontFamily: 'Poppins'),
+          content: Text(
+            AppLocalizations.of(context)!.messageSentSuccessfully,
+            style: const TextStyle(fontFamily: 'Poppins'),
           ),
           actions: [
             TextButton(
@@ -124,9 +125,9 @@ class ContactUs extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => const NavBar()),
                 );
               },
-              child: const Text(
-                'OK',
-                style: TextStyle(
+              child: Text(
+                AppLocalizations.of(context)!.ok,
+                style: const TextStyle(
                     fontFamily: 'Poppins',
                     color: Color.fromRGBO(52, 199, 89, 1)),
               ),

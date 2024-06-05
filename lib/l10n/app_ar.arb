@@ -2,31 +2,328 @@
     "@@locale": "ar",
     "change_language": "تغيير اللغة",
     "@change_language": {
-        "description": "عنوان صفحة تغيير اللغة"
+      "description": "The title of the change language page"
     },
     "english": "الإنجليزية",
     "@english": {
-        "description": "عنوان الزر للغة الإنجليزية"
+      "description": "Label for the English language button"
     },
     "arabic": "العربية",
     "@arabic": {
-        "description": "عنوان الزر للغة العربية"
+      "description": "Label for the Arabic language button"
     },
     "settings": "الإعدادات",
     "@settings": {
-        "description": "عنوان صفحة الإعدادات"
+      "description": "Title for the settings page"
     },
-   
     "weather": "الطقس",
     "@weather": {
-        "description": "عنوان عنصر الإعدادات للطقس"
+      "description": "Title for the weather settings item"
     },
-    "schedule": "الجدول الزمني",
+    "schedule": "الجدول",
     "@schedule": {
-        "description": "عنوان عنصر الإعدادات للجدول الزمني"
+      "description": "Title for the schedule settings item"
     },
     "government_support": "الدعم الحكومي",
     "@government_support": {
-        "description": "عنوان عنصر الإعدادات للدعم الحكومي"
-    }
+      "description": "Title for the government support settings item"
+    },
+    "welcome_back": "مرحبا بعودتك",
+    "@welcome_back": {
+      "description": "welcome back message to the app for the login screen"
+    },
+    "loginto_account": "تسجيل الدخول إلى حسابك",
+    "@loginto_account": {
+      "description": "label text for the login screen "
+    },
+    "email": "البريد الإلكتروني",
+    "@email": {
+      "description": "email hint text"
+    },
+    "password": "كلمة المرور",
+    "@password": {
+      "description": "password hint text"
+    },
+    "forgot_password": "نسيت كلمة المرور؟",
+    "@forgot_password": {
+      "description": ""
+    },
+    "enter_your_email": "أدخل بريدك الإلكتروني",
+    "@enter_your_email": {
+      "description": "hint text for email field"
+    },
+    "enter_your_password": "أدخل كلمة المرور الخاصة بك",
+    "@enter_your_password": {
+      "description": "hint text for password field"
+    },
+    "dont_have_an_account": "ليس لديك حساب؟",
+    "@dont_have_an_account": {
+      "description": "text for sign up link"
+    },
+    "sign_up": "اشترك",
+    "@sign_up": {
+      "description": "label for sign up button"
+    },
+    "log_in": "تسجيل الدخول",
+    "@log_in": {
+      "description": "label for log in button"
+    },
+    "enter_your_email_to_recieve_reset_password_link": "أدخل بريدك الإلكتروني لتلقي رابط إعادة تعيين كلمة المرور",
+    "@enter_your_email_to_recieve_reset_password_link": {
+      "description": "Enter your email to recieve reset password link"
+    },
+    "next": "التالي",
+    "@next": {
+      "description": "Next button"
+    },
+    "change_password": "تغيير كلمة المرور",
+    "@change_password": {
+      "description": "Change password button"
+    },
+    "old_password": "كلمة المرور القديمة",
+    "@old_password": {
+      "description": "hint text for old password field"
+    },
+    "new_password": "كلمة المرور الجديدة",
+    "@new_password": {
+      "description": "hint text for new password field"
+    },
+    "confirm_password": "تأكيد كلمة المرور",
+    "@confirm_password": {
+      "description": "hint text for confirm password field"
+    },
+    "update": "تحديث",
+    "@update": {
+      "description": "update button text"
+    },
+    "password_reset_successfully": "تم إعادة تعيين كلمة المرور بنجاح",
+    "@password_reset_successfully": {
+      "description": "password reset success message"
+    },
+    "error": "خطأ",
+    "@error": {
+      "description": "error message text"
+    },
+    "success": "نجاح!",
+    "@success": {
+      "description": "success message text"
+    },
+    "congratulationsYouHaveBeenSuccessfullyAuthenticated": "تهانينا! لقد تم التحقق من هويتك بنجاح",
+    "@congratulationsYouHaveBeenSuccessfullyAuthenticated": {
+      "description": "congratulations message for successful authentication"
+    },
+    "continueText": "متابعة",
+    "@continueText": {
+      "description": "continue button text"
+    },
+    "contactUs": "اتصل بنا",
+    "@contactUs": {
+      "description": "contact us button text"
+    },
+    "firstName": "الاسم الأول*",
+    "@firstName": {
+      "description": "first name field label"
+    },
+    "lastName": "اسم العائلة*",
+    "@lastName": {
+      "description": "last name field label"
+    },
+    "phoneNumber": "رقم الهاتف*",
+    "@phoneNumber": {
+      "description": "phone number field label"
+    },
+    "yourMessage": "رسالتك...*",
+    "@yourMessage": {
+      "description": "message field label"
+    },
+    "sendMessage": "إرسال رسالة",
+    "@sendMessage": {
+      "description": "send message button text"
+    },
+    "messageSentSuccessfully": "تم إرسال الرسالة بنجاح!",
+    "@messageSentSuccessfully": {
+      "description": "message sent success text"
+    },
+    "ok": "موافق",
+    "@ok": {
+      "description": "OK button text"
+    },
+    "getSeedRecommendations": "احصل على توصيات البذور",
+    "@getSeedRecommendations": {
+      "description": "get seed recommendations button text"
+    },
+    "notSureWhatToSeed": "لست متأكدًا مما يجب أن تزرعه؟ نموذج الذكاء الاصطناعي لدينا سيتخذ القرار نيابة عنك",
+    "@notSureWhatToSeed": {
+      "description": "AI model suggestion text for seeding"
+    },
+    "examineYourPlants": "افحص نباتاتك",
+    "@examineYourPlants": {
+      "description": "examine plants button text"
+    },
+    "eliminateDisease": "القضاء على الأمراض، والحفاظ على محصولك",
+    "@eliminateDisease": {
+      "description": "eliminate disease and preserve harvest text"
+    },
+    "manageYourFarmEfficiently": "إدارة مزرعتك بكفاءة",
+    "@manageYourFarmEfficiently": {
+      "description": "manage farm efficiently text"
+    },
+    "makeYourPlantsFeelBetter": "اجعل نباتاتك تشعر بالتحسن",
+    "@makeYourPlantsFeelBetter": {
+      "description": "make plants feel better text"
+    },
+    "locationServicesDisabled": "خدمات الموقع معطلة",
+    "@locationServicesDisabled": {
+      "description": "location services disabled message"
+    },
+    "pleaseEnableLocationServices": "يرجى تمكين خدمات الموقع.",
+    "@pleaseEnableLocationServices": {
+      "description": "enable location services request text"
+    },
+    "locationPermissionsDenied": "تم رفض أذونات الموقع",
+    "@locationPermissionsDenied": {
+      "description": "location permissions denied message"
+    },
+    "pleaseGrantLocationPermissions": "يرجى منح أذونات الموقع.",
+    "@pleaseGrantLocationPermissions": {
+      "description": "request for location permissions text"
+    },
+    "gotIt": "فهمت",
+    "@gotIt": {
+      "description": "got it button text"
+    },
+    "locationPermissionsDeniedForever": "تم رفض أذونات الموقع نهائيًا، لا يمكننا طلب الأذونات.",
+    "@locationPermissionsDeniedForever": {
+      "description": "location permissions denied forever message"
+    },
+    "todaysWeather": "طقس اليوم",
+    "@todaysWeather": {
+      "description": "today's weather title"
+    },
+    "todaysDate": "تاريخ اليوم",
+    "@todaysDate": {
+      "description": "today's date title"
+    },
+    "myLocation": "موقعي",
+    "@myLocation": {
+      "description": "my location label"
+    },
+    "temperature": "درجة الحرارة",
+    "@temperature": {
+      "description": "temperature label"
+    },
+    "humidity": "الرطوبة",
+    "@humidity": {
+      "description": "humidity label"
+    },
+    "windSpeed": "سرعة الرياح",
+    "@windSpeed": {
+      "description": "wind speed label"
+    },
+    "rainFall": "هطول الأمطار",
+    "@rainFall": {
+      "description": "rainfall label"
+    },
+    "addTask": "إضافة مهمة",
+    "@addTask": {
+      "description": "add task button text"
+    },
+    "title": "العنوان",
+    "@title": {
+      "description": "title label"
+    },
+    "description": "الوصف",
+    "@description": {
+      "description": "description label"
+    },
+    "startTime": "وقت البدء",
+    "@startTime": {
+      "description": "start time label"
+    },
+    "endTime": "وقت الانتهاء",
+    "@endTime": {
+      "description": "end time label"
+    },
+    "date": "التاريخ",
+    "@date": {
+      "description": "date label"
+    },
+    "createTask": "إنشاء مهمة",
+    "@createTask": {
+      "description": "create task button text"
+    },
+    "finishYourTask": "أكمل مهمتك!!",
+    "@finishYourTask": {
+      "description": "finish task alert text"
+    },
+    "todaysTasks": "مهام اليوم",
+    "all": "الكل",
+    "toDo": "قيد العمل",
+    "inProgress": "قيد التنفيذ",
+    "done": "منجز",
+    "errorLoadingTasks": "خطأ في تحميل المهام",
+    "noTasksHere": "لا توجد مهام هنا",
+    "taskStarted": "بدأت المهمة",
+    "taskCompleted": "اكتملت المهمة",
+    "deleteTask": "حذف المهمة",
+    "pleaseEnter": "يرجى إدخال",
+    "resend": "إعادة إرسال",
+    "check_email": "تحقق من البريد الإلكتروني",
+    "please_check_the_link_sent_to_your_email": "يرجى التحقق من الرابط المرسل إلى بريدك الإلكتروني",
+    "we_have_sent_you_a_link_in_your_email_that_you_can_click_on_to_change_your_password": "لقد أرسلنا لك رابطًا في بريدك الإلكتروني يمكنك النقر عليه لتغيير كلمة المرور الخاصة بك.",
+    "enter_your_new_password": "أدخل كلمة المرور الجديدة",
+    "this_field_is_required": "هذه الخانة مطلوبة",
+    "passwords_do_not_match": "كلمات المرور غير متطابقة",
+    "pleaseEnterAPhoneNumber": "يرجى إدخال رقم هاتف",
+    "invalidPhoneNumber": "رقم الهاتف غير صالح",
+    "enterYourEmail": "أدخل بريدك الإلكتروني",
+    "thisFieldIsRequired": "هذه الخانة مطلوبة",
+    "enterYourPassword": "أدخل كلمة المرور الخاصة بك",
+    "confirmPassword": "تأكيد كلمة المرور",
+    "passwordsDoNotMatch": "كلمات المرور غير متطابقة",
+    "enterYourID": "أدخل معرفك",
+    "userID": "معرف المستخدم",
+    "pleaseEnterYourID": "يرجى إدخال معرفك",
+    "invalidIDLength": "طول المعرف غير صالح",
+    "bySigningUpYouAgreeToOur": "بالتسجيل، فإنك توافق على",
+    "termsAndConditionsOfUse": "الشروط والأحكام",
+    "and": "و",
+    "privacyPolicy": "سياسة الخصوصية",
+    "signUp": "اشترك",
+    "pleaseAcceptTheTermsAndConditionsToSignUp": "يرجى قبول الشروط والأحكام للتسجيل",
+    "alreadyHaveAnAccount": "لديك حساب بالفعل؟",
+    "logIn": "تسجيل الدخول",
+    "passwordResetSuccessfully":"تمت إعادة تعيين كلمة المرور بنجاح",
+    "phoneNumberLogin" : "رقم الهاتف",
+    "language": "اللغة",
+    "sidebarUserProfile": "الملف الشخصي",
+  "sidebarSettings": "الإعدادات",
+  "sidebarContactUs": "اتصل بنا",
+  "sidebarLogOut": "تسجيل الخروج",
+  "plantCare": "رعاية النبات",
+  "diseaseDetection": "كشف الأمراض",
+  "predict" : "توقع",
+  "nValue": "قيمة النيتروجين",
+  "pValue": "قيمة الفوسفور",
+  "kValue": "قيمة البوتاسيوم",
+  "phValue": "قيمة الحموضة",
+  "rent": "إيجار",
+  "buy": "شراء",
+  "sell": "بيع",
+  "noProductsFound": "لم يتم العثور على منتجات",
+  "search": "بحث",
+  "addYourProduct": "أضف منتجك",
+  "productName": "اسم المنتج",
+  "productNameHint": "أضف اسم المنتج",
+  "price": "السعر",
+  "priceHint": "أضف السعر",
+  "quantity": "الكمية",
+  "quantityHint": "أضف الكمية",
+  "descriptionHint": "أضف الوصف",
+  "phoneNumberHint": "أضف رقم هاتفك",
+  "location": "الموقع",
+  "locationHint": "أضف موقعك",
+  "productImage": "صورة المنتج",
+  "uploadImageHint": "ارفع الصورة",
+  "productAddedSuccessfully": "تم إضافة المنتج بنجاح"
 }

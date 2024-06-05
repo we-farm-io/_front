@@ -5,6 +5,7 @@ import 'package:smart_farm/features/plantdoc/models/plant_species.dart';
 import 'package:smart_farm/features/plantdoc/providers/plantgrowth_provider.dart';
 import 'package:smart_farm/features/plantdoc/screens/plant_info_screen.dart';
 import 'package:smart_farm/shared/utils/palette.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Tab2 extends StatefulWidget {
   const Tab2({super.key});
@@ -25,7 +26,7 @@ class _Tab2State extends State<Tab2> {
           TextField(
             controller: provider.controller,
             decoration: InputDecoration(
-              hintText: 'Search',
+              hintText: AppLocalizations.of(context)!.search,
               focusedBorder: OutlineInputBorder(
                 borderSide: const BorderSide(color: Palette.buttonGreen),
                 borderRadius: BorderRadius.circular(16),
@@ -65,8 +66,8 @@ class _Tab2State extends State<Tab2> {
                           await provider
                               .fetchPlantGrowth(provider.species[index].id!);
                           navigator.push(MaterialPageRoute(
-                              builder: (context) =>
-                                  PlantInformation(provider.plantInfo)));
+                              builder: (context) => PlantInformation(
+                                  provider.plantInfo, species.photoUrl!)));
                         },
                         child: Card(
                           child: Padding(

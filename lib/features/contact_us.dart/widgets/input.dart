@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smart_farm/shared/utils/palette.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart'; // Import your localization package
 
 class Input extends StatelessWidget {
   final String hintText;
@@ -15,9 +16,9 @@ class Input extends StatelessWidget {
     this.maxLines = 1,
   });
 
-  static String? defaultValidator(String? value) {
+  static String? defaultValidator(BuildContext context, String? value) {
     if (value == null || value.isEmpty) {
-      return 'This field is required';
+      return AppLocalizations.of(context)!.thisFieldIsRequired; // Use the localized string
     }
     return null;
   }
@@ -27,7 +28,7 @@ class Input extends StatelessWidget {
     return TextFormField(
       controller: controller,
       maxLines: maxLines,
-      validator: validator ?? defaultValidator,
+      validator: validator ?? (value) => defaultValidator(context, value), // Pass context to the default validator
       decoration: InputDecoration(
         border: OutlineInputBorder(
           borderSide: const BorderSide(color: Colors.grey),

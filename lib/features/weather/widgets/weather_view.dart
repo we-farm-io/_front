@@ -3,15 +3,16 @@ import 'package:intl/intl.dart';
 import 'package:smart_farm/features/weather/providers/weather_provider.dart';
 import 'package:smart_farm/features/weather/widgets/weather_card.dart';
 import 'package:smart_farm/features/weather/widgets/weather_text.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-Widget weatherView(WeatherProvider weatherProvider) {
+Widget weatherView(WeatherProvider weatherProvider, BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Center(
+        Center(
           child: Text(
-            "Today's Weather",
-            style: TextStyle(
+            AppLocalizations.of(context)!.todaysWeather,
+            style: const TextStyle(
               fontFamily: 'poppins',
               fontSize: 36,
               fontWeight: FontWeight.bold,
@@ -19,9 +20,9 @@ Widget weatherView(WeatherProvider weatherProvider) {
           ),
         ),
         const SizedBox(height: 16),
-        const Text(
-          "Today's Date",
-          style: TextStyle(
+        Text(
+          AppLocalizations.of(context)!.todaysDate,
+          style: const TextStyle(
             fontFamily: 'poppins',
             fontSize: 16,
             fontWeight: FontWeight.bold,
@@ -34,9 +35,9 @@ Widget weatherView(WeatherProvider weatherProvider) {
           ),
         ),
         const SizedBox(height: 16),
-        const Text(
-          "My location",
-          style: TextStyle(
+         Text(
+          AppLocalizations.of(context)!.myLocation,
+          style: const TextStyle(
             fontFamily: 'poppins',
             fontSize: 16,
             fontWeight: FontWeight.bold,
@@ -54,13 +55,13 @@ Widget weatherView(WeatherProvider weatherProvider) {
           children: [
             WeatherCard(
               image: Image.asset('assets/images/weather/sun.png'),
-              label: 'Temperature',
+              label: AppLocalizations.of(context)!.temperature,
               value:
                   '${weatherProvider.weather?.temperature!.celsius!.round()}°C',
             ),
             WeatherCard(
               image: Image.asset('assets/images/weather/sun-clouds-rain.png'),
-              label: 'Humidity',
+              label: AppLocalizations.of(context)!.humidity,
               value: '${weatherProvider.weather?.humidity}%',
             ),
           ],
@@ -71,12 +72,12 @@ Widget weatherView(WeatherProvider weatherProvider) {
           children: [
             WeatherCard(
               image: Image.asset('assets/images/weather/bolt.png'),
-              label: 'Wind Speed',
+              label: AppLocalizations.of(context)!.windSpeed,
               value: '${weatherProvider.weather?.windSpeed}Km/h',
             ),
             WeatherCard(
               image: Image.asset('assets/images/weather/clouds-rain.png'),
-              label: 'RainFall',
+              label: AppLocalizations.of(context)!.rainFall,
               value: '${weatherProvider.weather?.rainLast3Hours ?? '0'} mm',
             ),
           ],

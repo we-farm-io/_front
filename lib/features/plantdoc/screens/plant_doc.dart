@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smart_farm/features/plantdoc/widgets/diseasedetection.dart';
 import 'package:smart_farm/features/plantdoc/widgets/plantinformation.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PlantDoc extends StatefulWidget {
   const PlantDoc({super.key});
@@ -59,13 +60,13 @@ class _PlantDocState extends State<PlantDoc>
                           borderRadius: BorderRadius.circular(10),
                         ),
                         controller: tabController,
-                        tabs: const [
+                        tabs: [
                           Tab(
-                            text: 'Plant Care',
+                            text: AppLocalizations.of(context)!.plantCare,
                           ),
                           Tab(
                             child: Text(
-                              'Disease detection',
+                              AppLocalizations.of(context)!.diseaseDetection,
                               softWrap: false,
                               overflow: TextOverflow.visible,
                             ),

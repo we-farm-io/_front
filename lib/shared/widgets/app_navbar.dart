@@ -41,9 +41,9 @@ class _NavBarState extends State<NavBar> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      Provider.of<NewsProvider>(context, listen: false).getNews();
+      Provider.of<NewsProvider>(context, listen: false).getNews(context);
     });
-     NotificationsServices().requestNotificationPermissions();
+    NotificationsServices().requestNotificationPermissions();
   }
 
   @override
@@ -64,7 +64,10 @@ class _NavBarState extends State<NavBar> {
             leading: Builder(
               builder: (BuildContext context) {
                 return IconButton(
-                  icon: SvgPicture.asset('assets/icons/side_bar.svg'),
+                  icon: SvgPicture.asset(
+                    'assets/icons/side_bar.svg',
+                    matchTextDirection: true,
+                  ),
                   onPressed: () {
                     Scaffold.of(context).openDrawer();
                   },
@@ -75,6 +78,7 @@ class _NavBarState extends State<NavBar> {
             ),
             centerTitle: true,
             title: const Wrap(
+              textDirection: TextDirection.ltr,
               direction: Axis.horizontal,
               children: [
                 Text("Agri",

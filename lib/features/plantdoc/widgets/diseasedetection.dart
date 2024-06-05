@@ -3,13 +3,13 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/services.dart';
-import 'package:tflite/tflite.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart_farm/features/plantdoc/models/plant_data.dart';
 import 'package:smart_farm/features/plantdoc/screens/plant_detail_screen.dart';
+import 'package:tflite_v2/tflite_v2.dart';
 
 class Tab1 extends StatefulWidget {
   const Tab1({super.key});
@@ -70,6 +70,7 @@ class _Tab1State extends State<Tab1> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: ListView.builder(
         itemCount: _recentPlantData.length,
         itemBuilder: (context, index) {

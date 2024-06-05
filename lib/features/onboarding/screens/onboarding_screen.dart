@@ -1,12 +1,10 @@
-// import 'dart:js_interop';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart_farm/features/authentication/screens/sign_up.dart';
 import 'package:smart_farm/features/onboarding/models/content_model.dart';
-import 'package:smart_farm/shared/widgets/app_navbar.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Onboarding extends StatefulWidget {
   const Onboarding({super.key});
@@ -18,8 +16,8 @@ class Onboarding extends StatefulWidget {
 class _OnBoardingState extends State<Onboarding> with TickerProviderStateMixin {
   late AnimationController _animationslideController;
   late AnimationController _animationfadeController;
-
   late PageController _controller;
+
   @override
   void initState() {
     _controller = PageController(initialPage: 0);
@@ -35,13 +33,15 @@ class _OnBoardingState extends State<Onboarding> with TickerProviderStateMixin {
     _controller.dispose();
     _animationfadeController.dispose();
     _animationslideController.dispose();
-
     super.dispose();
   }
 
   int currentIndex = 0;
+
   @override
   Widget build(BuildContext context) {
+    final contents = getOnBoardingContents(context);
+
     return Scaffold(
       backgroundColor: const Color(0xFF98C13F),
       body: Column(
@@ -119,7 +119,7 @@ class _OnBoardingState extends State<Onboarding> with TickerProviderStateMixin {
                             curve: Curves.easeInOutCubic);
                       },
                       controller: _controller,
-                      count: 3,
+                      count: contents.length,
                       effect: const ExpandingDotsEffect(
                         activeDotColor: Color(0xFF98C13F),
                         dotHeight: 6,
@@ -137,11 +137,14 @@ class _OnBoardingState extends State<Onboarding> with TickerProviderStateMixin {
               GetStarted(
                 currentIndex: currentIndex,
                 animationController: _animationslideController,
+                contents: contents,
               ),
               NextSkip(
-                  animationfadeController: _animationfadeController,
-                  currentIndex: currentIndex,
-                  controller: _controller),
+                animationfadeController: _animationfadeController,
+                currentIndex: currentIndex,
+                controller: _controller,
+                contents: contents,
+              ),
             ],
           ),
         ],
@@ -156,12 +159,14 @@ class NextSkip extends StatefulWidget {
     required AnimationController animationfadeController,
     required this.currentIndex,
     required PageController controller,
+    required this.contents,
   })  : _animationfadeController = animationfadeController,
         _controller = controller;
 
   final AnimationController _animationfadeController;
   final int currentIndex;
   final PageController _controller;
+  final List<OnBoardingContent> contents;
 
   @override
   State<NextSkip> createState() => _NextSkipState();
@@ -185,7 +190,7 @@ class _NextSkipState extends State<NextSkip> {
           children: [
             TextButton(
               onPressed: () async {
-                if (widget.currentIndex != contents.length - 1) {
+                if (widget.currentIndex != widget.contents.length - 1) {
                   SharedPreferences prefs =
                       await SharedPreferences.getInstance();
                   await prefs.setBool('onboardingCompleted', true);
@@ -210,7 +215,7 @@ class _NextSkipState extends State<NextSkip> {
               style: ButtonStyle(
                   overlayColor: MaterialStateProperty.all(Colors.transparent)),
               onPressed: () {
-                if (widget.currentIndex != contents.length - 1) {
+                if (widget.currentIndex != widget.contents.length - 1) {
                   widget._controller.nextPage(
                       duration: const Duration(milliseconds: 200),
                       curve: Curves.easeInOutCubic);
@@ -230,12 +235,15 @@ class _NextSkipState extends State<NextSkip> {
 
 class GetStarted extends StatefulWidget {
   final AnimationController animationController;
+  final int currentIndex;
+  final List<OnBoardingContent> contents;
+
   const GetStarted({
     super.key,
     required this.animationController,
     required this.currentIndex,
+    required this.contents,
   });
-  final int currentIndex;
 
   @override
   State<GetStarted> createState() => _GetStartedState();
@@ -246,7 +254,7 @@ class _GetStartedState extends State<GetStarted> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
-        if (widget.currentIndex == contents.length - 1) {
+        if (widget.currentIndex == widget.contents.length - 1) {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           await prefs.setBool('onboardingCompleted', true);
           if (context.mounted) {

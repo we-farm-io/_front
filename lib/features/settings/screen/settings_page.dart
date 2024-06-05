@@ -11,7 +11,10 @@ class SettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String locale = AppLocalizations.of(context)!.localeName;
+
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         forceMaterialTransparency: true,
         title: SvgPicture.asset('assets/logos/AgriTech.svg'),
@@ -21,7 +24,10 @@ class SettingsPage extends StatelessWidget {
             Navigator.of(context)
                 .push(MaterialPageRoute(builder: (context) => const NavBar()));
           },
-          icon: SvgPicture.asset('assets/icons/back_arrow.svg'),
+          icon: SvgPicture.asset(
+            'assets/icons/back_arrow.svg',
+            matchTextDirection: true,
+          ),
         ),
       ),
       body: Padding(
@@ -62,15 +68,39 @@ class SettingsPage extends StatelessWidget {
                   ),
                   onChanged: settingsProvider.setGovernmentSupportNotifications,
                 ),
-                ElevatedButton(
-                  onPressed: () {
+                const SizedBox(height: 24),
+                ListTile(
+                  contentPadding: EdgeInsets.all(0),
+                  onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => LanguagePage(),
                       ),
                     );
                   },
-                  child: Text(AppLocalizations.of(context)!.change_language),
+                  leading: Image.asset(
+                    "assets/icons/settings/Language.png",
+                    width: 40,
+                  ),
+                  title: Row(
+                    children: [
+                      const SizedBox(
+                        width: 14,
+                      ),
+                      Text(AppLocalizations.of(context)!.change_language,
+                          style: const TextStyle(
+                              fontFamily: 'Poppins',
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold)),
+                    ],
+                  ),
+                  trailing: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: SvgPicture.asset(
+                      "assets/icons/right_arrow.svg",
+                      matchTextDirection: true,
+                    ),
+                  ),
                 ),
               ],
             );

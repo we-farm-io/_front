@@ -1,13 +1,14 @@
 import 'dart:convert';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:http/http.dart';
 import 'package:smart_farm/features/home/models/news_model.dart';
 
 class NewsService {
-  Future<List<ArticleModel>> fetchNews() async {
+  Future<List<ArticleModel>> fetchNews(context) async {
     // Step 4: Fetch Dat
     final response = await get(Uri.parse(
-        "https://newsapi.org/v2/everything?q=l'agriculture&sortBy=publishedat&apiKey=014f1282a1964550b09c963fc5c19c49"));
+        "https://newsapi.org/v2/everything?q=${AppLocalizations.of(context)!.localeName == "en" ? "agriculture" : "زراعة"}&sortBy=publishedat&apiKey=014f1282a1964550b09c963fc5c19c49"));
     if (response.statusCode == 200) {
       final jsonData = json.decode(response.body);
       // ignore: no_leading_underscores_for_local_identifiers

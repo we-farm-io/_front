@@ -5,6 +5,7 @@ import 'package:smart_farm/features/authentication/models/authentication_models.
 import 'package:smart_farm/features/authentication/screens/page2_change_password.dart';
 import 'package:smart_farm/shared/utils/palette.dart';
 import 'package:smart_farm/shared/widgets/custom_button.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // ignore: must_be_immutable
 class Page1ChangePassword extends StatelessWidget {
@@ -28,9 +29,9 @@ class Page1ChangePassword extends StatelessWidget {
                 Container(
                   alignment: Alignment.centerLeft,
                   padding: const EdgeInsets.only(left: 25),
-                  child: const Center(
+                  child: Center(
                     child: Text(
-                      'Change Password',
+                      AppLocalizations.of(context)!.change_password,
                       style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
@@ -44,8 +45,9 @@ class Page1ChangePassword extends StatelessWidget {
                 Container(
                   alignment: Alignment.centerLeft,
                   padding: const EdgeInsets.symmetric(horizontal: 25),
-                  child: const Text(
-                    'We have sent you a link in your email that you can click on to change your password .',
+                  child: Text(
+                    AppLocalizations.of(context)!
+                        .we_have_sent_you_a_link_in_your_email_that_you_can_click_on_to_change_your_password,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         color: Colors.black,
@@ -56,8 +58,8 @@ class Page1ChangePassword extends StatelessWidget {
                 ),
                 const SizedBox(height: 32),
                 GestureDetector(
-                  child: const Text(
-                    'Resend',
+                  child: Text(
+                    AppLocalizations.of(context)!.resend,
                     style: TextStyle(
                         color: Palette.buttonGreen,
                         fontSize: 20,
@@ -65,15 +67,14 @@ class Page1ChangePassword extends StatelessWidget {
                         fontWeight: FontWeight.bold),
                   ),
                   onTap: () {
-                    userViewModel.sendPasswordResetEmail(
-                        context, email);
+                    userViewModel.sendPasswordResetEmail(context, email);
                   },
                 ),
                 const SizedBox(height: 32),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
                   child: CustomButton(
-                    buttonText: 'Check Email',
+                    buttonText: AppLocalizations.of(context)!.check_email,
                     onPressed: () {
                       if (userViewModel.linkChecked()) {
                         Navigator.push(
@@ -86,9 +87,9 @@ class Page1ChangePassword extends StatelessWidget {
                         );
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text(
-                                'Please check the link sent to your email'),
+                          SnackBar(
+                            content: Text(AppLocalizations.of(context)!
+                                .please_check_the_link_sent_to_your_email),
                           ),
                         );
                       }

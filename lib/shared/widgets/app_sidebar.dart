@@ -5,6 +5,7 @@ import 'package:smart_farm/features/authentication/models/authentication_models.
 import 'package:smart_farm/features/contact_us.dart/screen/contact_us.dart';
 import 'package:smart_farm/features/profile/screens/profile.dart';
 import 'package:smart_farm/features/settings/screen/settings_page.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SideBar extends StatelessWidget {
   const SideBar({
@@ -57,8 +58,8 @@ class SideBar extends StatelessWidget {
             ),
             ListTile(
               leading: Image.asset("assets/icons/SideBarIcons/ProfileIcon.png"),
-              title: const Text(
-                "Profile",
+              title: Text(
+                AppLocalizations.of(context)!.sidebarUserProfile,
                 style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 15,
@@ -72,8 +73,8 @@ class SideBar extends StatelessWidget {
             ListTile(
               leading:
                   Image.asset('assets/icons/SideBarIcons/SettingsIcon.png'),
-              title: const Text(
-                "Settings",
+              title:  Text(
+                AppLocalizations.of(context)!.sidebarSettings,
                 style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 15,
@@ -86,8 +87,8 @@ class SideBar extends StatelessWidget {
             ),
             ListTile(
               leading: Image.asset("assets/icons/SideBarIcons/ContactUs.png"),
-              title: const Text(
-                "Contact us",
+              title: Text(
+                AppLocalizations.of(context)!.sidebarContactUs,
                 style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 15,
@@ -100,8 +101,8 @@ class SideBar extends StatelessWidget {
             ),
             ListTile(
               leading: Image.asset("assets/icons/SideBarIcons/LogOut.png"),
-              title: const Text(
-                "Log out",
+              title:  Text(
+                AppLocalizations.of(context)!.sidebarLogOut,
                 style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 15,

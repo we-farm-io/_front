@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:smart_farm/features/profile/models/entity.dart';
 import 'package:smart_farm/features/profile/widgets/customentry.dart';
+import 'package:smart_farm/shared/utils/palette.dart';
 
 class MaterialsPage extends StatefulWidget {
   const MaterialsPage({super.key});
@@ -224,14 +227,84 @@ class _MaterialsPageState extends State<MaterialsPage> {
                                           horizontal: 30.0, vertical: 10),
                                       child: Column(
                                         children: [
-                                          CustomEntry(
-                                            hintText: materials[index]
-                                                .value
-                                                .toString(),
-                                            cropsName: materials[index].name,
-                                          ),
+                                          Slidable(
+                                            key: const ValueKey(0),
+                                            startActionPane: ActionPane(
+                                              motion: const ScrollMotion(),
+                                              dismissible: DismissiblePane(
+                                                onDismissed: () {},
+                                              ),
+                                              children: [],
+                                            ),
+                                            child: Column(
+                                              children: [
+                                                Container(
+                                                  alignment:
+                                                      Alignment.centerLeft,
+                                                  child: Padding(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                        horizontal: 30.0),
+                                                    child: Text(
+                                                      materials[index].name,
+                                                      style: const TextStyle(
+                                                          fontFamily: "Poppins",
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 20),
+                                                    ),
+                                                  ),
+                                                ),
+                                                TextField(
+                                                  readOnly: true,
+                                                  inputFormatters: <TextInputFormatter>[
+                                                    FilteringTextInputFormatter
+                                                        .digitsOnly,
+                                                  ],
+                                                  keyboardType:
+                                                      const TextInputType
+                                                          .numberWithOptions(
+                                                          decimal: false),
+                                                  controller:
+                                                      TextEditingController(),
+                                                  style: const TextStyle(
+                                                      fontFamily: "Poppins",
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      fontSize: 20),
+                                                  decoration: InputDecoration(
+                                                    border: OutlineInputBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              12),
+                                                    ),
+                                                    hintText: materials[index]
+                                                        .value
+                                                        .toString(),
+                                                    hintStyle: const TextStyle(
+                                                        fontFamily: 'Poppins',
+                                                        color: Colors.black),
+                                                    contentPadding:
+                                                        const EdgeInsets
+                                                            .symmetric(
+                                                            horizontal: 40,
+                                                            vertical: 10),
+                                                    focusedBorder:
+                                                        OutlineInputBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              12),
+                                                      borderSide:
+                                                          const BorderSide(
+                                                              color: Palette
+                                                                  .buttonGreen),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          )
                                         ],
-                                        
                                       ),
                                     );
                                   }),

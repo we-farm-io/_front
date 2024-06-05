@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TimeInput extends StatelessWidget {
   final String labelText;
@@ -24,7 +25,7 @@ class TimeInput extends StatelessWidget {
       controller: controller,
       validator: (value) {
         if (value == null || value.isEmpty) {
-          return 'Please enter $labelText';
+          return '${AppLocalizations.of(context)!.pleaseEnter} $labelText';
         }
         return null;
       },

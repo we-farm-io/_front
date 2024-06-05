@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:smart_farm/shared/widgets/custom_button.dart';
 
 class EditProfilePage extends StatefulWidget {
   const EditProfilePage({super.key});
@@ -12,6 +13,7 @@ class EditProfilePage extends StatefulWidget {
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
+  bool _isnotEditing = true;
   File? _image;
   final picker = ImagePicker();
   final TextEditingController _usernameController =
@@ -27,6 +29,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   Widget build(BuildContext context) {
     MediaQueryData mediaQuery = MediaQuery.of(context);
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Stack(
         children: [
           Positioned(
@@ -93,7 +96,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: TextFormField(
-                    readOnly: true,
+                    readOnly: _isnotEditing,
                     controller: _usernameController,
                     decoration: InputDecoration(
                       labelText: 'Username',
@@ -107,7 +110,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: TextFormField(
-                    readOnly: true,
+                    readOnly: _isnotEditing,
                     controller: _phoneNumberController,
                     decoration: InputDecoration(
                       labelText: 'Phone Number',
@@ -121,7 +124,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: TextFormField(
-                    readOnly: true,
+                    readOnly: _isnotEditing,
                     controller: _passwordController,
                     obscureText: true,
                     decoration: InputDecoration(
@@ -136,7 +139,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: TextFormField(
-                    readOnly: true,
+                    readOnly: _isnotEditing,
                     controller: _bioController,
                     maxLines: null,
                     decoration: InputDecoration(
@@ -147,6 +150,28 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     ),
                   ),
                 ),
+                Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Row(
+                    textDirection: TextDirection.rtl,
+                    children: [
+                      ElevatedButton(
+                          onPressed: () {
+                            setState(() {
+                              _isnotEditing = true;
+                            });
+                          },
+                          child: Text("save")),
+                      ElevatedButton(
+                          onPressed: () {
+                            setState(() {
+                              _isnotEditing = false;
+                            });
+                          },
+                          child: Text("edit"))
+                    ],
+                  ),
+                )
               ],
             ),
           ),

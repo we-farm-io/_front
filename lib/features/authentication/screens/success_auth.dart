@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smart_farm/features/authentication/screens/login_page.dart';
 import 'package:smart_farm/shared/widgets/app_navbar.dart';
 import 'package:smart_farm/shared/widgets/custom_button.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SuccessAuth extends StatelessWidget {
   const SuccessAuth({super.key});
@@ -23,9 +24,9 @@ class SuccessAuth extends StatelessWidget {
                     'assets/images/authentication_images/success.svg',
                     height: 380),
                 const SizedBox(height: 30),
-                const Text(
-                  'Success!',
-                  style: TextStyle(
+                Text(
+                  AppLocalizations.of(context)!.success,
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 22,
                     fontFamily: 'Poppins',
@@ -34,15 +35,15 @@ class SuccessAuth extends StatelessWidget {
                 const SizedBox(height: 27),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: const Text(
-                    'Congratulations! You have been successfully authenticated',
+                  child: Text(
+                    AppLocalizations.of(context)!.congratulationsYouHaveBeenSuccessfullyAuthenticated,
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 18, fontFamily: 'Poppins'),
+                    style: const TextStyle(fontSize: 18, fontFamily: 'Poppins'),
                   ),
                 ),
-                const SizedBox(height: 60),
+                SizedBox(height: 60),
                 CustomButton(
-                  buttonText: 'Continue',
+                  buttonText: AppLocalizations.of(context)!.continueText,
                   onPressed: () {
                     Navigator.push(
                       context,

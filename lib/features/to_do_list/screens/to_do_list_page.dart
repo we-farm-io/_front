@@ -11,6 +11,7 @@ import 'package:smart_farm/features/to_do_list/widgets/task_box.dart';
 import 'package:smart_farm/features/to_do_list/widgets/time_line.dart';
 import 'package:smart_farm/shared/utils/palette.dart';
 import '../widgets/do_button.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ToDoListPage extends StatefulWidget {
   const ToDoListPage({super.key});
@@ -39,8 +40,8 @@ class _ToDoListPageState extends State<ToDoListPage> {
           centerTitle: true,
           leading: IconButton(
             onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const ProfilePage()));
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const ProfilePage()));
             },
             icon: SvgPicture.asset('assets/icons/back_arrow.svg'),
           ),
@@ -57,18 +58,18 @@ class _ToDoListPageState extends State<ToDoListPage> {
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Text(
-                "Today's Tasks",
-                style: TextStyle(
+                AppLocalizations.of(context)!.todaysTasks,
+                style: const TextStyle(
                     fontFamily: 'poppins',
                     fontSize: 24,
                     fontWeight: FontWeight.bold),
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: TimeLine(),
             ),
             const SizedBox(
@@ -81,7 +82,7 @@ class _ToDoListPageState extends State<ToDoListPage> {
                 child: Row(
                   children: [
                     DoButton(
-                      buttonText: 'All',
+                      buttonText: AppLocalizations.of(context)!.all,
                       isSelected: tasksprovider.selectedFilter == 'All',
                       onPressed: () {
                         tasksprovider.setFilter('All');
@@ -92,7 +93,7 @@ class _ToDoListPageState extends State<ToDoListPage> {
                       width: 16,
                     ),
                     DoButton(
-                      buttonText: 'To Do',
+                      buttonText: AppLocalizations.of(context)!.toDo,
                       isSelected: tasksprovider.selectedFilter == 'To Do',
                       onPressed: () {
                         tasksprovider.setFilter('To Do');
@@ -103,7 +104,7 @@ class _ToDoListPageState extends State<ToDoListPage> {
                       width: 16,
                     ),
                     DoButton(
-                      buttonText: 'In progress',
+                      buttonText: AppLocalizations.of(context)!.inProgress,
                       isSelected: tasksprovider.selectedFilter == 'In progress',
                       onPressed: () {
                         tasksprovider.setFilter('In progress');
@@ -114,7 +115,7 @@ class _ToDoListPageState extends State<ToDoListPage> {
                       width: 16,
                     ),
                     DoButton(
-                        buttonText: 'Done',
+                        buttonText: AppLocalizations.of(context)!.done,
                         isSelected: tasksprovider.selectedFilter == 'Done',
                         onPressed: () {
                           tasksprovider.setFilter('Done');
@@ -140,16 +141,17 @@ class _ToDoListPageState extends State<ToDoListPage> {
                       ),
                     );
                   } else if (snapshot.hasError) {
-                    return const Center(
-                      child: Text('Error loading tasks'),
+                    return Center(
+                      child:
+                          Text(AppLocalizations.of(context)!.errorLoadingTasks),
                     );
                   } else {
                     final todos = snapshot.data!;
                     return todos.isEmpty
-                        ? const Center(
+                        ? Center(
                             child: Text(
-                              'No Tasks here',
-                              style: TextStyle(
+                              AppLocalizations.of(context)!.noTasksHere,
+                              style: const TextStyle(
                                   fontFamily: 'poppins',
                                   fontSize: 24,
                                   fontWeight: FontWeight.bold),

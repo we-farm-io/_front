@@ -153,7 +153,7 @@ class _MyAppState extends State<MyApp> {
                 // ignore: avoid_print
                 print(snapshot.data);
                 return onboardingCompleted
-                    ? const LoginPage()
+                    ? const Onboarding()
                     : const Onboarding(); //boarding is disabled for now
               }
             },

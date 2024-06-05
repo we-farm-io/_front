@@ -19,7 +19,8 @@ class CustomEntry extends StatelessWidget {
       startActionPane: ActionPane(
         motion: const ScrollMotion(),
         dismissible: DismissiblePane(
-          onDismissed: () {},
+          onDismissed: () {
+          },
         ),
         children: [],
       ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smart_farm/shared/utils/palette.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TextInput extends StatelessWidget {
   final String labelText;
@@ -22,7 +23,7 @@ class TextInput extends StatelessWidget {
       maxLines: null,
       validator: (value) {
         if (value == null || value.isEmpty) {
-          return 'Please enter $labelText';
+          return '${AppLocalizations.of(context)!.pleaseEnter} $labelText';
         }
         return null;
       },
@@ -31,8 +32,8 @@ class TextInput extends StatelessWidget {
         filled: true,
         prefixIcon: prefixIcon != null
             ? Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     prefixIcon!,
@@ -47,10 +48,10 @@ class TextInput extends StatelessWidget {
                     ),
                   ],
                 ),
-            )
+              )
             : Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
                   labelText,
                   style: const TextStyle(
                     color: Color.fromRGBO(67, 91, 113, 1),
@@ -58,7 +59,7 @@ class TextInput extends StatelessWidget {
                     fontFamily: 'poppins',
                   ),
                 ),
-            ),
+              ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10.0),
           borderSide: BorderSide.none,

@@ -1,25 +1,34 @@
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter/material.dart';
+
 class OnBoardingContent {
-  String image;
-  String title;
-  String description;
-  OnBoardingContent(
-      {required this.image, required this.title, required this.description});
+  final String image;
+  final String title;
+  final String description;
+
+  OnBoardingContent({
+    required this.image,
+    required this.title,
+    required this.description,
+  });
 }
 
-List<OnBoardingContent> contents = [
-  OnBoardingContent(
-    image: "assets/images/on_boarding_images/3.svg",
-    title: "Get seed recommendations",
-    description:
-        "Not sure what to seed? Our AI model will make a decision for you",
-  ),
-  OnBoardingContent(
-    image: "assets/images/on_boarding_images/1.svg",
-    title: "Examine your plants",
-    description: "eliminate disease , preserve your harvest",
-  ),
-  OnBoardingContent(
+List<OnBoardingContent> getOnBoardingContents(BuildContext context) {
+  return [
+    OnBoardingContent(
+      image: "assets/images/on_boarding_images/3.svg",
+      title: AppLocalizations.of(context)!.getSeedRecommendations,
+      description: AppLocalizations.of(context)!.notSureWhatToSeed,
+    ),
+    OnBoardingContent(
+      image: "assets/images/on_boarding_images/1.svg",
+      title: AppLocalizations.of(context)!.examineYourPlants,
+      description: AppLocalizations.of(context)!.eliminateDisease,
+    ),
+    OnBoardingContent(
       image: "assets/images/on_boarding_images/2.svg",
-      title: "Manage your Farm efficiently",
-      description: "make your plants feel better"),
-];
+      title: AppLocalizations.of(context)!.manageYourFarmEfficiently,
+      description: AppLocalizations.of(context)!.makeYourPlantsFeelBetter,
+    ),
+  ];
+}

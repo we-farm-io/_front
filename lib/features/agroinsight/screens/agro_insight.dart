@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:smart_farm/features/agroinsight/widgets/result.dart';
 import 'package:smart_farm/shared/widgets/custom_button.dart';
 import 'package:tflite_flutter/tflite_flutter.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AgroInsight extends StatefulWidget {
   const AgroInsight({super.key});
@@ -18,7 +19,7 @@ class AgroInsight extends StatefulWidget {
 
 class _AgroInsightState extends State<AgroInsight> {
   final String apiUrl =
-      'https://api.weatherbit.io/v2.0/history/daily?lat=35.2644406&lon=-0.68899378&start_date=2023-1-25&end_date=2023-1-26&key=af606978766f43a7911ff411cbf168e3';
+      'https://api.weatherbit.io/v2.0/history/daily?lat=35.2644406&lon=-0.68899378&start_date=2023-1-25&end_date=2023-1-26&key=2d6bc64cc7674aad8ada593c6a1ce996';
   late Future<Map<String, dynamic>> futureData;
   String? errorMessage1;
   String? errorMessage2;
@@ -53,6 +54,7 @@ class _AgroInsightState extends State<AgroInsight> {
 
   @override
   Widget build(BuildContext context) {
+    AppLocalizations locale = AppLocalizations.of(context)!;
     return Scaffold(
         backgroundColor: Colors.white,
         body: Padding(
@@ -64,11 +66,11 @@ class _AgroInsightState extends State<AgroInsight> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: Text(
-                          'Nitrogen Value',
-                          style: TextStyle(
+                          locale.nValue,
+                          style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
                               fontFamily: "Poppins"),
@@ -79,8 +81,10 @@ class _AgroInsightState extends State<AgroInsight> {
                         controller: controller1,
                         onChanged: (value) {
                           setState(() {
-                            errorMessage1 =
-                                value.isEmpty ? 'Field is required' : null;
+                            errorMessage1 = value.isEmpty
+                                ? AppLocalizations.of(context)!
+                                    .thisFieldIsRequired
+                                : null;
                           });
                         },
                         decoration: InputDecoration(
@@ -100,11 +104,11 @@ class _AgroInsightState extends State<AgroInsight> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: Text(
-                          'Phosphorus value',
-                          style: TextStyle(
+                          locale.pValue,
+                          style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
                               fontFamily: "Poppins"),
@@ -115,8 +119,10 @@ class _AgroInsightState extends State<AgroInsight> {
                         controller: controller2,
                         onChanged: (value) {
                           setState(() {
-                            errorMessage2 =
-                                value.isEmpty ? 'Field is required' : null;
+                            errorMessage2 = value.isEmpty
+                                ? AppLocalizations.of(context)!
+                                    .thisFieldIsRequired
+                                : null;
                           });
                         },
                         decoration: InputDecoration(
@@ -136,11 +142,11 @@ class _AgroInsightState extends State<AgroInsight> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: Text(
-                          'Potassium Value',
-                          style: TextStyle(
+                          locale.kValue,
+                          style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
                               fontFamily: "Poppins"),
@@ -151,8 +157,10 @@ class _AgroInsightState extends State<AgroInsight> {
                         controller: controller3,
                         onChanged: (value) {
                           setState(() {
-                            errorMessage3 =
-                                value.isEmpty ? 'Field is required' : null;
+                            errorMessage3 = value.isEmpty
+                                ? AppLocalizations.of(context)!
+                                    .thisFieldIsRequired
+                                : null;
                           });
                         },
                         decoration: InputDecoration(
@@ -172,11 +180,11 @@ class _AgroInsightState extends State<AgroInsight> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: Text(
-                          'PH value',
-                          style: TextStyle(
+                          locale.phValue,
+                          style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
                               fontFamily: "Poppins"),
@@ -187,8 +195,10 @@ class _AgroInsightState extends State<AgroInsight> {
                         controller: controller4,
                         onChanged: (value) {
                           setState(() {
-                            errorMessage4 =
-                                value.isEmpty ? 'Field is required' : null;
+                            errorMessage4 = value.isEmpty
+                                ? AppLocalizations.of(context)!
+                                    .thisFieldIsRequired
+                                : null;
                           });
                         },
                         decoration: InputDecoration(
@@ -241,7 +251,7 @@ class _AgroInsightState extends State<AgroInsight> {
                         );
                       }
                     },
-                    buttonText: "Predict",
+                    buttonText: AppLocalizations.of(context)!.predict,
                   ),
                 ],
               ),
@@ -290,10 +300,18 @@ class _AgroInsightState extends State<AgroInsight> {
     // Get values from text controllers
 
     setState(() {
-      errorMessage1 = controller1.text.isEmpty ? 'Field is required' : null;
-      errorMessage2 = controller2.text.isEmpty ? 'Field is required' : null;
-      errorMessage3 = controller3.text.isEmpty ? 'Field is required' : null;
-      errorMessage4 = controller4.text.isEmpty ? 'Field is required' : null;
+      errorMessage1 = controller1.text.isEmpty
+          ? AppLocalizations.of(context)!.thisFieldIsRequired
+          : null;
+      errorMessage2 = controller2.text.isEmpty
+          ? AppLocalizations.of(context)!.thisFieldIsRequired
+          : null;
+      errorMessage3 = controller3.text.isEmpty
+          ? AppLocalizations.of(context)!.thisFieldIsRequired
+          : null;
+      errorMessage4 = controller4.text.isEmpty
+          ? AppLocalizations.of(context)!.thisFieldIsRequired
+          : null;
     });
 
     double nValue = double.tryParse(controller1.text) ?? 0.0;
@@ -321,8 +339,6 @@ class _AgroInsightState extends State<AgroInsight> {
     _interpreter.run(input, output);
     int? maxindex = findMaxIndex(output);
     if (maxindex == null) {}
-    print(maxindex);
-    print("should have run");
     return maxindex ?? 0;
   }
 

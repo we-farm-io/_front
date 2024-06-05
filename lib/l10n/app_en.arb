@@ -2,53 +2,229 @@
     "@@locale": "en",
     "change_language": "Change Language",
     "@change_language": {
-        "description": "The title of the change language page"
+      "description": "The title of the change language page"
     },
+    "language":"Language",
     "english": "English",
     "@english": {
-        "description": "Label for the English language button"
+      "description": "Label for the English language button"
     },
     "arabic": "Arabic",
     "@arabic": {
-        "description": "Label for the Arabic language button"
+      "description": "Label for the Arabic language button"
     },
     "settings": "Settings",
     "@settings": {
-        "description": "Title for the settings page"
+      "description": "Title for the settings page"
     },
     "weather": "Weather",
     "@weather": {
-        "description": "Title for the weather settings item"
+      "description": "Title for the weather settings item"
     },
     "schedule": "Schedule",
     "@schedule": {
-        "description": "Title for the schedule settings item"
+      "description": "Title for the schedule settings item"
     },
     "government_support": "Government Support",
     "@government_support": {
-        "description": "Title for the government support settings item"
+      "description": "Title for the government support settings item"
     },
     "welcome_back" : "Welcome Back",
     "@welcome_back" : {
-        "description": "welcome back message to the app for the login screen"
+      "description": "welcome back message to the app for the login screen"
     },
     "loginto_account" : "Log into your account",
     "@loginto_account" : {
-        "description": "label text for the login screen "
-
-    }
-,
+      "description": "label text for the login screen "
+    },
     "email" : "Email",
     "@email"  : {
-        "description": "email hint text"
+      "description": "email hint text"
     },
     "password" : "Password",
     "@password" : {
-        "description": "password hint text"
+      "description": "password hint text"
     },
-
     "forgot_password" : "Forgot Password ?",
     "@forgot_password" : {
-        "description": ""
-    }
+      "description": ""
+    },
+    "enter_your_email" : "Enter your email",
+    "@enter_your_email" : {
+      "description": "hint text for email field"
+    },
+    "enter_your_password" : "Enter your password",
+    "@enter_your_password" : {
+      "description": "hint text for password field"
+    },
+    "dont_have_an_account" : "Don’t have an account? ",
+    "@dont_have_an_account" : {
+      "description": "text for sign up link"
+    },
+    "sign_up" : "Sign up",
+    "@sign_up" : {
+      "description": "label for sign up button"
+    },
+    "log_in" : "Log in",
+    "@log_in" : {
+      "description": "label for log in button"
+    },
+    "enter_your_email_to_recieve_reset_password_link": "Enter your email to recieve reset password link",
+"@enter_your_email_to_recieve_reset_password_link": {
+  "description": "Enter your email to recieve reset password link"
+},
+
+"next": "Next",
+"@next": {
+  "description": "Next button"
+},
+"change_password": "Change Password",
+"@change_password": {
+  "description": "Title of the change password page"
+},
+"resend": "Resend",
+"@resend": {
+  "description": "Button to resend the password reset email"
+},
+"check_email": "Check Email",
+"@check_email": {
+  "description": "Button to check the email for the password reset link"
+},
+"please_check_the_link_sent_to_your_email": "Please check the link sent to your email",
+"@please_check_the_link_sent_to_your_email": {
+  "description": "Error message when the user hasn't checked the email"
+},
+"we_have_sent_you_a_link_in_your_email_that_you_can_click_on_to_change_your_password": "We have sent you a link in your email that you can click on to change your password.",
+"@we_have_sent_you_a_link_in_your_email_that_you_can_click_on_to_change_your_password": {
+  "description": "Instructional text on the change password page"
+},
+
+"enter_your_new_password": "Enter your new password",
+"@enter_your_new_password": {
+  "description": "Hint text for the new password field"
+},
+"new_password": "New password",
+"@new_password": {
+  "description": "Label for the new password field"
+},
+"this_field_is_required": "This field is required",
+"@this_field_is_required": {
+  "description": "Error message for the required field"
+},
+"passwords_do_not_match": "Passwords do not match",
+"@passwords_do_not_match": {
+  "description": "Error message for the mismatched passwords"
+},
+"confirm_password": "Confirm password",
+"@confirm_password": {
+  "description": "Label for the confirm password field"
+},
+
+"pleaseEnterAPhoneNumber": "Please enter a phone number",
+"invalidPhoneNumber": "Invalid phone number",
+"enterYourEmail": "Enter your email",
+
+"thisFieldIsRequired": "This field is required",
+  "enterYourPassword": "Enter your password",
+  "confirmPassword": "Confirm Password",
+  "passwordsDoNotMatch": "Passwords do not match",
+  "enterYourID": "Enter your ID",
+  "userID": "User ID",
+  "pleaseEnterYourID": "Please enter your ID",
+  "invalidIDLength": "Invalid ID length",
+  
+    "bySigningUpYouAgreeToOur": "By signing up you agree to our",
+    "termsAndConditionsOfUse": "terms & conditions of use",
+    "and": "and",
+    "privacyPolicy": "privacy policy",
+    "signUp": "Sign Up",
+  "pleaseAcceptTheTermsAndConditionsToSignUp": "Please accept the terms & conditions to sign up.",
+  "alreadyHaveAnAccount": "Already have an account?",
+  "logIn": "Log in",
+  "success": "Success!",
+  "congratulationsYouHaveBeenSuccessfullyAuthenticated": "Congratulations! You have been successfully authenticated",
+  "continueText": "Continue",
+  
+    "passwordResetSuccessfully": "Password reset successfully!"
+    ,
+        "contactUs": "Contact us",
+        "firstName": "First Name*",
+        "lastName": "Last Name*",
+        "phoneNumber": "Phone Number*",
+        "yourMessage": "Your message...*",
+        "sendMessage": "Send Message",
+        "messageSentSuccessfully": "Message sent successfully!",
+        "ok": "OK",
+        "getSeedRecommendations": "Get seed recommendations",
+        "notSureWhatToSeed": "Not sure what to seed? Our AI model will make a decision for you",
+        "examineYourPlants": "Examine your plants",
+        "eliminateDisease": "eliminate disease, preserve your harvest",
+        "manageYourFarmEfficiently": "Manage your Farm efficiently",
+        "makeYourPlantsFeelBetter": "make your plants feel better",
+        "locationServicesDisabled": "Location Services Disabled",
+        "pleaseEnableLocationServices": "Please enable location services.",
+        "locationPermissionsDenied": "Location Permissions Denied",
+  "pleaseGrantLocationPermissions": "Please grant location permissions.",
+  "gotIt": "Got it",
+  "locationPermissionsDeniedForever": "Location permissions are permanently denied, we cannot request permissions.",
+  
+    "todaysWeather": "Today's Weather",
+    "todaysDate": "Today's Date",
+    "myLocation": "My location",
+    "temperature": "Temperature",
+    "humidity": "Humidity",
+    "windSpeed": "Wind Speed",
+    "rainFall": "RainFall",
+    "addTask": "Add Task",
+    "title": "Title",
+    "description": "Description",
+    "startTime": "Start Time",
+    "endTime": "End Time",
+    "date": "Date",
+    "createTask": "Create Task",
+    "finishYourTask": "FINISH YOUR TASK!!",
+    "todaysTasks": "Today's Tasks",
+  "all": "All",
+  "toDo": "To Do",
+  "inProgress": "In Progress",
+  "done": "Done",
+  "errorLoadingTasks": "Error loading tasks",
+  "noTasksHere": "No Tasks here",
+  "taskStarted": "Task Started",
+  "taskCompleted": "Task Completed",
+  "deleteTask": "Delete Task",
+  "pleaseEnter": "Please enter",
+  "phoneNumberLogin" : "Phone number",
+  "sidebarUserProfile": "Profile",
+  "sidebarSettings": "Settings",
+  "sidebarContactUs": "Contact us",
+  "sidebarLogOut": "Log out",
+  "plantCare": "Plant Care",
+  "diseaseDetection": "Disease Detection",
+  "predict" : "Predict",
+  "nValue": "Nitrogen Value",
+  "pValue": "Phosphorus Value",
+
+  "kValue": "Potassium Value",
+
+  "phValue": "PH Value",
+  "rent": "Rent",
+  "buy": "Buy",
+  "sell": "Sell",
+  "noProductsFound": "No Products Found",
+  "search" : "Search",
+  "addYourProduct": "Add your product",
+  "productName": "Product name",
+  "productNameHint": "Add product name",
+  "price": "Price",
+  "priceHint": "Add price",
+  "quantity": "Quantity",
+  "quantityHint": "Add quantity",
+  "descriptionHint": "Add description",
+  "phoneNumberHint": "Add your phone number",
+  "location": "Location",
+  "locationHint": "Add your location",
+  "productImage": "Product image",
+  "uploadImageHint": "Upload image",
+  "productAddedSuccessfully": "Product added successfully"
 }

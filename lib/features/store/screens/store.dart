@@ -5,6 +5,7 @@ import 'package:smart_farm/features/store/screens/add_product.dart';
 import 'package:smart_farm/features/store/widgets/app_search_bar.dart';
 import 'package:smart_farm/features/store/widgets/store_view.dart';
 import '../widgets/custom_icon.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // ignore: must_be_immutable
 class StorePage extends StatefulWidget {
@@ -28,9 +29,11 @@ class _StorePageState extends State<StorePage> {
 
   @override
   Widget build(BuildContext context) {
+    AppLocalizations locale = AppLocalizations.of(context)!;
     return Consumer<ProductsProvider>(
       builder: (context, productsProvider, child) {
         return Scaffold(
+          backgroundColor: Colors.white,
           // Added return here
           body: SingleChildScrollView(
             child: Column(
@@ -45,7 +48,7 @@ class _StorePageState extends State<StorePage> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     CustomIcon(
-                      text: 'Rent',
+                      text: locale.rent,
                       isSelected: selectedButton == 'Rent',
                       onPressed: () {
                         setState(() {
@@ -56,7 +59,7 @@ class _StorePageState extends State<StorePage> {
                       svgImage: 'assets/icons/store_icons/Rent.svg',
                     ),
                     CustomIcon(
-                      text: 'Buy',
+                      text: locale.buy,
                       isSelected: selectedButton == 'Buy',
                       onPressed: () {
                         setState(() {
@@ -67,7 +70,7 @@ class _StorePageState extends State<StorePage> {
                       svgImage: 'assets/icons/store_icons/Buy.svg',
                     ),
                     CustomIcon(
-                      text: 'Sell',
+                      text: locale.sell,
                       onPressed: () {
                         Navigator.push(
                           context,
@@ -81,10 +84,10 @@ class _StorePageState extends State<StorePage> {
                   ],
                 ),
                 if (productsProvider.products.isEmpty)
-                  const Padding(
+                  Padding(
                     padding: EdgeInsets.symmetric(vertical: 20),
                     child: Text(
-                      'No Products Found',
+                      locale.noProductsFound,
                       style: TextStyle(
                           color: Color.fromRGBO(
                             67,
