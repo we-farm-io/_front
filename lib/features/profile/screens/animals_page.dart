@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:smart_farm/features/profile/models/entity.dart';
-import 'package:smart_farm/features/profile/widgets/customentry.dart';
 import 'package:smart_farm/shared/utils/palette.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -58,7 +57,46 @@ class _AnimalsPageState extends State<AnimalsPage> {
       });
       print('animal added successfully!');
       setState(() {});
-      _showSnackbar(context);
+      _showSnackbar(context,'Added Successfully!');
+    } else {
+      throw Exception('No user is currently signed in.');
+    }
+  }
+
+  Future<void> updateCropInUserProfile(
+      String oldCropType, String newCropType, int quantity) async {
+    if (currentUser != null) {
+      String userId = currentUser!.uid;
+
+      DocumentReference oldCropDoc = FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .collection('animals')
+          .doc(oldCropType);
+
+      DocumentReference newCropDoc = FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .collection('animals')
+          .doc(newCropType);
+
+      await FirebaseFirestore.instance.runTransaction((transaction) async {
+        DocumentSnapshot oldSnapshot = await transaction.get(oldCropDoc);
+
+        if (oldSnapshot.exists) {
+          if (oldCropType != newCropType) {
+            // Rename crop
+            transaction.delete(oldCropDoc);
+            transaction.set(newCropDoc, {'totalQuantity': quantity});
+          } else {
+            // Update quantity
+            transaction.update(oldCropDoc, {'totalQuantity': quantity});
+          }
+        }
+      });
+      print('Animal updated successfully!');
+      setState(() {});
+      _showSnackbar(context, 'Updated Successfully!');
     } else {
       throw Exception('No user is currently signed in.');
     }
@@ -84,10 +122,10 @@ class _AnimalsPageState extends State<AnimalsPage> {
     }
   }
 
-  void _showSnackbar(BuildContext context) {
-    const snackBar = SnackBar(
+  void _showSnackbar(BuildContext context,String message) {
+    final snackBar = SnackBar(
       content: Text(
-        'Added Successfully!',
+        message,
         style: TextStyle(
           color: Colors.white,
         ),
@@ -98,19 +136,21 @@ class _AnimalsPageState extends State<AnimalsPage> {
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
-  void _addCrop(BuildContext context) {
-    String name = '';
-    int quantity = 0;
+  void _addOrEditCrop(BuildContext context, String defaultname,
+      int defaultquantity, String action, String buttonaction, bool isEdit) {
+    String name = defaultname;
+    int quantity = defaultquantity;
 
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Add Animal'),
+          title: Text('${action} Crop'),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               TextField(
+                controller: TextEditingController(text: name),
                 onChanged: (value) {
                   name = value;
                 },
@@ -118,6 +158,7 @@ class _AnimalsPageState extends State<AnimalsPage> {
               ),
               TextField(
                 keyboardType: TextInputType.number,
+                controller: TextEditingController(text: quantity.toString()),
                 onChanged: (value) {
                   quantity = int.parse(value);
                 },
@@ -128,10 +169,14 @@ class _AnimalsPageState extends State<AnimalsPage> {
           actions: <Widget>[
             TextButton(
               onPressed: () {
-                addCropToUserProfile(name, quantity);
+                if (isEdit) {
+                  updateCropInUserProfile(defaultname, name, quantity);
+                } else {
+                  addCropToUserProfile(name, quantity);
+                }
                 Navigator.of(context).pop();
               },
-              child: const Text('Add'),
+              child: Text(buttonaction),
             ),
             TextButton(
               onPressed: () {
@@ -154,7 +199,7 @@ class _AnimalsPageState extends State<AnimalsPage> {
       floatingActionButton: IconButton(
         icon: SvgPicture.asset('assets/icons/Profile/message-add.svg'),
         onPressed: () {
-          _addCrop(context);
+          _addOrEditCrop(context,'',0,"Add","Add",false);
         },
       ),
       body: FutureBuilder(
@@ -226,83 +271,95 @@ class _AnimalsPageState extends State<AnimalsPage> {
                                           horizontal: 30.0, vertical: 10),
                                       child: Column(
                                         children: [
-                                          Slidable(
-                                            key: const ValueKey(0),
-                                            startActionPane: ActionPane(
-                                              motion: const ScrollMotion(),
-                                              dismissible: DismissiblePane(
-                                                onDismissed: () {},
+                                                              Slidable(
+                                      key: ValueKey(animals[index].name),
+                                      startActionPane: ActionPane(
+                                        motion: const ScrollMotion(),
+                                        children: [
+                                          SlidableAction(
+                                            onPressed: (context) {
+                                              _addOrEditCrop(
+                                                  context,
+                                                  animals[index].name,
+                                                  animals[index].value,
+                                                  "Edit",
+                                                  "Save",
+                                                  true);
+                                            },
+                                            icon: Icons.edit,
+                                          ),
+                                        ],
+                                      ),
+                                      endActionPane: ActionPane(
+                                        motion: const ScrollMotion(),
+                                        children: [
+                                          SlidableAction(
+                                            onPressed: (context) {
+                                              _showDeleteConfirmationDialog(
+                                                  context, animals[index].name);
+                                            },
+                                            icon: Icons.delete,
+                                            backgroundColor: Colors.red,
+                                          ),
+                                        ],
+                                      ),
+                                      child: Column(
+                                        children: [
+                                          Container(
+                                            alignment: Alignment.centerLeft,
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 30.0),
+                                              child: Text(
+                                                animals[index].name,
+                                                style: const TextStyle(
+                                                    fontFamily: "Poppins",
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 20),
                                               ),
-                                              children: [],
                                             ),
-                                            child: Column(
-                                              children: [
-                                                Container(
-                                                  alignment:
-                                                      Alignment.centerLeft,
-                                                  child: Padding(
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
-                                                        horizontal: 30.0),
-                                                    child: Text(
-                                                      animals[index].name,
-                                                      style: const TextStyle(
-                                                          fontFamily: "Poppins",
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 20),
-                                                    ),
-                                                  ),
-                                                ),
-                                                TextField(
-                                                  readOnly: true,
-                                                  inputFormatters: <TextInputFormatter>[
-                                                    FilteringTextInputFormatter
-                                                        .digitsOnly,
-                                                  ],
-                                                  keyboardType:
-                                                      const TextInputType
-                                                          .numberWithOptions(
-                                                          decimal: false),
-                                                  controller:
-                                                      TextEditingController(),
-                                                  style: const TextStyle(
-                                                      fontFamily: "Poppins",
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 20),
-                                                  decoration: InputDecoration(
-                                                    border: OutlineInputBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              12),
-                                                    ),
-                                                    hintText: animals[index]
-                                                        .value
-                                                        .toString(),
-                                                    hintStyle: const TextStyle(
-                                                        fontFamily: 'Poppins',
-                                                        color: Colors.black),
-                                                    contentPadding:
-                                                        const EdgeInsets
-                                                            .symmetric(
-                                                            horizontal: 40,
-                                                            vertical: 10),
-                                                    focusedBorder:
-                                                        OutlineInputBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              12),
-                                                      borderSide:
-                                                          const BorderSide(
-                                                              color: Palette
-                                                                  .buttonGreen),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
+                                          ),
+                                          TextField(
+                                            readOnly: true,
+                                            inputFormatters: <TextInputFormatter>[
+                                              FilteringTextInputFormatter
+                                                  .digitsOnly,
+                                            ],
+                                            keyboardType: const TextInputType
+                                                .numberWithOptions(
+                                                decimal: false),
+                                            controller: TextEditingController(),
+                                            style: const TextStyle(
+                                                fontFamily: "Poppins",
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 20),
+                                            decoration: InputDecoration(
+                                              border: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                              ),
+                                              hintText:
+                                                  animals[index].value.toString(),
+                                              hintStyle: const TextStyle(
+                                                  fontFamily: 'Poppins',
+                                                  color: Colors.black),
+                                              contentPadding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 40,
+                                                      vertical: 10),
+                                              focusedBorder: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                                borderSide: const BorderSide(
+                                                    color: Palette.buttonGreen),
+                                              ),
                                             ),
-                                          )
+                                          ),
+                                        ],
+                                      ),
+                                    ),                                    
+
                                         ],
                                       ),
                                     );
@@ -320,4 +377,81 @@ class _AnimalsPageState extends State<AnimalsPage> {
           }),
     );
   }
+
+  void _showDeleteConfirmationDialog(BuildContext context, String cropType) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Confirm Deletion'),
+          content: const Text('Are you sure you want to delete this crop?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Dismiss the dialog
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                deleteCropFromUserProfile(cropType);
+                Navigator.of(context).pop(); // Dismiss the dialog
+              },
+              child: const Text('Delete'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> deleteCropFromUserProfile(String cropType) async {
+    if (currentUser != null) {
+      String userId = currentUser!.uid;
+
+      DocumentReference cropDoc = FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .collection('animals')
+          .doc(cropType);
+
+      await FirebaseFirestore.instance.runTransaction((transaction) async {
+        DocumentSnapshot snapshot = await transaction.get(cropDoc);
+
+        if (snapshot.exists) {
+          int totalQuantity =
+              (snapshot.data() as Map<String, dynamic>)['totalQuantity'];
+
+          if (totalQuantity > 1) {
+            transaction.update(cropDoc, {'totalQuantity': totalQuantity - 1});
+          } else {
+            transaction.delete(cropDoc);
+          }
+        }
+      });
+      DocumentReference globaldoc =
+          FirebaseFirestore.instance.collection('animals').doc(cropType);
+      await FirebaseFirestore.instance.runTransaction((transaction) async {
+        DocumentSnapshot snapshot = await transaction.get(globaldoc);
+
+        if (snapshot.exists) {
+          int totalQuantity =
+              (snapshot.data() as Map<String, dynamic>)['totalQuantity'];
+
+          if (totalQuantity > 1) {
+            transaction.update(globaldoc, {'totalQuantity': totalQuantity - 1});
+          } else {
+            transaction.delete(globaldoc);
+          }
+        }
+      });
+      print('Animal deleted successfully!');
+      setState(() {});
+      _showSnackbar(context, 'Deleted Successfully!');
+    } else {
+      throw Exception('No user is currently signed in.');
+    }
+  }
 }
+
+
