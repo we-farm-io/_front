@@ -70,6 +70,7 @@ class _Tab2State extends State<Tab2> {
                                   provider.plantInfo, species.photoUrl!)));
                         },
                         child: Card(
+                          color: Colors.lightGreen,
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Column(
