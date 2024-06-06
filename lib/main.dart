@@ -132,6 +132,10 @@ class _MyAppState extends State<MyApp> {
       child:
           Consumer<LocaleProvider>(builder: (context, localeProvider, child) {
         return MaterialApp(
+          theme: ThemeData(
+            scaffoldBackgroundColor:
+                Colors.white, // Set your desired background color here
+          ),
           debugShowCheckedModeBanner: false,
           supportedLocales: L10n.all,
           locale: localeProvider.locale,

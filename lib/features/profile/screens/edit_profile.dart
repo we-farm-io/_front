@@ -18,12 +18,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
   bool _isnotEditing = true;
   File? _image;
   final picker = ImagePicker();
-  final TextEditingController _usernameController =
-      TextEditingController(text: 'mouhamed');
-  final TextEditingController _phoneNumberController =
-      TextEditingController(text: '0123456789');
-  final TextEditingController _bioController =
-      TextEditingController(text: 'I am just an honest farmer');
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _phoneNumberController = TextEditingController();
+  final TextEditingController _bioController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -147,20 +144,35 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     textDirection: TextDirection.rtl,
                     children: [
                       ElevatedButton(
+                          style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all(Colors.lightGreen)),
                           onPressed: () {
                             setState(() {
                               _isnotEditing = true;
                             });
                             _saveUserInfo(); // Call the save function
                           },
-                          child: const Text("save")),
+                          child: const Text(
+                            "save",
+                            style: TextStyle(color: Colors.white),
+                          )),
+                      SizedBox(
+                        width: 10,
+                      ),
                       ElevatedButton(
+                          style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all(Colors.lightGreen)),
                           onPressed: () {
                             setState(() {
                               _isnotEditing = false;
                             });
                           },
-                          child: const Text("edit"))
+                          child: const Text(
+                            "edit",
+                            style: TextStyle(color: Colors.white),
+                          ))
                     ],
                   ),
                 )

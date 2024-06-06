@@ -43,7 +43,7 @@ class _TimeLineState extends State<TimeLine> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Text(
-                DateFormat.MMMM().format(
+                DateFormat.MMM().format(
                     DateTime(fullDate.year, fullDate.month)), //month name
                 style: TextStyle(
                     color: isSelected ? Colors.white : Colors.black,
@@ -60,7 +60,7 @@ class _TimeLineState extends State<TimeLine> {
                     fontWeight: FontWeight.bold),
               ),
               Text(
-                DateFormat.EEEE().format(DateTime(
+                DateFormat.E().format(DateTime(
                     fullDate.year, fullDate.month, fullDate.day + 1)), //name
                 style: TextStyle(
                     color: isSelected ? Colors.white : Colors.black,
