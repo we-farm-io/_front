@@ -10,6 +10,7 @@ import 'package:smart_farm/features/profile/widgets/editprofilebutton.dart';
 import 'package:smart_farm/features/store/screens/my_products.dart';
 import 'package:smart_farm/features/to_do_list/screens/to_do_list_page.dart';
 import 'package:smart_farm/shared/widgets/app_navbar.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() {
   runApp(const ProfilePage());
@@ -24,7 +25,9 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context)  {
+    AppLocalizations locale = AppLocalizations.of(context)!;
+
     MediaQueryData mediaQuery = MediaQuery.of(context);
     return Scaffold(
       backgroundColor: Colors.white,
@@ -38,11 +41,15 @@ class _ProfilePageState extends State<ProfilePage> {
                 height: mediaQuery.size.height / 4)),
         Positioned(
             top: 50,
-            left: 10,
+            left: locale.localeName == "en" ? 10 : null,
+            right: locale.localeName == "en" ? null : 10,
             child: Transform.scale(
                 scaleX: 1.3,
                 child: IconButton(
-                  icon: SvgPicture.asset("assets/icons/arrow-left.svg"),
+                  icon: SvgPicture.asset(
+                    "assets/icons/arrow-left.svg",
+                    matchTextDirection: true,
+                  ),
                   onPressed: () {
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => const NavBar()));

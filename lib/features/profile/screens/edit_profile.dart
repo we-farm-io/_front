@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:smart_farm/shared/widgets/custom_button.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EditProfilePage extends StatefulWidget {
   const EditProfilePage({super.key});
@@ -27,6 +28,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    AppLocalizations locale = AppLocalizations.of(context)!;
+
     MediaQueryData mediaQuery = MediaQuery.of(context);
     return Scaffold(
       backgroundColor: Colors.white,
@@ -43,11 +46,15 @@ class _EditProfilePageState extends State<EditProfilePage> {
           ),
           Positioned(
             top: 50,
-            left: 10,
+            left: locale.localeName == "en" ? 10 : null,
+            right: locale.localeName == "en" ? null : 10,
             child: Transform.scale(
               scaleX: 1.3,
               child: IconButton(
-                icon: SvgPicture.asset("assets/icons/arrow-left.svg"),
+                icon: SvgPicture.asset(
+                  "assets/icons/arrow-left.svg",
+                  matchTextDirection: true,
+                ),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },

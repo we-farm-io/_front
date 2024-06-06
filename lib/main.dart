@@ -20,7 +20,6 @@ import 'package:smart_farm/shared/services/notifications/notifications_controlle
 import 'package:smart_farm/shared/services/notifications/notifications_services.dart';
 import 'package:smart_farm/shared/services/shared_preferences_service.dart';
 import 'package:smart_farm/shared/widgets/app_navbar.dart';
-import 'package:smart_farm/features/authentication/screens/login_page.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 Future main() async {

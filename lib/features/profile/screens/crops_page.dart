@@ -7,6 +7,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:smart_farm/features/profile/models/entity.dart';
 import 'package:smart_farm/features/profile/widgets/customentry.dart';
 import 'package:smart_farm/shared/utils/palette.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CropsPage extends StatefulWidget {
   const CropsPage({super.key});
@@ -150,6 +151,8 @@ class _CropsPageState extends State<CropsPage> {
 
   @override
   Widget build(BuildContext context) {
+    AppLocalizations locale = AppLocalizations.of(context)!;
+
     MediaQueryData mediaQuery = MediaQuery.of(context);
     return Scaffold(
       backgroundColor: Colors.white,
@@ -177,11 +180,15 @@ class _CropsPageState extends State<CropsPage> {
                   ),
                   Positioned(
                     top: 50,
-                    left: 10,
+                    left: locale.localeName == "en" ? 10 : null,
+                    right: locale.localeName == "en" ? null : 10,
                     child: Transform.scale(
                       scaleX: 1.3,
                       child: IconButton(
-                        icon: SvgPicture.asset("assets/icons/arrow-left.svg"),
+                        icon: SvgPicture.asset(
+                          "assets/icons/arrow-left.svg",
+                          matchTextDirection: true,
+                        ),
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
@@ -251,7 +258,7 @@ class _CropsPageState extends State<CropsPage> {
                                           dismissible: DismissiblePane(
                                             onDismissed: () {},
                                           ),
-                                          children: const  [],
+                                          children: const [],
                                         ),
                                         child: Column(
                                           children: [
