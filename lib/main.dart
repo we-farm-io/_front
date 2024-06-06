@@ -20,7 +20,6 @@ import 'package:smart_farm/shared/services/notifications/notifications_controlle
 import 'package:smart_farm/shared/services/notifications/notifications_services.dart';
 import 'package:smart_farm/shared/services/shared_preferences_service.dart';
 import 'package:smart_farm/shared/widgets/app_navbar.dart';
-import 'package:smart_farm/features/authentication/screens/login_page.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 Future main() async {
@@ -133,6 +132,10 @@ class _MyAppState extends State<MyApp> {
       child:
           Consumer<LocaleProvider>(builder: (context, localeProvider, child) {
         return MaterialApp(
+          theme: ThemeData(
+            scaffoldBackgroundColor:
+                Colors.white, // Set your desired background color here
+          ),
           debugShowCheckedModeBanner: false,
           supportedLocales: L10n.all,
           locale: localeProvider.locale,

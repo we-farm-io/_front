@@ -5,8 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:smart_farm/features/profile/models/entity.dart';
-import 'package:smart_farm/features/profile/widgets/customentry.dart';
 import 'package:smart_farm/shared/utils/palette.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MaterialsPage extends StatefulWidget {
   const MaterialsPage({super.key});
@@ -55,14 +55,52 @@ class _MaterialsPageState extends State<MaterialsPage> {
           transaction.update(globaldoc, {'totalQuantity': newTotalQuantity});
         }
       });
-
-      print('Crop added successfully!');
+      print('material added successfully!');
       if (mounted) {
         setState(() {});
-        _showSnackbar(context);
+        _showSnackbar(context, "Added Successfully");
       }
     } else {
       throw Exception('No userqsd is currently signed in.');
+    }
+  }
+
+  Future<void> updateCropInUserProfile(
+      String oldCropType, String newCropType, int quantity) async {
+    if (currentUser != null) {
+      String userId = currentUser!.uid;
+
+      DocumentReference oldCropDoc = FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .collection('materials')
+          .doc(oldCropType);
+
+      DocumentReference newCropDoc = FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .collection('materials')
+          .doc(newCropType);
+
+      await FirebaseFirestore.instance.runTransaction((transaction) async {
+        DocumentSnapshot oldSnapshot = await transaction.get(oldCropDoc);
+
+        if (oldSnapshot.exists) {
+          if (oldCropType != newCropType) {
+            // Rename crop
+            transaction.delete(oldCropDoc);
+            transaction.set(newCropDoc, {'totalQuantity': quantity});
+          } else {
+            // Update quantity
+            transaction.update(oldCropDoc, {'totalQuantity': quantity});
+          }
+        }
+      });
+      print('material updated successfully!');
+      setState(() {});
+      _showSnackbar(context, 'Updated Successfully!');
+    } else {
+      throw Exception('No user is currently signed in.');
     }
   }
 
@@ -87,19 +125,21 @@ class _MaterialsPageState extends State<MaterialsPage> {
     }
   }
 
-  void _addCrop(BuildContext context) {
-    String name = '';
-    int quantity = 0;
+  void _addOrEditCrop(BuildContext context, String defaultname,
+      int defaultquantity, String action, String buttonaction, bool isEdit) {
+    String name = defaultname;
+    int quantity = defaultquantity;
 
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Add Material'),
+          title: Text('${action} Material'),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               TextField(
+                controller: TextEditingController(text: name),
                 onChanged: (value) {
                   name = value;
                 },
@@ -107,6 +147,7 @@ class _MaterialsPageState extends State<MaterialsPage> {
               ),
               TextField(
                 keyboardType: TextInputType.number,
+                controller: TextEditingController(text: quantity.toString()),
                 onChanged: (value) {
                   quantity = int.parse(value);
                 },
@@ -117,11 +158,14 @@ class _MaterialsPageState extends State<MaterialsPage> {
           actions: <Widget>[
             TextButton(
               onPressed: () {
-                addCropToUserProfile(name, quantity);
-
+                if (isEdit) {
+                  updateCropInUserProfile(defaultname, name, quantity);
+                } else {
+                  addCropToUserProfile(name, quantity);
+                }
                 Navigator.of(context).pop();
               },
-              child: const Text('Add'),
+              child: Text(buttonaction),
             ),
             TextButton(
               onPressed: () {
@@ -135,10 +179,10 @@ class _MaterialsPageState extends State<MaterialsPage> {
     );
   }
 
-  void _showSnackbar(BuildContext context) {
-    const snackBar = SnackBar(
+  void _showSnackbar(BuildContext context, String message) {
+    final snackBar = SnackBar(
       content: Text(
-        'Added Successfully!',
+        message,
         style: TextStyle(
           color: Colors.white,
         ),
@@ -151,12 +195,14 @@ class _MaterialsPageState extends State<MaterialsPage> {
 
   @override
   Widget build(BuildContext context) {
+    AppLocalizations locale = AppLocalizations.of(context)!;
+
     MediaQueryData mediaQuery = MediaQuery.of(context);
     return Scaffold(
       floatingActionButton: IconButton(
         icon: SvgPicture.asset('assets/icons/Profile/message-add.svg'),
         onPressed: () {
-          _addCrop(context);
+          _addOrEditCrop(context, '', 0, "Add", "Add", false);
         },
       ),
       body: FutureBuilder(
@@ -178,12 +224,15 @@ class _MaterialsPageState extends State<MaterialsPage> {
                       ),
                       Positioned(
                         top: 50,
-                        left: 10,
+                        left: locale.localeName == "en" ? 10 : null,
+                        right: locale.localeName == "en" ? null : 10,
                         child: Transform.scale(
                           scaleX: 1.3,
                           child: IconButton(
-                            icon:
-                                SvgPicture.asset("assets/icons/arrow-left.svg"),
+                            icon: SvgPicture.asset(
+                              "assets/icons/arrow-left.svg",
+                              matchTextDirection: true,
+                            ),
                             onPressed: () {
                               Navigator.of(context).pop();
                             },
@@ -228,13 +277,38 @@ class _MaterialsPageState extends State<MaterialsPage> {
                                       child: Column(
                                         children: [
                                           Slidable(
-                                            key: const ValueKey(0),
+                                            key:
+                                                ValueKey(materials[index].name),
                                             startActionPane: ActionPane(
                                               motion: const ScrollMotion(),
-                                              dismissible: DismissiblePane(
-                                                onDismissed: () {},
-                                              ),
-                                              children: [],
+                                              children: [
+                                                SlidableAction(
+                                                  onPressed: (context) {
+                                                    _addOrEditCrop(
+                                                        context,
+                                                        materials[index].name,
+                                                        materials[index].value,
+                                                        "Edit",
+                                                        "Save",
+                                                        true);
+                                                  },
+                                                  icon: Icons.edit,
+                                                ),
+                                              ],
+                                            ),
+                                            endActionPane: ActionPane(
+                                              motion: const ScrollMotion(),
+                                              children: [
+                                                SlidableAction(
+                                                  onPressed: (context) {
+                                                    _showDeleteConfirmationDialog(
+                                                        context,
+                                                        materials[index].name);
+                                                  },
+                                                  icon: Icons.delete,
+                                                  backgroundColor: Colors.red,
+                                                ),
+                                              ],
                                             ),
                                             child: Column(
                                               children: [
@@ -303,7 +377,7 @@ class _MaterialsPageState extends State<MaterialsPage> {
                                                 ),
                                               ],
                                             ),
-                                          )
+                                          ),
                                         ],
                                       ),
                                     );
@@ -320,5 +394,80 @@ class _MaterialsPageState extends State<MaterialsPage> {
             );
           }),
     );
+  }
+
+  void _showDeleteConfirmationDialog(BuildContext context, String cropType) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Confirm Deletion'),
+          content: const Text('Are you sure you want to delete this crop?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Dismiss the dialog
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                deleteCropFromUserProfile(cropType);
+                Navigator.of(context).pop(); // Dismiss the dialog
+              },
+              child: const Text('Delete'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> deleteCropFromUserProfile(String cropType) async {
+    if (currentUser != null) {
+      String userId = currentUser!.uid;
+
+      DocumentReference cropDoc = FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .collection('crops')
+          .doc(cropType);
+
+      await FirebaseFirestore.instance.runTransaction((transaction) async {
+        DocumentSnapshot snapshot = await transaction.get(cropDoc);
+
+        if (snapshot.exists) {
+          int totalQuantity =
+              (snapshot.data() as Map<String, dynamic>)['totalQuantity'];
+
+          if (totalQuantity > 1) {
+            transaction.update(cropDoc, {'totalQuantity': totalQuantity - 1});
+          } else {
+            transaction.delete(cropDoc);
+          }
+        }
+      });
+      DocumentReference globaldoc =
+          FirebaseFirestore.instance.collection('crops').doc(cropType);
+      await FirebaseFirestore.instance.runTransaction((transaction) async {
+        DocumentSnapshot snapshot = await transaction.get(globaldoc);
+
+        if (snapshot.exists) {
+          int totalQuantity =
+              (snapshot.data() as Map<String, dynamic>)['totalQuantity'];
+
+          if (totalQuantity > 1) {
+            transaction.update(globaldoc, {'totalQuantity': totalQuantity - 1});
+          } else {
+            transaction.delete(globaldoc);
+          }
+        }
+      });
+      print('Crop deleted successfully!');
+      setState(() {});
+      _showSnackbar(context, 'Deleted Successfully!');
+    } else {
+      throw Exception('No user is currently signed in.');
+    }
   }
 }

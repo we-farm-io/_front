@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_pie_chart/easy_pie_chart.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -125,7 +126,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
           future: _getdocuments(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
             } else {
@@ -406,44 +407,60 @@ class _StatisticsPageState extends State<StatisticsPage> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 20),
+                              padding: EdgeInsets.symmetric(vertical: 20),
                               child: Column(
                                 children: [
                                   Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(0, 0, 0, 30),
-                                    child: PieChart(
-                                      chartRadius: 70,
-                                      legendOptions: const LegendOptions(
-                                          showLegends: false),
-                                      dataMap: {
-                                        "data":
-                                            (totalmaterials["data"]! / total ==
-                                                        0
-                                                    ? 1
-                                                    : total) *
-                                                100
-                                      },
-                                      chartType: ChartType.ring,
-                                      baseChartColor: totalmaterialcolor[0]
-                                          .withOpacity(0.25),
-                                      colorList: totalmaterialcolor,
-                                      chartValuesOptions:
-                                          const ChartValuesOptions(
-                                        showChartValues: false,
-                                      ),
-                                      initialAngleInDegree: 0,
-                                      totalValue: 100,
-                                      centerWidget: Text(
-                                        "${((totalmaterials["data"]! / (total == 0 ? 1 : total)) * 100).toInt()}%",
-                                        style: const TextStyle(
-                                            fontFamily: "Poppins",
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w600),
-                                      ),
+                                    padding: EdgeInsets.fromLTRB(0, 0, 0, 30),
+                                    child: EasyPieChart(
+                                      showValue: false,
+                                      pieType: PieType.fill,
+                                      size: 100,
+                                      children: [
+                                        PieData(
+                                            value: (totalmaterials["data"]! /
+                                                (total == 0 ? 1 : total)),
+                                            color: totalmaterialcolor[0]),
+                                        PieData(
+                                            value: 1 -
+                                                (totalmaterials["data"]! /
+                                                    (total == 0 ? 1 : total)),
+                                            color: totalmaterialcolor[0]
+                                                .withOpacity(0.25))
+                                      ],
                                     ),
+                                    // PieChart(
+                                    //   chartRadius: 70,
+                                    //   legendOptions: const LegendOptions(
+                                    //       showLegends: false),
+                                    //   dataMap: {
+                                    //     "data":
+                                    //         (totalmaterials["data"]! / total ==
+                                    //                     0
+                                    //                 ? 1
+                                    //                 : total) *
+                                    //             100
+                                    //   },
+                                    //   chartType: ChartType.ring,
+                                    //   baseChartColor: totalmaterialcolor[0]
+                                    //       .withOpacity(0.25),
+                                    //   colorList: totalmaterialcolor,
+                                    //   chartValuesOptions:
+                                    //       const ChartValuesOptions(
+                                    //     showChartValues: false,
+                                    //   ),
+                                    //   initialAngleInDegree: 0,
+                                    //   totalValue: 100,
+                                    //   centerWidget: Text(
+                                    //     "${((totalmaterials["data"]! / (total == 0 ? 1 : total)) * 100).toInt()}%",
+                                    //     style: const TextStyle(
+                                    //         fontFamily: "Poppins",
+                                    //         fontSize: 18,
+                                    //         fontWeight: FontWeight.w600),
+                                    //   ),
+                                    // ),
                                   ),
-                                  const Text(
+                                  Text(
                                     textAlign: TextAlign.center,
                                     "Total\nMaterials",
                                     style: TextStyle(
@@ -463,38 +480,57 @@ class _StatisticsPageState extends State<StatisticsPage> {
                                   Padding(
                                     padding:
                                         const EdgeInsets.fromLTRB(0, 0, 0, 30),
-                                    child: PieChart(
-                                      chartRadius: 70,
-                                      legendOptions: const LegendOptions(
-                                          showLegends: false),
-                                      dataMap: {
-                                        "data":
-                                            (totalanimals["data"]! / total == 0
-                                                    ? 1
-                                                    : total) *
-                                                100
-                                      },
-                                      chartType: ChartType.ring,
-                                      baseChartColor: totalanimalscolor[0]
-                                          .withOpacity(0.25),
-                                      colorList: totalanimalscolor,
-                                      chartValuesOptions:
-                                          const ChartValuesOptions(
-                                        showChartValues: false,
-                                      ),
-                                      initialAngleInDegree:
-                                          (32 / total == 0 ? 1 : total) * 360,
-                                      totalValue: 100,
-                                      degreeOptions: const DegreeOptions(
-                                          initialAngle: 0, totalDegrees: 360),
-                                      centerWidget: Text(
-                                        "${((totalanimals["data"]! / (total == 0 ? 1 : total)) * 100).toInt()}%",
-                                        style: const TextStyle(
-                                            fontFamily: "Poppins",
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w600),
-                                      ),
+                                    child: EasyPieChart(
+                                      showValue: false,
+                                      pieType: PieType.fill,
+                                      size: 100,
+                                      children: [
+                                        PieData(
+                                            value: (totalanimals["data"]! /
+                                                (total == 0 ? 1 : total)),
+                                            color: totalanimalscolor[0]),
+                                        PieData(
+                                            value: 1 -
+                                                (totalanimals["data"]! /
+                                                    (total == 0 ? 1 : total)),
+                                            color: totalanimalscolor[0]
+                                                .withOpacity(0.25))
+                                      ],
                                     ),
+                                    // PieChart(
+                                    //   chartRadius: 70,
+                                    //   legendOptions: const LegendOptions(
+                                    //       showLegends: false),
+                                    //   dataMap: {
+                                    //     "data":
+                                    //         (totalanimals["data"]! / total == 0
+                                    //                 ? 1
+                                    //                 : total) *
+                                    //             100
+                                    //   },
+                                    //   chartType: ChartType.ring,
+                                    //   baseChartColor: totalanimalscolor[0]
+                                    //       .withOpacity(0.25),
+                                    //   colorList: totalanimalscolor,
+                                    //   chartValuesOptions:
+                                    //       const ChartValuesOptions(
+                                    //     showChartValues: false,
+                                    //   ),
+                                    //   initialAngleInDegree:
+                                    //       ((totalmaterials["data"]! /
+                                    //               (total == 0 ? 1 : total)) *
+                                    //           360),
+                                    //   totalValue: 100,
+                                    //   degreeOptions: const DegreeOptions(
+                                    //       initialAngle: 0, totalDegrees: 360),
+                                    //   centerWidget: Text(
+                                    //     "${((totalanimals["data"]! / (total == 0 ? 1 : total)) * 100).toInt()}%",
+                                    //     style: const TextStyle(
+                                    //         fontFamily: "Poppins",
+                                    //         fontSize: 18,
+                                    //         fontWeight: FontWeight.w600),
+                                    //   ),
+                                    // ),
                                   ),
                                   const Text(
                                     textAlign: TextAlign.center,
@@ -516,39 +552,56 @@ class _StatisticsPageState extends State<StatisticsPage> {
                                   Padding(
                                     padding:
                                         const EdgeInsets.fromLTRB(0, 0, 0, 30),
-                                    child: PieChart(
-                                      chartRadius: 70,
-                                      legendOptions: const LegendOptions(
-                                          showLegends: false),
-                                      dataMap: {
-                                        "data": totalcrops["data"]! /
-                                            (total == 0 ? 1 : total) *
-                                            100
-                                      },
-                                      chartType: ChartType.ring,
-                                      baseChartColor:
-                                          totalcropscolor[0].withOpacity(0.25),
-                                      colorList: totalcropscolor,
-                                      chartValuesOptions:
-                                          const ChartValuesOptions(
-                                        showChartValues: false,
-                                      ),
-                                      initialAngleInDegree: (totalmaterials[
-                                                          "data"]! +
-                                                      totalanimals["data"]!) /
-                                                  total ==
-                                              0
-                                          ? 1
-                                          : total * 360,
-                                      totalValue: 100,
-                                      centerWidget: Text(
-                                        "${((totalcrops["data"]! / (total == 0 ? 1 : total)) * 100).toInt()}%",
-                                        style: const TextStyle(
-                                            fontFamily: "Poppins",
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w600),
-                                      ),
+                                    child: EasyPieChart(
+                                      showValue: false,
+                                      pieType: PieType.fill,
+                                      size: 100,
+                                      children: [
+                                        PieData(
+                                            value: (totalcrops["data"]! /
+                                                (total == 0 ? 1 : total)),
+                                            color: totalcropscolor[0]),
+                                        PieData(
+                                            value: 1 -
+                                                (totalcrops["data"]! /
+                                                    (total == 0 ? 1 : total)),
+                                            color: totalcropscolor[0]
+                                                .withOpacity(0.25))
+                                      ],
                                     ),
+                                    // PieChart(
+                                    //   chartRadius: 70,
+                                    //   legendOptions: const LegendOptions(
+                                    //       showLegends: false),
+                                    //   dataMap: {
+                                    //     "data": totalcrops["data"]! /
+                                    //         (total == 0 ? 1 : total) *
+                                    //         100
+                                    //   },
+                                    //   chartType: ChartType.ring,
+                                    //   baseChartColor:
+                                    //       totalcropscolor[0].withOpacity(0.25),
+                                    //   colorList: totalcropscolor,
+                                    //   chartValuesOptions:
+                                    //       const ChartValuesOptions(
+                                    //     showChartValues: false,
+                                    //   ),
+                                    //   initialAngleInDegree: (totalmaterials[
+                                    //                       "data"]! +
+                                    //                   totalanimals["data"]!) /
+                                    //               total ==
+                                    //           0
+                                    //       ? 1
+                                    //       : total * 360,
+                                    //   totalValue: 100,
+                                    //   centerWidget: Text(
+                                    //     "${((totalcrops["data"]! / (total == 0 ? 1 : total)) * 100).toInt()}%",
+                                    //     style: const TextStyle(
+                                    //         fontFamily: "Poppins",
+                                    //         fontSize: 18,
+                                    //         fontWeight: FontWeight.w600),
+                                    //   ),
+                                    // ),
                                   ),
                                   const Text(
                                     textAlign: TextAlign.center,
@@ -595,23 +648,43 @@ class _StatisticsPageState extends State<StatisticsPage> {
                                 ),
                               ),
                             ),
-                            PieChart(
-                              dataMap: cropsvalues,
-                              animationDuration:
-                                  const Duration(milliseconds: 800),
-                              chartRadius:
-                                  (MediaQuery.of(context).size.width + 40) / 3,
-                              colorList: cropscolor,
-                              initialAngleInDegree: 0,
-                              chartType: ChartType.disc,
-                              ringStrokeWidth: 32,
-                              legendOptions: const LegendOptions(
-                                showLegends: false,
-                              ),
-                              chartValuesOptions: const ChartValuesOptions(
-                                showChartValues: false,
-                              ),
+                            EasyPieChart(
+                              showValue: false,
+                              pieType: PieType.fill,
+                              size: 180,
+                              children: [
+                                PieData(
+                                    value: cropsvalues.values.toList()[0],
+                                    color: cropscolor[0]),
+                                if (crops.keys.toList().isEmpty)
+                                  PieData(value: 1, color: cropscolor[0]),
+                                if (crops.keys.toList().isNotEmpty)
+                                  PieData(
+                                      value: (cropsvalues.values.toList()[1]),
+                                      color: cropscolor[1]),
+                                if (crops.keys.toList().length >= 2)
+                                  PieData(
+                                      value: cropsvalues.values.toList()[2],
+                                      color: cropscolor[2])
+                              ],
                             ),
+                            // PieChart(
+                            //   dataMap: cropsvalues,
+                            //   animationDuration:
+                            //       const Duration(milliseconds: 800),
+                            //   chartRadius:
+                            //       (MediaQuery.of(context).size.width + 40) / 3,
+                            //   colorList: cropscolor,
+                            //   initialAngleInDegree: 0,
+                            //   chartType: ChartType.disc,
+                            //   ringStrokeWidth: 32,
+                            //   legendOptions: const LegendOptions(
+                            //     showLegends: false,
+                            //   ),
+                            //   chartValuesOptions: const ChartValuesOptions(
+                            //     showChartValues: false,
+                            //   ),
+                            // ),
                             Padding(
                               padding: const EdgeInsets.fromLTRB(0, 20, 0, 40),
                               child: Container(
@@ -665,7 +738,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
                                             ],
                                           ),
                                           Text(
-                                            "${((cropsvalues.values.toList()[1].toInt() / totalcrops["data"]! == 0 ? 1 : totalcrops["data"]!) * 100).toInt()}%",
+                                            "${((cropsvalues.values.toList()[1].toInt() / (totalcrops["data"]! == 0 ? 1 : totalcrops["data"]!)) * 100).toInt()}%",
                                             style: const TextStyle(
                                                 color: Color(0xFF2B3674),
                                                 fontFamily: "Poppins",
@@ -708,7 +781,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
                                             ],
                                           ),
                                           Text(
-                                            "${((cropsvalues.values.toList()[2].toInt() / totalcrops["data"]! == 0 ? 1 : totalcrops["data"]!) * 100).toInt()}%",
+                                            "${((cropsvalues.values.toList()[2].toInt() / (totalcrops["data"]! == 0 ? 1 : totalcrops["data"]!)) * 100).toInt()}%",
                                             style: const TextStyle(
                                                 color: Color(0xFF2B3674),
                                                 fontFamily: "Poppins",
@@ -747,7 +820,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
                                           ],
                                         ),
                                         Text(
-                                          "${((cropsvalues.values.toList()[0].toInt() / totalcrops["data"]! == 0 ? 1 : totalcrops["data"]!) * 100).toInt()}%",
+                                          "${((cropsvalues.values.toList()[0].toInt() / (totalcrops["data"]! == 0 ? 1 : totalcrops["data"]!)) * 100).toInt()}%",
                                           style: const TextStyle(
                                               color: Color(0xFF2B3674),
                                               fontFamily: "Poppins",
@@ -794,23 +867,43 @@ class _StatisticsPageState extends State<StatisticsPage> {
                                 ),
                               ),
                             ),
-                            PieChart(
-                              dataMap: animalsvalues,
-                              animationDuration:
-                                  const Duration(milliseconds: 800),
-                              chartRadius:
-                                  (MediaQuery.of(context).size.width + 40) / 3,
-                              colorList: animalscolor,
-                              initialAngleInDegree: 0,
-                              chartType: ChartType.disc,
-                              ringStrokeWidth: 32,
-                              legendOptions: const LegendOptions(
-                                showLegends: false,
-                              ),
-                              chartValuesOptions: const ChartValuesOptions(
-                                showChartValues: false,
-                              ),
+                            EasyPieChart(
+                              showValue: false,
+                              pieType: PieType.fill,
+                              size: 180,
+                              children: [
+                                PieData(
+                                    value: animalsvalues.values.toList()[0],
+                                    color: animalscolor[0]),
+                                if (animals.keys.toList().isEmpty)
+                                  PieData(value: 1, color: animalscolor[0]),
+                                if (animals.keys.toList().isNotEmpty)
+                                  PieData(
+                                      value: (animalsvalues.values.toList()[1]),
+                                      color: animalscolor[1]),
+                                if (animals.keys.toList().length >= 2)
+                                  PieData(
+                                      value: animalsvalues.values.toList()[2],
+                                      color: animalscolor[2])
+                              ],
                             ),
+                            // PieChart(
+                            //   dataMap: animalsvalues,
+                            //   animationDuration:
+                            //       const Duration(milliseconds: 800),
+                            //   chartRadius:
+                            //       (MediaQuery.of(context).size.width + 40) / 3,
+                            //   colorList: animalscolor,
+                            //   initialAngleInDegree: 0,
+                            //   chartType: ChartType.disc,
+                            //   ringStrokeWidth: 32,
+                            //   legendOptions: const LegendOptions(
+                            //     showLegends: false,
+                            //   ),
+                            //   chartValuesOptions: const ChartValuesOptions(
+                            //     showChartValues: false,
+                            //   ),
+                            // ),
                             Padding(
                               padding: const EdgeInsets.fromLTRB(0, 20, 0, 40),
                               child: Container(
@@ -865,7 +958,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
                                             ],
                                           ),
                                           Text(
-                                            "${((animalsvalues.values.toList()[1].toInt() / totalanimals["data"]! == 0 ? 1 : totalanimals["data"]!) * 100).toInt()}%",
+                                            "${(((animalsvalues.values.toList()[1].toInt() / (totalanimals["data"]! == 0 ? 1 : totalanimals["data"]!))) * 100).toInt()}%",
                                             style: const TextStyle(
                                                 color: Color(0xFF2B3674),
                                                 fontFamily: "Poppins",
@@ -908,7 +1001,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
                                             ],
                                           ),
                                           Text(
-                                            "${((animalsvalues.values.toList()[2].toInt() / totalanimals["data"]! == 0 ? 1 : totalanimals["data"]!) * 100).toInt()}%",
+                                            "${((animalsvalues.values.toList()[2].toInt() / (totalanimals["data"]! == 0 ? 1 : totalanimals["data"]!)) * 100).toInt()}%",
                                             style: const TextStyle(
                                                 color: Color(0xFF2B3674),
                                                 fontFamily: "Poppins",
@@ -948,7 +1041,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
                                           ],
                                         ),
                                         Text(
-                                          "${((animalsvalues.values.toList()[0].toInt() / totalanimals["data"]! == 0 ? 1 : totalanimals["data"]!) * 100).toInt()}%",
+                                          "${((animalsvalues.values.toList()[0].toInt() / (totalanimals["data"]! == 0 ? 1 : totalanimals["data"]!)) * 100).toInt()}%",
                                           style: const TextStyle(
                                               color: Color(0xFF2B3674),
                                               fontFamily: "Poppins",
@@ -995,23 +1088,44 @@ class _StatisticsPageState extends State<StatisticsPage> {
                                 ),
                               ),
                             ),
-                            PieChart(
-                              dataMap: materialsvalues,
-                              animationDuration:
-                                  const Duration(milliseconds: 800),
-                              chartRadius:
-                                  (MediaQuery.of(context).size.width + 40) / 3,
-                              colorList: materialscolor,
-                              initialAngleInDegree: 0,
-                              chartType: ChartType.disc,
-                              ringStrokeWidth: 32,
-                              legendOptions: const LegendOptions(
-                                showLegends: false,
-                              ),
-                              chartValuesOptions: const ChartValuesOptions(
-                                showChartValues: false,
-                              ),
+                            EasyPieChart(
+                              showValue: false,
+                              pieType: PieType.fill,
+                              size: 180,
+                              children: [
+                                PieData(
+                                    value: materialsvalues.values.toList()[0],
+                                    color: materialscolor[0]),
+                                if (materials.keys.toList().isEmpty)
+                                  PieData(value: 1, color: materialscolor[0]),
+                                if (materials.keys.toList().isNotEmpty)
+                                  PieData(
+                                      value:
+                                          (materialsvalues.values.toList()[1]),
+                                      color: materialscolor[1]),
+                                if (materials.keys.toList().length >= 2)
+                                  PieData(
+                                      value: materialsvalues.values.toList()[2],
+                                      color: materialscolor[2])
+                              ],
                             ),
+                            // PieChart(
+                            //   dataMap: materialsvalues,
+                            //   animationDuration:
+                            //       const Duration(milliseconds: 800),
+                            //   chartRadius:
+                            //       (MediaQuery.of(context).size.width + 40) / 3,
+                            //   colorList: materialscolor,
+                            //   initialAngleInDegree: 0,
+                            //   chartType: ChartType.disc,
+                            //   ringStrokeWidth: 32,
+                            //   legendOptions: const LegendOptions(
+                            //     showLegends: false,
+                            //   ),
+                            //   chartValuesOptions: const ChartValuesOptions(
+                            //     showChartValues: false,
+                            //   ),
+                            // ),
                             Padding(
                               padding: const EdgeInsets.fromLTRB(0, 20, 0, 40),
                               child: Container(

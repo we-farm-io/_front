@@ -3,10 +3,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geocoding/geocoding.dart' as cod;
 import 'package:location/location.dart' as loc;
 import 'package:location/location.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:smart_farm/shared/widgets/custom_button.dart';
 
 class AddressCombo {
   late final String? _address;
@@ -44,22 +46,43 @@ class _StorePageState extends State<NavigationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Choose a Location'),
+        bottomSheet: Container(
+          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 30),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+            color: Colors.white,
+          ),
+          height: MediaQuery.of(context).size.height / 8,
+          child: CustomButton(
+            buttonText: "Use location",
+            onPressed: () async {
+              final navigator = Navigator.of(context);
+              await getAddressFromLatLng();
+              navigator.pop(AddressCombo(_address, destLocation));
+              //TODO implement the send location back to store window
+              // Navigator.of(context).pushAndRemoveUntil(
+              //     MaterialPageRoute(
+              //       builder: (context) => NavigationScreen(
+              //           destLocation!.latitude, destLocation!.longitude),
+              //     ),
+              //     (route) => false);
+            },
+          ),
         ),
-        floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.navigate_next),
-          onPressed: () async {
-            final navigator = Navigator.of(context);
-            await getAddressFromLatLng();
-            navigator.pop(AddressCombo(_address, destLocation));
-            // Navigator.of(context).pushAndRemoveUntil(
-            //     MaterialPageRoute(
-            //       builder: (context) => NavigationScreen(
-            //           destLocation!.latitude, destLocation!.longitude),
-            //     ),
-            //     (route) => false);
-          },
+        appBar: AppBar(
+          toolbarHeight: MediaQuery.of(context).size.height / 8,
+          leading: IconButton(
+            icon: SvgPicture.asset("assets/icons/arrow-left.svg"),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+          centerTitle: true,
+          backgroundColor: Color(0xff0D986A),
+          title: Text(
+            'Choose a location',
+            style: TextStyle(
+                color: Colors.white, fontFamily: "Poppins", fontSize: 24),
+          ),
         ),
         body: Stack(
           children: [
@@ -94,7 +117,7 @@ class _StorePageState extends State<NavigationPage> {
               child: Padding(
                   padding: const EdgeInsets.only(bottom: 35.0),
                   child: Icon(
-                    color: Colors.green,
+                    color: Colors.green.shade900,
                     Icons.location_on,
                     size: 50,
                   )), // Padding
@@ -141,39 +164,5 @@ class _StorePageState extends State<NavigationPage> {
     if (_permissionGranted == loc.PermissionStatus.granted) {
       location.changeSettings(accuracy: loc.LocationAccuracy.high);
     }
-  }
-}
-
-class SecondPage extends StatelessWidget {
-  const SecondPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    TextEditingController _textEditingController = TextEditingController();
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Second Page'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            TextField(
-              controller: _textEditingController,
-              decoration: InputDecoration(
-                labelText: 'Enter your input',
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context, _textEditingController.text);
-              },
-              child: Text('Submit'),
-            ),
-          ],
-        ),
-      ),
-    );
   }
 }

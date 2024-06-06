@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart'; // Import for Firebase Authentication
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EditProfilePage extends StatefulWidget {
   const EditProfilePage({super.key});
@@ -62,6 +63,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    AppLocalizations locale = AppLocalizations.of(context)!;
+
     MediaQueryData mediaQuery = MediaQuery.of(context);
     return Scaffold(
       backgroundColor: Colors.white,
@@ -78,11 +81,15 @@ class _EditProfilePageState extends State<EditProfilePage> {
           ),
           Positioned(
             top: 50,
-            left: 10,
+            left: locale.localeName == "en" ? 10 : null,
+            right: locale.localeName == "en" ? null : 10,
             child: Transform.scale(
               scaleX: 1.3,
               child: IconButton(
-                icon: SvgPicture.asset("assets/icons/arrow-left.svg"),
+                icon: SvgPicture.asset(
+                  "assets/icons/arrow-left.svg",
+                  matchTextDirection: true,
+                ),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -176,20 +183,35 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     textDirection: TextDirection.rtl,
                     children: [
                       ElevatedButton(
+                          style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all(Colors.lightGreen)),
                           onPressed: () {
                             setState(() {
                               _isnotEditing = true;
                             });
                             _saveUserInfo(); // Call the save function
                           },
-                          child: const Text("save")),
+                          child: const Text(
+                            "save",
+                            style: TextStyle(color: Colors.white),
+                          )),
+                      SizedBox(
+                        width: 10,
+                      ),
                       ElevatedButton(
+                          style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all(Colors.lightGreen)),
                           onPressed: () {
                             setState(() {
                               _isnotEditing = false;
                             });
                           },
-                          child: const Text("edit"))
+                          child: const Text(
+                            "edit",
+                            style: TextStyle(color: Colors.white),
+                          ))
                     ],
                   ),
                 )

@@ -100,9 +100,6 @@ class _AddProductState extends State<AddProduct> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        const SizedBox(
-                          width: 20,
-                        ),
                         Image.asset('assets/images/store/Group.png'),
                       ],
                     ),
