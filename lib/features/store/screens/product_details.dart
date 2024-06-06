@@ -134,7 +134,7 @@ class ProductDetails extends StatelessWidget {
                             onPressed: () async {
                               await launchUrl(Uri.parse(
                                   //Todo implement the fetch product coordinates and link with firebase
-                                  'google.navigation:q=${35.7048287}, ${-0.653571}&key=AIzaSyDSbl052WrQ8pwywEKmNl5FLJAa21tXxa0'));
+                                  'google.navigation:q=${product.location["latitude"]}, ${product.location["longtitude"]}&key=AIzaSyDSbl052WrQ8pwywEKmNl5FLJAa21tXxa0'));
                             },
                             icon: const Icon(
                               Icons.add,

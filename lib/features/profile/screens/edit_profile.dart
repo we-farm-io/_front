@@ -17,12 +17,48 @@ class _EditProfilePageState extends State<EditProfilePage> {
   bool _isnotEditing = true;
   File? _image;
   final picker = ImagePicker();
-  final TextEditingController _usernameController =
-      TextEditingController(text: 'mouhamed');
-  final TextEditingController _phoneNumberController =
-      TextEditingController(text: '0123456789');
-  final TextEditingController _bioController =
-      TextEditingController(text: 'I am just an honest farmer');
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _phoneNumberController = TextEditingController();
+  final TextEditingController _bioController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    User? user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      String userId = user.uid;
+
+      try {
+        DocumentSnapshot userDoc = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(userId)
+            .get();
+
+        if (userDoc.exists) {
+          setState(() {
+            _usernameController.text = userDoc['name'] ?? '';
+            _phoneNumberController.text = userDoc['phonenumber'] ?? '';
+            _bioController.text = userDoc['bio'] ?? '';
+          });
+        }
+      } catch (e) {
+        print('Error fetching user data: $e');
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Failed to load user data')),
+        );
+      }
+    } else {
+      print('No user is currently signed in.');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('No user is currently signed in')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

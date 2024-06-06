@@ -483,10 +483,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
                                         showChartValues: false,
                                       ),
                                       initialAngleInDegree:
-                                          (totalmaterials["data"]! / total == 0
-                                                  ? 1
-                                                  : total) *
-                                              360,
+                                          (32 / total == 0 ? 1 : total) * 360,
                                       totalValue: 100,
                                       degreeOptions: const DegreeOptions(
                                           initialAngle: 0, totalDegrees: 360),

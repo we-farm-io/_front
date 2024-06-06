@@ -113,31 +113,56 @@ class UserViewModel with ChangeNotifier {
           )));
     } else {
       try {
-        UserCredential usercredential = await FirebaseAuth.instance
-            .createUserWithEmailAndPassword(email: email, password: password);
-        // ignore: unused_local_variable
-        if (usercredential.user != null) {
-          print("entered here");
-          String userId = usercredential.user!.uid;
-          print("user id $userId");
-          final usersCollection =
-              FirebaseFirestore.instance.collection('users');
-          await usersCollection.doc(userId).set({
-            'email': email,
-            "phoneNumber": phonenumber,
-            'createdAt': FieldValue.serverTimestamp(),
-            "agriculture_id": id,
-          });
-          print("routing success");
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const SuccessAuth()),
-          );
-        } else {
-          print("id null");
-        }
+        // Verify agriculture_id
+        final idQuerySnapshot = await FirebaseFirestore.instance
+            .collection('id')
+            .where('id', isEqualTo: id)
+            .where('used', isEqualTo: false)
+            .limit(1)
+            .get();
 
-        // Navigate to the next screen upon successful sign-up
+        if (idQuerySnapshot.docs.isNotEmpty) {
+          // Proceed with sign-up since agriculture_id exists and is not used
+          UserCredential usercredential = await FirebaseAuth.instance
+              .createUserWithEmailAndPassword(email: email, password: password);
+
+          if (usercredential.user != null) {
+            print("entered here");
+            String userId = usercredential.user!.uid;
+            print("user id $userId");
+
+            final usersCollection =
+                FirebaseFirestore.instance.collection('users');
+            await usersCollection.doc(userId).set({
+              'email': email,
+              'phoneNumber': phonenumber,
+              'createdAt': FieldValue.serverTimestamp(),
+              'agriculture_id': id,
+            });
+
+            // Mark the id as used
+            final idDocId = idQuerySnapshot.docs.first.id;
+            await FirebaseFirestore.instance
+                .collection('id')
+                .doc(idDocId)
+                .update({'used': true});
+
+            print("routing success");
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const SuccessAuth()),
+            );
+          } else {
+            print("id null");
+          }
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              backgroundColor: Colors.orangeAccent,
+              content: Text(
+                "Invalid agriculture ID or already used",
+                style: TextStyle(fontSize: 18.0),
+              )));
+        }
       } on FirebaseAuthException catch (e) {
         if (e.code == 'weak-password') {
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -164,7 +189,6 @@ class UserViewModel with ChangeNotifier {
         }
       }
     }
-    // }
   }
 
   bool isValidEmail(String email) {
