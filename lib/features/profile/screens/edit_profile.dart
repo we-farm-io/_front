@@ -2,8 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:smart_farm/shared/widgets/custom_button.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart'; // Import for Firebase Authentication
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EditProfilePage extends StatefulWidget {
@@ -21,8 +22,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
       TextEditingController(text: 'mouhamed');
   final TextEditingController _phoneNumberController =
       TextEditingController(text: '0123456789');
-  final TextEditingController _passwordController =
-      TextEditingController(text: '********');
   final TextEditingController _bioController =
       TextEditingController(text: 'I am just an honest farmer');
 
@@ -132,21 +131,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: TextFormField(
                     readOnly: _isnotEditing,
-                    controller: _passwordController,
-                    obscureText: true,
-                    decoration: InputDecoration(
-                      labelText: 'Password',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 40),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: TextFormField(
-                    readOnly: _isnotEditing,
                     controller: _bioController,
                     maxLines: null,
                     decoration: InputDecoration(
@@ -167,15 +151,16 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             setState(() {
                               _isnotEditing = true;
                             });
+                            _saveUserInfo(); // Call the save function
                           },
-                          child: Text("save")),
+                          child: const Text("save")),
                       ElevatedButton(
                           onPressed: () {
                             setState(() {
                               _isnotEditing = false;
                             });
                           },
-                          child: Text("edit"))
+                          child: const Text("edit"))
                     ],
                   ),
                 )
@@ -210,9 +195,42 @@ class _EditProfilePageState extends State<EditProfilePage> {
       if (pickedFile != null) {
         _image = File(pickedFile.path);
       } else {
-        // ignore: avoid_print
         print('No image selected.');
       }
     });
+  }
+
+  Future<void> _saveUserInfo() async {
+    // Get the current user
+    User? user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      String userId = user.uid; // Get the user ID
+
+      try {
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(userId)
+            .update({
+          'name': _usernameController.text.trim(),
+          'phonenumber': _phoneNumberController.text.trim(),
+          'bio': _bioController.text.trim(),
+          // Add other fields as necessary
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Profile updated successfully')),
+        );
+      } catch (e) {
+        print('Error updating profile: $e');
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Failed to update profile')),
+        );
+      }
+    } else {
+      print('No user is currently signed in.');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('No user is currently signed in')),
+      );
+    }
   }
 }
