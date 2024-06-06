@@ -73,7 +73,7 @@ class SideBar extends StatelessWidget {
             ListTile(
               leading:
                   Image.asset('assets/icons/SideBarIcons/SettingsIcon.png'),
-              title:  Text(
+              title: Text(
                 AppLocalizations.of(context)!.sidebarSettings,
                 style: TextStyle(
                     fontWeight: FontWeight.w600,
@@ -101,7 +101,7 @@ class SideBar extends StatelessWidget {
             ),
             ListTile(
               leading: Image.asset("assets/icons/SideBarIcons/LogOut.png"),
-              title:  Text(
+              title: Text(
                 AppLocalizations.of(context)!.sidebarLogOut,
                 style: TextStyle(
                     fontWeight: FontWeight.w600,
